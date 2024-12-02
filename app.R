@@ -23,7 +23,7 @@ ui <- fluidPage(
                  checkboxInput("biplot", "Biplot", value = FALSE),
                  conditionalPanel(
                    condition = "input.biplot == false",
-                   checkboxInput("plotlytooltipping", "Plotly tooltipping", value = FALSE)
+                   checkboxInput("plotlytooltipping", "Plotly", value = FALSE)
                  ),
                  conditionalPanel(
                    condition = "input.plotlytooltipping == true",
@@ -52,12 +52,9 @@ ui <- fluidPage(
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare", value = TRUE),
                  numericInput("pointSize", "Point size", value = 1 , step = 0.1),
                  checkboxInput("pointSizeReflectingStress", "pointSizeReflectingStress", value = FALSE),
-                 conditionalPanel(
-                   condition = "input.biplot == true",
-                   checkboxInput("displayArrowLabels", "displayArrowLabels", value = TRUE),
-                   numericInput("arrowLabelSize", "arrowLabelSize", value = 3.88, step = 0.1),
-                   checkboxInput("repelArrowLabels", "repelArrowLabels", value = FALSE)
-                 )
+                 checkboxInput("displayArrowLabels", "displayArrowLabels", value = TRUE),
+                 numericInput("arrowLabelSize", "arrowLabelSize", value = 3.88, step = 0.1),
+                 checkboxInput("repelArrowLabels", "repelArrowLabels", value = FALSE)
                ),
                mainPanel(
                  p("")
@@ -96,7 +93,7 @@ ui <- fluidPage(
 # }
 
 server <- function(input, output, session) {
-  p <- reactive(
+  p <- reactive({
     if (length(input$pDataForAdditionalLabelling) == 0) {
       CytoMDS::ggplotSampleMDS(
         mdsObj = mdsObj,
@@ -145,7 +142,7 @@ server <- function(input, output, session) {
         pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
       )
     }
-    )
+    })
   output$mdsPlotc <- renderUI({
     if (input$plotlytooltipping == FALSE) {
       plotOutput("mdsPlot1")
