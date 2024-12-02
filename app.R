@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 library(CytoMDS)
+library(plotly)
 
 mdsObj <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_mdsObj.rds")
 pData <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_phenoData.rds")
@@ -19,13 +20,24 @@ ui <- fluidPage(
                  selectInput("colourBy", "Colour by:", choices = colnames(pData), selected = colnames(pData)[1]),
                  selectInput("labelBy", "Label by:", choices = colnames(pData), selected = colnames(pData)[2]),
                  selectInput("shapeBy", "Shape by:", choices = colnames(pData), selected = colnames(pData)[2]),
-                 checkboxInput("biplot", "biplot", value = FALSE),
-                 numericInput("arrowThreshold", "arrowThreshold", value = 0.8 , step = 0.1),
+                 checkboxInput("biplot", "Biplot", value = FALSE),
+                 conditionalPanel(
+                   condition = "input.biplot == false",
+                   checkboxInput("plotlytooltipping", "Plotly tooltipping", value = FALSE)
+                 ),
+                 conditionalPanel(
+                   condition = "input.plotlytooltipping == true",
+                   selectInput("pDataForAdditionalLabelling", "pDataForAdditionalLabelling:", choices = colnames(pData), multiple = TRUE)
+                 ),
+                 conditionalPanel(
+                   condition = "input.biplot == true",
+                   numericInput("arrowThreshold", "arrowThreshold", value = 0.8, step = 0.1)
+                 ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
                ),
                mainPanel(
-                 plotOutput("mdsPlot", height = "500px")
+                 uiOutput("mdsPlotc")
                )
              )
     ),
@@ -40,9 +52,12 @@ ui <- fluidPage(
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare", value = TRUE),
                  numericInput("pointSize", "Point size", value = 1 , step = 0.1),
                  checkboxInput("pointSizeReflectingStress", "pointSizeReflectingStress", value = FALSE),
-                 checkboxInput("displayArrowLabels", "displayArrowLabels", value = TRUE),
-                 numericInput("arrowLabelSize", "arrowLabelSize", value = 3.88, step = 0.1),
-                 checkboxInput("repelArrowLabels", "repelArrowLabels", value = FALSE)
+                 conditionalPanel(
+                   condition = "input.biplot == true",
+                   checkboxInput("displayArrowLabels", "displayArrowLabels", value = TRUE),
+                   numericInput("arrowLabelSize", "arrowLabelSize", value = 3.88, step = 0.1),
+                   checkboxInput("repelArrowLabels", "repelArrowLabels", value = FALSE)
+                 )
                ),
                mainPanel(
                  p("")
@@ -52,33 +67,101 @@ ui <- fluidPage(
   )
 )
 
+# server <- function(input, output, session) {
+#   output$mdsPlot <- renderPlot({
+#     CytoMDS::ggplotSampleMDS(
+#       mdsObj = mdsObj,
+#       pData = pData,
+#       projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+#       biplot = input$biplot,
+#       extVariables = stats$median, # how to choose variable?
+#       pDataForColour = input$colourBy,
+#       pDataForLabel = input$labelBy,
+#       pDataForShape = input$shapeBy,
+#       flipXAxis = input$flipXAxis,
+#       flipYAxis = input$flipYAxis,
+#       pointLabelSize = input$pointLabelSize,
+#       displayPointLabels = input$displayPointLabels,
+#       repelPointLabels = input$repelPointLabels,
+#       displayPseudoRSq = input$displayPseudoRSq,
+#       pointSizeReflectingStress = input$pointSizeReflectingStress,
+#       pointSize = input$pointSize,
+#       displayArrowLabels = input$displayArrowLabels,
+#       arrowLabelSize = input$arrowLabelSize,
+#       repelArrowLabels = input$repelArrowLabels,
+#       arrowThreshold = input$arrowThreshold,
+#       pDataForAdditionalLabelling = c("group", "patientId")
+#     )
+#   })
+# }
+
 server <- function(input, output, session) {
-  output$mdsPlot <- renderPlot({
-    projectionAxes <- c(as.integer(input$axis1), as.integer(input$axis2))
-    CytoMDS::ggplotSampleMDS(
-      mdsObj = mdsObj,
-      pData = pData,
-      projectionAxes = projectionAxes,
-      biplot = input$biplot,
-      extVariables = stats$median, # how to choose variable?
-      pDataForColour = input$colourBy,
-      pDataForLabel = input$labelBy,
-      pDataForShape = input$shapeBy,
-      flipXAxis = input$flipXAxis,
-      flipYAxis = input$flipYAxis,
-      pointLabelSize = input$pointLabelSize,
-      displayPointLabels = input$displayPointLabels,
-      repelPointLabels = input$repelPointLabels,
-      displayPseudoRSq = input$displayPseudoRSq,
-      pointSizeReflectingStress = input$pointSizeReflectingStress,
-      pointSize = input$pointSize,
-      displayArrowLabels = input$displayArrowLabels,
-      arrowLabelSize = input$arrowLabelSize,
-      repelArrowLabels = input$repelArrowLabels,
-      arrowThreshold = input$arrowThreshold
+  p <- reactive(
+    if (length(input$pDataForAdditionalLabelling) == 0) {
+      CytoMDS::ggplotSampleMDS(
+        mdsObj = mdsObj,
+        pData = pData,
+        projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+        biplot = input$biplot,
+        extVariables = stats$median, # how to choose variable?
+        pDataForColour = input$colourBy,
+        pDataForLabel = input$labelBy,
+        pDataForShape = input$shapeBy,
+        flipXAxis = input$flipXAxis,
+        flipYAxis = input$flipYAxis,
+        pointLabelSize = input$pointLabelSize,
+        displayPointLabels = input$displayPointLabels,
+        repelPointLabels = input$repelPointLabels,
+        displayPseudoRSq = input$displayPseudoRSq,
+        pointSizeReflectingStress = input$pointSizeReflectingStress,
+        pointSize = input$pointSize,
+        displayArrowLabels = input$displayArrowLabels,
+        arrowLabelSize = input$arrowLabelSize,
+        repelArrowLabels = input$repelArrowLabels,
+        arrowThreshold = input$arrowThreshold
+      )
+    } else {
+      CytoMDS::ggplotSampleMDS(
+        mdsObj = mdsObj,
+        pData = pData,
+        projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+        biplot = input$biplot,
+        extVariables = stats$median,
+        pDataForColour = input$colourBy,
+        pDataForLabel = input$labelBy,
+        pDataForShape = input$shapeBy,
+        flipXAxis = input$flipXAxis,
+        flipYAxis = input$flipYAxis,
+        pointLabelSize = input$pointLabelSize,
+        displayPointLabels = input$displayPointLabels,
+        repelPointLabels = input$repelPointLabels,
+        displayPseudoRSq = input$displayPseudoRSq,
+        pointSizeReflectingStress = input$pointSizeReflectingStress,
+        pointSize = input$pointSize,
+        displayArrowLabels = input$displayArrowLabels,
+        arrowLabelSize = input$arrowLabelSize,
+        repelArrowLabels = input$repelArrowLabels,
+        arrowThreshold = input$arrowThreshold,
+        pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
+      )
+    }
     )
+  output$mdsPlotc <- renderUI({
+    if (input$plotlytooltipping == FALSE) {
+      plotOutput("mdsPlot1")
+
+    } else if (input$plotlytooltipping == TRUE){
+      plotlyOutput("mdsPlot2")
+    }
+  })
+
+  output$mdsPlot1 <- renderPlot({
+    p()
+  })
+
+  output$mdsPlot2 <- renderPlotly({
+      ggplotly(p())
   })
 }
 
-# Run the application
 shinyApp(ui = ui, server = server)
