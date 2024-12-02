@@ -31,6 +31,7 @@ ui <- fluidPage(
                  ),
                  conditionalPanel(
                    condition = "input.biplot == true",
+                   selectInput("extVariables", "Select stat:", choices = names(stats), selected = names(stats)[1]),
                    numericInput("arrowThreshold", "arrowThreshold", value = 0.8, step = 0.1)
                  ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
@@ -100,7 +101,7 @@ server <- function(input, output, session) {
         pData = pData,
         projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
         biplot = input$biplot,
-        extVariables = stats$median, # how to choose variable?
+        extVariables = stats[[input$extVariables]],
         pDataForColour = input$colourBy,
         pDataForLabel = input$labelBy,
         pDataForShape = input$shapeBy,
