@@ -40,7 +40,7 @@ ui <- fluidPage(
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
                ),
                mainPanel(
-                 uiOutput("mdsPlotc")
+                 uiOutput("mdsPlot_")
                )
              )
     ),
@@ -146,20 +146,20 @@ server <- function(input, output, session) {
       )
     }
     })
-  output$mdsPlotc <- renderUI({
+  output$mdsPlot_ <- renderUI({
     if (input$plotlytooltipping == FALSE) {
-      plotOutput("mdsPlot1")
+      plotOutput("mdsPlot")
 
     } else if (input$plotlytooltipping == TRUE){
-      plotlyOutput("mdsPlot2")
+      plotlyOutput("mdsPlotly")
     }
   })
 
-  output$mdsPlot1 <- renderPlot({
+  output$mdsPlot <- renderPlot({
     p()
   })
 
-  output$mdsPlot2 <- renderPlotly({
+  output$mdsPlotly <- renderPlotly({
       ggplotly(p())
   })
   
@@ -168,6 +168,13 @@ server <- function(input, output, session) {
       disable("biplot")
     } else {
       enable("biplot")
+    }
+  })
+  
+  observeEvent(input$pDataForAdditionalLabelling, {
+    if (length(input$pDataForAdditionalLabelling) > 3) {
+      updateSelectInput(session, "pDataForAdditionalLabelling", selected = input$pDataForAdditionalLabelling[1:3])
+      showNotification("You can select a maximum of 3 options for pDataForAdditionalLabelling.", type = "warning")
     }
   })
 }
