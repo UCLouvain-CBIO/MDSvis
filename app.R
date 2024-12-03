@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(ggplot2)
 library(CytoMDS)
 library(plotly)
@@ -8,6 +9,7 @@ pData <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_phenoData.
 stats <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_stats.rds")
 
 ui <- fluidPage(
+  useShinyjs(),
   titlePanel("Plot of Metric MDS object"),
   tabsetPanel(
     id = "tabs", # Tab ID
@@ -159,6 +161,14 @@ server <- function(input, output, session) {
 
   output$mdsPlot2 <- renderPlotly({
       ggplotly(p())
+  })
+  
+  observeEvent(input$plotlytooltipping, {
+    if (input$plotlytooltipping == TRUE) {
+      disable("biplot")
+    } else {
+      enable("biplot")
+    }
   })
 }
 
