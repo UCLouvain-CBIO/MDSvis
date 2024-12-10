@@ -1,15 +1,9 @@
-library(shiny)
-library(shinyjs)
-library(ggplot2)
-library(CytoMDS)
-library(plotly)
-
-mdsObj <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_mdsObj.rds")
-pData <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_phenoData.rds")
-stats <- readRDS(file = "/Users/andreavicini/Desktop/InputObjects/HBV_stats.rds")
+mdsObj <- readRDS(system.file("app/data/HBV_mdsObj.rds", package = "MDSgui"))
+pData <- readRDS(system.file("app/data/HBV_phenoData.rds", package = "MDSgui"))
+stats <- readRDS(system.file("app/data/HBV_stats.rds", package = "MDSgui"))
 
 ui <- fluidPage(
-  useShinyjs(),
+  shinyjs::useShinyjs(),
   titlePanel("Plot of Metric MDS object"),
   tabsetPanel(
     id = "tabs",
@@ -17,9 +11,11 @@ ui <- fluidPage(
              sidebarLayout(
                sidebarPanel(
                  selectInput("axis1", "X-axis coordinate:",
-                             choices = seq_len(nDim(mdsObj)), selected = 1),
+                             choices = seq_len(CytoMDS::nDim(mdsObj)),
+                             selected = 1),
                  selectInput("axis2", "Y-axis coordinate:",
-                             choices = seq_len(nDim(mdsObj)), selected = 2),
+                             choices = seq_len(CytoMDS::nDim(mdsObj)),
+                             selected = 2),
                  selectInput("colourBy", "Colour by:",
                              choices = colnames(pData),
                              selected = colnames(pData)[1]),
@@ -142,7 +138,7 @@ server <- function(input, output, session) {
         pData = pData,
         projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
         biplot = input$biplot,
-        extVariables = stats$median,
+        extVariables = stats[[input$extVariables]],
         pDataForColour = input$colourBy,
         pDataForLabel = input$labelBy,
         pDataForShape = input$shapeBy,
@@ -167,7 +163,7 @@ server <- function(input, output, session) {
       plotOutput("mdsPlot")
 
     } else if (input$plotlytooltipping == TRUE){
-      plotlyOutput("mdsPlotly")
+      plotly::plotlyOutput("mdsPlotly")
     }
   })
 
@@ -175,18 +171,18 @@ server <- function(input, output, session) {
     p()
   })
 
-  output$mdsPlotly <- renderPlotly({
-      ggplotly(p())
+  output$mdsPlotly <- plotly::renderPlotly({
+      plotly::ggplotly(p())
   })
-  
+
   observeEvent(input$plotlytooltipping, {
     if (input$plotlytooltipping == TRUE) {
-      disable("biplot")
+      shinyjs::disable("biplot")
     } else {
-      enable("biplot")
+      shinyjs::enable("biplot")
     }
   })
-  
+
   observeEvent(input$pDataForAdditionalLabelling, {
     if (length(input$pDataForAdditionalLabelling) > 3) {
       updateSelectInput(session, "pDataForAdditionalLabelling",
@@ -195,7 +191,7 @@ server <- function(input, output, session) {
                        type = "warning")
     }
   })
-  
+
 }
 
 shinyApp(ui = ui, server = server)
