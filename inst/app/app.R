@@ -33,7 +33,7 @@ ui <- fluidPage(
                    checkboxInput("plotlytooltipping", "Plotly", value = FALSE)
                  ),
                  conditionalPanel(
-                   condition = "input.plotlytooltipping == true",
+                   condition = "input.plotlytooltipping == true && input.statsFile !== null",
                    selectInput("pDataForAdditionalLabelling",
                                "pDataForAdditionalLabelling:",
                                choices = NULL, multiple = TRUE)
@@ -114,6 +114,65 @@ server <- function(input, output, session) {
   pData <- reactiveVal(NULL)
   stats <- reactiveVal(NULL)
 
+  observe({
+    if (is.null(input$mdsObjFile)) {
+      shinyjs::disable("axis1")
+      shinyjs::disable("axis2")
+      shinyjs::disable("colourBy")
+      shinyjs::disable("labelBy")
+      shinyjs::disable("shapeBy")
+      shinyjs::disable("biplot")
+      shinyjs::disable("plotlytooltipping") #########
+      shinyjs::disable("flipXAxis")
+      shinyjs::disable("flipYAxis")
+    } else {
+      shinyjs::enable("axis1")
+      shinyjs::enable("axis2")
+      shinyjs::enable("flipXAxis")
+      shinyjs::enable("flipYAxis")
+      if (!is.null(input$statsFile) && !input$plotlytooltipping) {
+        shinyjs::enable("biplot")
+      } else {
+        shinyjs::disable("biplot")
+      }
+      if (input$biplot == FALSE) {
+        shinyjs::enable("plotlytooltipping") #####???
+      }
+      if (!is.null(input$pDataFile)){
+        shinyjs::enable("colourBy")
+        shinyjs::enable("labelBy")
+        shinyjs::enable("shapeBy")
+      }
+      # if (input$biplot == TRUE) {
+      #   shinyjs::enable("plotly")
+      # }
+    }
+  })
+
+  # conditionalPanel(
+  #   condition = "input.biplot == false",
+  #   checkboxInput("plotlytooltipping", "Plotly", value = FALSE)
+  # ),
+  # conditionalPanel(
+  #   condition = "input.plotlytooltipping == true",
+  #   selectInput("pDataForAdditionalLabelling",
+  #               "pDataForAdditionalLabelling:",
+  #               choices = NULL, multiple = TRUE)
+  # ),
+  # conditionalPanel(
+  #   condition = "input.biplot == true",
+  #   selectInput("extVariables", "Select stat:", choices = NULL),
+  #   numericInput("arrowThreshold", "arrowThreshold", value = 0.8,
+  #                step = 0.1)
+  # ),
+  # observeEvent(input$plotlytooltipping, {
+  #   if (input$plotlytooltipping == TRUE) {
+  #     shinyjs::disable("biplot")
+  #   } else {
+  #     shinyjs::enable("biplot")
+  #   }
+  # })
+
   observeEvent(input$mdsObjFile, {
     req(input$mdsObjFile)
     mdsObj(readRDS(input$mdsObjFile$datapath))
@@ -134,17 +193,34 @@ server <- function(input, output, session) {
     stats(readRDS(input$statsFile$datapath))
     updateSelectInput(session, "extVariables", choices = names(stats()), selected = names(stats())[1])
   })
+
   p <- reactive({
-    if (length(input$pDataForAdditionalLabelling) == 0) {
+    if (is.null(input$pDataFile) && is.null(input$statsFile)) { #no biplot
       CytoMDS::ggplotSampleMDS(
         mdsObj = mdsObj(),
-        pData = pData(),
+        projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+        #biplot = input$biplot,
+        #extVariables = stats()[[input$extVariables]],
+        flipXAxis = input$flipXAxis,
+        flipYAxis = input$flipYAxis,
+        pointLabelSize = input$pointLabelSize,
+        displayPointLabels = input$displayPointLabels,
+        repelPointLabels = input$repelPointLabels,
+        displayPseudoRSq = input$displayPseudoRSq,
+        pointSizeReflectingStress = input$pointSizeReflectingStress,
+        pointSize = input$pointSize
+        #displayArrowLabels = input$displayArrowLabels,
+        #arrowLabelSize = input$arrowLabelSize,
+        #repelArrowLabels = input$repelArrowLabels,
+        #arrowThreshold = input$arrowThreshold
+      )
+
+    } else if (is.null(input$pDataFile) && !is.null(input$statsFile)){
+      CytoMDS::ggplotSampleMDS(
+        mdsObj = mdsObj(),
         projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
         biplot = input$biplot,
         extVariables = stats()[[input$extVariables]],
-        pDataForColour = input$colourBy,
-        pDataForLabel = input$labelBy,
-        pDataForShape = input$shapeBy,
         flipXAxis = input$flipXAxis,
         flipYAxis = input$flipYAxis,
         pointLabelSize = input$pointLabelSize,
@@ -158,13 +234,13 @@ server <- function(input, output, session) {
         repelArrowLabels = input$repelArrowLabels,
         arrowThreshold = input$arrowThreshold
       )
-    } else {
+    } else if (!is.null(input$pDataFile) && is.null(input$statsFile)){ # no biplot
       CytoMDS::ggplotSampleMDS(
         mdsObj = mdsObj(),
         pData = pData(),
         projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
-        biplot = input$biplot,
-        extVariables = stats()[[input$extVariables]],
+        #biplot = input$biplot,
+        #extVariables = stats()[[input$extVariables]],
         pDataForColour = input$colourBy,
         pDataForLabel = input$labelBy,
         pDataForShape = input$shapeBy,
@@ -175,13 +251,61 @@ server <- function(input, output, session) {
         repelPointLabels = input$repelPointLabels,
         displayPseudoRSq = input$displayPseudoRSq,
         pointSizeReflectingStress = input$pointSizeReflectingStress,
-        pointSize = input$pointSize,
-        displayArrowLabels = input$displayArrowLabels,
-        arrowLabelSize = input$arrowLabelSize,
-        repelArrowLabels = input$repelArrowLabels,
-        arrowThreshold = input$arrowThreshold,
-        pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
-      )
+        pointSize = input$pointSize
+        #displayArrowLabels = input$displayArrowLabels,
+        #arrowLabelSize = input$arrowLabelSize,
+        #repelArrowLabels = input$repelArrowLabels,
+        #arrowThreshold = input$arrowThreshold
+        )
+    } else {
+      if (length(input$pDataForAdditionalLabelling) == 0) {
+        CytoMDS::ggplotSampleMDS(
+          mdsObj = mdsObj(),
+          pData = pData(),
+          projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+          biplot = input$biplot,
+          extVariables = stats()[[input$extVariables]],
+          pDataForColour = input$colourBy,
+          pDataForLabel = input$labelBy,
+          pDataForShape = input$shapeBy,
+          flipXAxis = input$flipXAxis,
+          flipYAxis = input$flipYAxis,
+          pointLabelSize = input$pointLabelSize,
+          displayPointLabels = input$displayPointLabels,
+          repelPointLabels = input$repelPointLabels,
+          displayPseudoRSq = input$displayPseudoRSq,
+          pointSizeReflectingStress = input$pointSizeReflectingStress,
+          pointSize = input$pointSize,
+          displayArrowLabels = input$displayArrowLabels,
+          arrowLabelSize = input$arrowLabelSize,
+          repelArrowLabels = input$repelArrowLabels,
+          arrowThreshold = input$arrowThreshold
+        )
+      } else {
+        CytoMDS::ggplotSampleMDS(
+          mdsObj = mdsObj(),
+          pData = pData(),
+          projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+          biplot = input$biplot,
+          extVariables = stats()[[input$extVariables]],
+          pDataForColour = input$colourBy,
+          pDataForLabel = input$labelBy,
+          pDataForShape = input$shapeBy,
+          flipXAxis = input$flipXAxis,
+          flipYAxis = input$flipYAxis,
+          pointLabelSize = input$pointLabelSize,
+          displayPointLabels = input$displayPointLabels,
+          repelPointLabels = input$repelPointLabels,
+          displayPseudoRSq = input$displayPseudoRSq,
+          pointSizeReflectingStress = input$pointSizeReflectingStress,
+          pointSize = input$pointSize,
+          displayArrowLabels = input$displayArrowLabels,
+          arrowLabelSize = input$arrowLabelSize,
+          repelArrowLabels = input$repelArrowLabels,
+          arrowThreshold = input$arrowThreshold,
+          pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
+        )
+      }
     }
     })
   output$mdsPlot_ <- renderUI({
@@ -201,14 +325,6 @@ server <- function(input, output, session) {
   output$mdsPlotly <- plotly::renderPlotly({
     req(mdsObj())
     plotly::ggplotly(p())
-  })
-
-  observeEvent(input$plotlytooltipping, {
-    if (input$plotlytooltipping == TRUE) {
-      shinyjs::disable("biplot")
-    } else {
-      shinyjs::enable("biplot")
-    }
   })
 
   observeEvent(input$pDataForAdditionalLabelling, {
