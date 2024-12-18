@@ -96,11 +96,31 @@ server <- function(input, output, session) {
       shinyjs::disable("plotlytooltipping") #########
       shinyjs::disable("flipXAxis")
       shinyjs::disable("flipYAxis")
+      shinyjs::disable("pointLabelSize")
+      shinyjs::disable("displayPointLabels")
+      shinyjs::disable("repelPointLabels")
+      shinyjs::disable("displayPseudoRSq")
+      shinyjs::disable("pointSize")
+      shinyjs::disable("pointSizeReflectingStress")
+      shinyjs::disable("displayArrowLabels")
+      shinyjs::disable("arrowLabelSize")
+      shinyjs::disable("repelArrowLabels")
     } else {
       shinyjs::enable("axis1")
       shinyjs::enable("axis2")
       shinyjs::enable("flipXAxis")
       shinyjs::enable("flipYAxis")
+      shinyjs::enable("pointLabelSize")
+      shinyjs::enable("displayPointLabels")
+      shinyjs::enable("repelPointLabels")
+      shinyjs::enable("displayPseudoRSq")
+      shinyjs::enable("pointSize")
+      shinyjs::enable("pointSizeReflectingStress")
+      if (!is.null(input$statsFile)) {
+        shinyjs::enable("displayArrowLabels")
+        shinyjs::enable("arrowLabelSize")
+        shinyjs::enable("repelArrowLabels")
+      }
       if (!is.null(input$statsFile) && !input$plotlytooltipping) {
         shinyjs::enable("biplot")
       } else {
