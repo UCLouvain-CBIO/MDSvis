@@ -8,7 +8,7 @@ ui <- fluidPage(
                sidebarPanel(
                  fileInput("mdsObjFile", "Choose MDS object file",
                            accept = ".rds"),
-                 fileInput("pDataFile", "Choose phenodataData file",
+                 fileInput("pDataFile", "Choose phenodata file",
                            accept = ".rds"),
                  fileInput("statsFile", "Choose stats file",
                            accept = ".rds")
@@ -32,7 +32,7 @@ ui <- fluidPage(
                    checkboxInput("plotlytooltipping", "Plotly", value = FALSE)
                  ),
                  conditionalPanel(
-                   condition = "input.plotlytooltipping == true && input.statsFile !== null",
+                   condition = "input.plotlytooltipping == true",
                    selectInput("pDataForAdditionalLabelling",
                                "pDataForAdditionalLabelling:",
                                choices = NULL, multiple = TRUE)
