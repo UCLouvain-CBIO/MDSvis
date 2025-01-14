@@ -10,6 +10,7 @@ ui <- fluidPage(
                            accept = ".rds"),
                  fileInput("pDataFile", "Choose phenodata file",
                            accept = ".rds"),
+                 uiOutput("pDataVariableSelector"),
                  fileInput("statsFile", "Choose stats file",
                            accept = ".rds")
                ),
@@ -83,6 +84,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   mdsObj <- reactiveVal(NULL)
   pData <- reactiveVal(NULL)
+  pDataSubs <- reactiveVal(NULL)
   stats <- reactiveVal(NULL)
 
   observe({
@@ -149,12 +151,13 @@ server <- function(input, output, session) {
   observeEvent(input$pDataFile, {
     req(input$pDataFile)
     pData(readRDS(input$pDataFile$datapath))
-    updateSelectInput(session, "colourBy", choices = c("_", c(colnames(pData()))),
-                      selected = colnames(pData())[1])
-    updateSelectInput(session, "labelBy", choices = c("_", (colnames(pData()))),
-                      selected = colnames(pData())[2])
-    updateSelectInput(session, "shapeBy", choices = c("_", c(colnames(pData()))),
-                      selected = colnames(pData())[2])
+    pDataSubs(readRDS(input$pDataFile$datapath))
+    updateSelectInput(session, "colourBy", choices = c("_", c(colnames(pDataSubs()))),
+                      selected = "_")
+    updateSelectInput(session, "labelBy", choices = c("_", (colnames(pDataSubs()))),
+                      selected = "_")
+    updateSelectInput(session, "shapeBy", choices = c("_", c(colnames(pDataSubs()))),
+                      selected = "_")
   })
 
   observeEvent(input$statsFile, {
@@ -189,7 +192,7 @@ server <- function(input, output, session) {
      }
       # do.call(CytoMDS::ggplotSampleMDS, plotargs)
     if (!is.null(input$pDataFile)) {#no biplot
-      plotargs$pData = pData()
+      plotargs$pData = pDataSubs()
       if (input$colourBy != "_") {
         plotargs$pDataForColour = input$colourBy
       }
@@ -223,6 +226,26 @@ server <- function(input, output, session) {
   output$mdsPlotly <- plotly::renderPlotly({
     req(mdsObj())
     plotly::ggplotly(p())
+  })
+
+  output$pDataVariableSelector <- renderUI({
+    req(pData())
+    selectInput("pDataVariableSelection",
+                "Select phenodata variables to include:",
+                choices = colnames(pData()),
+                selected = colnames(pData()),
+                multiple = TRUE)
+  })
+
+  observeEvent(input$pDataVariableSelection, {
+    req(pData(), input$pDataVariableSelection)
+    pDataSubs(pData()[, input$pDataVariableSelection, drop = FALSE])
+    updateSelectInput(session, "colourBy", choices = c("_", c(colnames(pDataSubs()))),
+                      selected = "_")
+    updateSelectInput(session, "labelBy", choices = c("_", (colnames(pDataSubs()))),
+                      selected = "_")
+    updateSelectInput(session, "shapeBy", choices = c("_", c(colnames(pDataSubs()))),
+                      selected = "_")
   })
 
   observeEvent(input$pDataForAdditionalLabelling, {
