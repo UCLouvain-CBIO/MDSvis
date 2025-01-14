@@ -152,11 +152,14 @@ server <- function(input, output, session) {
     req(input$pDataFile)
     pData(readRDS(input$pDataFile$datapath))
     pDataSubs(readRDS(input$pDataFile$datapath))
-    updateSelectInput(session, "colourBy", choices = c("_", c(colnames(pDataSubs()))),
+    updateSelectInput(session, "colourBy",
+                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
                       selected = "_")
-    updateSelectInput(session, "labelBy", choices = c("_", (colnames(pDataSubs()))),
+    updateSelectInput(session, "labelBy",
+                      choices = c("_", colnames(pDataSubs())),
                       selected = "_")
-    updateSelectInput(session, "shapeBy", choices = c("_", c(colnames(pDataSubs()))),
+    updateSelectInput(session, "shapeBy",
+                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
                       selected = "_")
   })
 
@@ -240,11 +243,14 @@ server <- function(input, output, session) {
   observeEvent(input$pDataVariableSelection, {
     req(pData(), input$pDataVariableSelection)
     pDataSubs(pData()[, input$pDataVariableSelection, drop = FALSE])
-    updateSelectInput(session, "colourBy", choices = c("_", c(colnames(pDataSubs()))),
+    updateSelectInput(session, "colourBy",
+                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
                       selected = "_")
-    updateSelectInput(session, "labelBy", choices = c("_", (colnames(pDataSubs()))),
+    updateSelectInput(session, "labelBy",
+                      choices = c("_", colnames(pDataSubs())),
                       selected = "_")
-    updateSelectInput(session, "shapeBy", choices = c("_", c(colnames(pDataSubs()))),
+    updateSelectInput(session, "shapeBy",
+                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
                       selected = "_")
   })
 
