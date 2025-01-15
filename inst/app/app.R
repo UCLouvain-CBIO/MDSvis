@@ -59,6 +59,11 @@ ui <- fluidPage(
                               value = 3.88, step = 0.1),
                  checkboxInput("displayPointLabels", "displayPointLabels",
                                value = TRUE),
+                 conditionalPanel(
+                   condition = "input.displayPointLabels == true",
+                   numericInput("maxOverlaps", "max.overlaps", value = 10,
+                                step = 1)
+                 ),
                  checkboxInput("repelPointLabels", "repelPointLabels",
                                value = TRUE),
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare",
@@ -185,6 +190,9 @@ server <- function(input, output, session) {
       pointSizeReflectingStress = input$pointSizeReflectingStress,
       pointSize = input$pointSize
     )
+    if (!is.null(input$maxOverlaps)) {
+      plotargs$max.overlaps = input$maxOverlaps
+    }
     if (!is.null(input$statsFile)) {
       plotargs$biplot = input$biplot
       plotargs$extVariables = stats()[[input$extVariables]]
