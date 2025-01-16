@@ -163,6 +163,8 @@ server <- function(input, output, session) {
     updateSelectInput(session, "shapeBy",
                       choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
                       selected = "_")
+    updateSelectInput(session, "pDataForAdditionalLabelling",
+                      choices = colnames(pDataSubs()))
   })
 
   observeEvent(input$statsFile, {
