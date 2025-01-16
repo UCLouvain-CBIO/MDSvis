@@ -29,20 +29,17 @@ ui <- fluidPage(
                  selectInput("shapeBy", "Shape by:", choices = NULL),
                  checkboxInput("biplot", "Biplot", value = FALSE),
                  conditionalPanel(
-                   condition = "input.biplot == false",
-                   checkboxInput("plotlytooltipping", "Plotly", value = FALSE)
+                   condition = "input.biplot == true",
+                   selectInput("extVariables", "Select stat:", choices = NULL),
+                   numericInput("arrowThreshold", "arrowThreshold", value = 0.8,
+                                step = 0.1)
                  ),
+                 checkboxInput("plotlytooltipping", "Plotly", value = FALSE),
                  conditionalPanel(
                    condition = "input.plotlytooltipping == true",
                    selectInput("pDataForAdditionalLabelling",
                                "pDataForAdditionalLabelling:",
                                choices = NULL, multiple = TRUE)
-                 ),
-                 conditionalPanel(
-                   condition = "input.biplot == true",
-                   selectInput("extVariables", "Select stat:", choices = NULL),
-                   numericInput("arrowThreshold", "arrowThreshold", value = 0.8,
-                                step = 0.1)
                  ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
@@ -129,18 +126,12 @@ server <- function(input, output, session) {
       shinyjs::enable("displayPseudoRSq")
       shinyjs::enable("pointSize")
       shinyjs::enable("pointSizeReflectingStress")
+      shinyjs::enable("plotlytooltipping")
       if (!is.null(input$statsFile)) {
+        shinyjs::enable("biplot")
         shinyjs::enable("displayArrowLabels")
         shinyjs::enable("arrowLabelSize")
         shinyjs::enable("repelArrowLabels")
-      }
-      if (!is.null(input$statsFile) && !input$plotlytooltipping) {
-        shinyjs::enable("biplot")
-      } else {
-        shinyjs::disable("biplot")
-      }
-      if (input$biplot == FALSE) {
-        shinyjs::enable("plotlytooltipping") #####???
       }
       if (!is.null(input$pDataFile)){
         shinyjs::enable("colourBy")
@@ -222,17 +213,19 @@ server <- function(input, output, session) {
     if (length(input$pDataForAdditionalLabelling)) {
       plotargs$pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
     }
-    do.call(CytoMDS::ggplotSampleMDS, plotargs)
+    list(plt = do.call(CytoMDS::ggplotSampleMDS, plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]),
+         pltly = do.call(CytoMDS::ggplotSampleMDS, plotargs[!(names(plotargs) %in% "biplot")]))
   })
 
   output$mdsPlot <- renderPlot({
     req(mdsObj())
-    p()
+    p()$plt
   })
 
   output$mdsPlotly <- plotly::renderPlotly({
     req(mdsObj())
-    plotly::ggplotly(p())
+    req(input$plotlytooltipping)
+    plotly::ggplotly(p()$pltly)
   })
 
   output$pDataVariableSelector <- renderUI({
