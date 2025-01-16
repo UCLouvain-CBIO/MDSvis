@@ -48,7 +48,9 @@ ui <- fluidPage(
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
                ),
                mainPanel(
-                 uiOutput("mdsPlot_")
+                 #uiOutput("mdsPlot_")
+                 plotOutput("mdsPlot"),
+                 plotly::plotlyOutput("mdsPlotly")
                )
              )
     ),
@@ -205,8 +207,7 @@ server <- function(input, output, session) {
       plotargs$repelArrowLabels = input$repelArrowLabels
       plotargs$arrowThreshold = input$arrowThreshold
      }
-      # do.call(CytoMDS::ggplotSampleMDS, plotargs)
-    if (!is.null(input$pDataFile)) {#no biplot
+    if (!is.null(input$pDataFile)) {
       plotargs$pData = pDataSubs()
       if (input$colourBy != "_") {
         plotargs$pDataForColour = input$colourBy
@@ -222,15 +223,6 @@ server <- function(input, output, session) {
       plotargs$pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
     }
     do.call(CytoMDS::ggplotSampleMDS, plotargs)
-  })
-
-  output$mdsPlot_ <- renderUI({
-    if (input$plotlytooltipping == FALSE) {
-      plotOutput("mdsPlot")
-
-    } else if (input$plotlytooltipping == TRUE) {
-      plotly::plotlyOutput("mdsPlotly")
-    }
   })
 
   output$mdsPlot <- renderPlot({
