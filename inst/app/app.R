@@ -143,35 +143,67 @@ server <- function(input, output, session) {
 
   observeEvent(input$mdsObjFile, {
     req(input$mdsObjFile)
-    mdsObj(readRDS(input$mdsObjFile$datapath))
-    updateSelectInput(session, "axis1",
-                      choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 1)
-    updateSelectInput(session, "axis2",
-                      choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 2)
+    tryCatch({
+      mds <- readRDS(input$mdsObjFile$datapath)
+
+      if (is(mds)[1] != "MDS") {
+        stop("The selected file does not contain a MDS object.")
+      }
+
+      mdsObj(mds)
+      updateSelectInput(session, "axis1",
+                        choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 1)
+      updateSelectInput(session, "axis2",
+                        choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 2)
+    }, error = function(e) {
+      showNotification(as.character(e$message), type = "error", duration = 5)
+    })
   })
 
   observeEvent(input$pDataFile, {
     req(input$pDataFile)
-    pData(readRDS(input$pDataFile$datapath))
-    pDataSubs(readRDS(input$pDataFile$datapath))
-    updateSelectInput(session, "colourBy",
-                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
-                      selected = "_")
-    updateSelectInput(session, "labelBy",
-                      choices = c("_", colnames(pDataSubs())),
-                      selected = "_")
-    updateSelectInput(session, "shapeBy",
-                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
-                      selected = "_")
-    updateSelectInput(session, "pDataForAdditionalLabelling",
-                      choices = colnames(pDataSubs()))
+    tryCatch({
+      pdata <- readRDS(input$pDataFile$datapath)
+
+      if (!is.data.frame(pdata)) {
+        stop("The selected file does not contain a data.frame object.")
+      }
+
+      pData(pdata)
+      pDataSubs(pdata)
+
+      updateSelectInput(session, "colourBy",
+                        choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                        selected = "_")
+      updateSelectInput(session, "labelBy",
+                        choices = c("_", colnames(pDataSubs())),
+                        selected = "_")
+      updateSelectInput(session, "shapeBy",
+                        choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                        selected = "_")
+      updateSelectInput(session, "pDataForAdditionalLabelling",
+                        choices = colnames(pDataSubs()))
+
+    }, error = function(e) {
+      showNotification(as.character(e$message), type = "error", duration = NULL)
+    })
   })
 
   observeEvent(input$statsFile, {
     req(input$statsFile)
-    stats(readRDS(input$statsFile$datapath))
-    updateSelectInput(session, "extVariables", choices = names(stats()),
-                      selected = names(stats())[1])
+    tryCatch({
+      stats_ <- readRDS(input$statsFile$datapath)
+
+      if (!(is.list(stats_) && all(sapply(stats_, is.matrix)))) {
+        stop("The selected file does not contain a list of matrices")
+      }
+      stats(stats_)
+      updateSelectInput(session, "extVariables", choices = names(stats()),
+                        selected = names(stats())[1])
+
+    }, error = function(e) {
+      showNotification(as.character(e$message), type = "error", duration = NULL)
+    })
   })
 
 
