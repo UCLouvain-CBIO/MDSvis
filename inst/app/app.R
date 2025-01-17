@@ -156,7 +156,7 @@ server <- function(input, output, session) {
       updateSelectInput(session, "axis2",
                         choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 2)
     }, error = function(e) {
-      showNotification(as.character(e$message), type = "error", duration = 5)
+      showNotification(as.character(e$message), type = "error", duration = NULL)
     })
   })
 
@@ -247,8 +247,11 @@ server <- function(input, output, session) {
     if (length(input$pDataForAdditionalLabelling)) {
       plotargs$pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
     }
-    list(plt = do.call(CytoMDS::ggplotSampleMDS, plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]),
-         pltly = do.call(CytoMDS::ggplotSampleMDS, plotargs[!(names(plotargs) %in% "biplot")]))
+    pltargs = plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]
+    pltlyargs = plotargs[!(names(plotargs) %in% "biplot")]
+    pltlyargs$repelPointLabels = FALSE
+    list(plt = do.call(CytoMDS::ggplotSampleMDS, pltargs),
+         pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs))
   })
 
   output$mdsPlot <- renderPlot({
