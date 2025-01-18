@@ -103,7 +103,7 @@ server <- function(input, output, session) {
       shinyjs::disable("labelBy")
       shinyjs::disable("shapeBy")
       shinyjs::disable("biplot")
-      shinyjs::disable("plotlytooltipping") #########
+      shinyjs::disable("plotlytooltipping")
       shinyjs::disable("flipXAxis")
       shinyjs::disable("flipYAxis")
       shinyjs::disable("pointLabelSize")
@@ -145,16 +145,17 @@ server <- function(input, output, session) {
     req(input$mdsObjFile)
     tryCatch({
       mds <- readRDS(input$mdsObjFile$datapath)
-
       if (is(mds)[1] != "MDS") {
         stop("The selected file does not contain a MDS object.")
       }
 
       mdsObj(mds)
       updateSelectInput(session, "axis1",
-                        choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 1)
+                        choices = seq_len(CytoMDS::nDim(mdsObj())),
+                        selected = 1)
       updateSelectInput(session, "axis2",
-                        choices = seq_len(CytoMDS::nDim(mdsObj())), selected = 2)
+                        choices = seq_len(CytoMDS::nDim(mdsObj())),
+                        selected = 2)
     }, error = function(e) {
       showNotification(as.character(e$message), type = "error", duration = NULL)
     })
@@ -173,13 +174,17 @@ server <- function(input, output, session) {
       pDataSubs(pdata)
 
       updateSelectInput(session, "colourBy",
-                        choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                        choices = c("_",
+                                    colnames(pDataSubs())[sapply(pDataSubs(),
+                                                                 is.factor)]),
                         selected = "_")
       updateSelectInput(session, "labelBy",
                         choices = c("_", colnames(pDataSubs())),
                         selected = "_")
       updateSelectInput(session, "shapeBy",
-                        choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                        choices = c("_",
+                                    colnames(pDataSubs())[sapply(pDataSubs(),
+                                                                 is.factor)]),
                         selected = "_")
       updateSelectInput(session, "pDataForAdditionalLabelling",
                         choices = colnames(pDataSubs()))
@@ -278,13 +283,17 @@ server <- function(input, output, session) {
     req(pData(), input$pDataVariableSelection)
     pDataSubs(pData()[, input$pDataVariableSelection, drop = FALSE])
     updateSelectInput(session, "colourBy",
-                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                      choices = c("_",
+                                  colnames(pDataSubs())[sapply(pDataSubs(),
+                                                               is.factor)]),
                       selected = "_")
     updateSelectInput(session, "labelBy",
                       choices = c("_", colnames(pDataSubs())),
                       selected = "_")
     updateSelectInput(session, "shapeBy",
-                      choices = c("_", colnames(pDataSubs())[sapply(pDataSubs(), is.factor)]),
+                      choices = c("_",
+                                  colnames(pDataSubs())[sapply(pDataSubs(),
+                                                               is.factor)]),
                       selected = "_")
   })
 
@@ -292,7 +301,7 @@ server <- function(input, output, session) {
     if (length(input$pDataForAdditionalLabelling) > 3) {
       updateSelectInput(session, "pDataForAdditionalLabelling",
                         selected = input$pDataForAdditionalLabelling[1:3])
-      showNotification("You can select a maximum of 3 options for pDataForAdditionalLabelling.",
+      showNotification("Maximum 3 options allowed for pDataForAdditionalLabelling.",
                        type = "warning")
     }
   })
