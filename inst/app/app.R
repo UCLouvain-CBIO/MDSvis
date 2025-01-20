@@ -171,9 +171,7 @@ server <- function(input, output, session) {
       pDataSubs(pdata)
 
       updateSelectInput(session, "colourBy",
-                        choices = c("_",
-                                    colnames(pDataSubs())[sapply(pDataSubs(),
-                                                                 is.factor)]),
+                        choices = c("_", colnames(pDataSubs())),
                         selected = "_")
       updateSelectInput(session, "labelBy",
                         choices = c("_", colnames(pDataSubs())),
@@ -280,9 +278,7 @@ server <- function(input, output, session) {
     req(pData(), input$pDataVariableSelection)
     pDataSubs(pData()[, input$pDataVariableSelection, drop = FALSE])
     updateSelectInput(session, "colourBy",
-                      choices = c("_",
-                                  colnames(pDataSubs())[sapply(pDataSubs(),
-                                                               is.factor)]),
+                      choices = c("_", colnames(pDataSubs())),
                       selected = "_")
     updateSelectInput(session, "labelBy",
                       choices = c("_", colnames(pDataSubs())),
