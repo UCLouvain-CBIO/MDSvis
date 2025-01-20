@@ -14,9 +14,7 @@ ui <- fluidPage(
                  fileInput("statsFile", "Choose stats file",
                            accept = ".rds")
                ),
-               mainPanel(
-                 p("")
-               )
+               mainPanel()
              )
     ),
     tabPanel("View",
@@ -45,7 +43,6 @@ ui <- fluidPage(
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
                ),
                mainPanel(
-                 #uiOutput("mdsPlot_")
                  plotOutput("mdsPlot"),
                  plotly::plotlyOutput("mdsPlotly")
                )
@@ -58,13 +55,13 @@ ui <- fluidPage(
                               value = 3.88, step = 0.1),
                  checkboxInput("displayPointLabels", "displayPointLabels",
                                value = TRUE),
+                 checkboxInput("repelPointLabels", "repelPointLabels",
+                               value = TRUE),
                  conditionalPanel(
-                   condition = "input.displayPointLabels == true",
+                   condition = "input.repelPointLabels == true",
                    numericInput("maxOverlaps", "max.overlaps", value = 10,
                                 step = 1)
                  ),
-                 checkboxInput("repelPointLabels", "repelPointLabels",
-                               value = TRUE),
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare",
                                value = TRUE),
                  numericInput("pointSize", "Point size", value = 1, step = 0.1),
@@ -77,9 +74,7 @@ ui <- fluidPage(
                  checkboxInput("repelArrowLabels", "repelArrowLabels",
                                value = FALSE)
                ),
-               mainPanel(
-                 p("")
-               )
+               mainPanel()
              )
     )
   )
@@ -115,6 +110,7 @@ server <- function(input, output, session) {
       shinyjs::disable("displayArrowLabels")
       shinyjs::disable("arrowLabelSize")
       shinyjs::disable("repelArrowLabels")
+      shinyjs::disable("maxOverlaps")
     } else {
       shinyjs::enable("axis1")
       shinyjs::enable("axis2")
@@ -127,6 +123,7 @@ server <- function(input, output, session) {
       shinyjs::enable("pointSize")
       shinyjs::enable("pointSizeReflectingStress")
       shinyjs::enable("plotlytooltipping")
+      shinyjs::enable("maxOverlaps")
       if (!is.null(input$statsFile)) {
         shinyjs::enable("biplot")
         shinyjs::enable("displayArrowLabels")
