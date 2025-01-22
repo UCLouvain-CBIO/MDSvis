@@ -288,6 +288,8 @@ server <- function(input, output, session) {
                                   colnames(pDataSubs())[sapply(pDataSubs(),
                                                                is.factor)]),
                       selected = "_")
+    updateSelectInput(session, "pDataForAdditionalLabelling",
+                      choices = colnames(pDataSubs()))
   })
 }
 
