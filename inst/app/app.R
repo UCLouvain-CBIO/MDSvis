@@ -36,7 +36,7 @@ ui <- fluidPage(
                  conditionalPanel(
                    condition = "input.plotlytooltipping == true",
                    selectInput("pDataForAdditionalLabelling",
-                               "pDataForAdditionalLabelling:",
+                               "Additional plotly tooltips:",
                                choices = NULL, multiple = TRUE)
                  ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
@@ -289,16 +289,6 @@ server <- function(input, output, session) {
                                                                is.factor)]),
                       selected = "_")
   })
-
-  observeEvent(input$pDataForAdditionalLabelling, {
-    if (length(input$pDataForAdditionalLabelling) > 3) {
-      updateSelectInput(session, "pDataForAdditionalLabelling",
-                        selected = input$pDataForAdditionalLabelling[1:3])
-      showNotification("Maximum 3 options allowed for pDataForAdditionalLabelling.",
-                       type = "warning")
-    }
-  })
-
 }
 
 shinyApp(ui = ui, server = server)
