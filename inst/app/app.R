@@ -25,14 +25,16 @@ ui <- fluidPage(
                  selectInput("colourBy", "Colour by:", choices = NULL),
                  selectInput("labelBy", "Label by:", choices = NULL),
                  selectInput("shapeBy", "Shape by:", choices = NULL),
-                 checkboxInput("biplot", "Biplot", value = FALSE),
+                 checkboxInput("biplot", "Show biplot", value = FALSE),
                  conditionalPanel(
                    condition = "input.biplot == true",
-                   selectInput("extVariables", "Select stat:", choices = NULL),
-                   numericInput("arrowThreshold", "arrowThreshold", value = 0.8,
-                                step = 0.1)
+                   selectInput("extVariables", "Select statistic:",
+                               choices = NULL),
+                   numericInput("arrowThreshold", "Arrow length threshold",
+                                value = 0.8, step = 0.1)
                  ),
-                 checkboxInput("plotlytooltipping", "Plotly", value = FALSE),
+                 checkboxInput("plotlytooltipping", "Show plotly plot",
+                               value = FALSE),
                  conditionalPanel(
                    condition = "input.plotlytooltipping == true",
                    selectInput("pDataForAdditionalLabelling",
@@ -51,28 +53,38 @@ ui <- fluidPage(
     tabPanel("General Settings",
              sidebarLayout(
                sidebarPanel(
-                 numericInput("pointLabelSize", "Point Label Size",
-                              value = 3.88, step = 0.1),
-                 checkboxInput("displayPointLabels", "displayPointLabels",
-                               value = TRUE),
-                 checkboxInput("repelPointLabels", "repelPointLabels",
+                 checkboxInput("displayPointLabels", "Display point labels",
                                value = TRUE),
                  conditionalPanel(
-                   condition = "input.repelPointLabels == true",
-                   numericInput("maxOverlaps", "max.overlaps", value = 10,
-                                step = 1)
+                   condition = "input.displayPointLabels == true",
+                   numericInput("pointLabelSize", "Point label size",
+                                value = 3.88, step = 0.1),
+                   checkboxInput("repelPointLabels", "Repel overlapping labels",
+                                 value = TRUE),
+                   conditionalPanel(
+                     condition = "input.repelPointLabels == true",
+                     numericInput("maxOverlaps", "Maximum overlaps", value = 10,
+                                  step = 1)
+                   )
                  ),
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare",
                                value = TRUE),
-                 numericInput("pointSize", "Point size", value = 1, step = 0.1),
                  checkboxInput("pointSizeReflectingStress",
-                               "pointSizeReflectingStress", value = FALSE),
-                 checkboxInput("displayArrowLabels", "displayArrowLabels",
+                               "Point size reflecting stress", value = FALSE),
+                 conditionalPanel(
+                   condition = "input.pointSizeReflectingStress == false",
+                   numericInput("pointSize", "Point size", value = 1,
+                                step = 0.1)
+                 ),
+                 checkboxInput("displayArrowLabels", "Display arrow labels",
                                value = TRUE),
-                 numericInput("arrowLabelSize", "arrowLabelSize", value = 3.88,
-                              step = 0.1),
-                 checkboxInput("repelArrowLabels", "repelArrowLabels",
-                               value = FALSE)
+                 conditionalPanel(
+                   condition = "input.displayArrowLabels == true",
+                   numericInput("arrowLabelSize", "Arrow label size",
+                                value = 3.88, step = 0.1),
+                   checkboxInput("repelArrowLabels", "Repel arrow labels",
+                                 value = FALSE)
+                 )
                ),
                mainPanel()
              )
