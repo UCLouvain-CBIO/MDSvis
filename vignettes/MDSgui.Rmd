@@ -2,6 +2,7 @@
 title: "Visualization of Multi Dimensional Scaling (MDS) objects"
 author:
     - name: Andrea Vicini
+    - name: Philippe Hauchamps
 package: MDSgui
 abstract: >
  This vignette describes the functionality implemented in the `MDSgui`
@@ -11,6 +12,7 @@ abstract: >
 output:
   BiocStyle::html_document:
     toc_float: true
+bibliography: MDSgui.bib
 vignette: >
   %\VignetteIndexEntry{Visualization of Multi Dimensional Scaling (MDS) objects}
   %\VignetteEngine{knitr::rmarkdown}
@@ -39,8 +41,6 @@ We now load the packages needed in the current vignette:
 suppressPackageStartupMessages(library(HDCytoData))
 library(CytoMDS)
 library(MDSgui)
-# library(ggplot2)
-# library(patchwork)
 ```
 
 # Introduction
@@ -48,10 +48,11 @@ library(MDSgui)
 The `MDSgui` package implements visualization of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of cytometry samples.
 Such objects can be obtained using the functionalities implemented in the
-`CytoMDS` package. For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).The visualization is realised via a Shiny app that allows
-the user to interactively customise the plots depending a series of input
-paramenters (see the `CytoMDS::ggplotSampleMDS` function for more details on the
-parameters).
+`CytoMDS` package (@Hauchamps2024-nn). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html). 
+The visualization is realised via a Shiny app that allows 
+the user to interactively customise the plots depending on a series of input
+parameters (see the `CytoMDS::ggplotSampleMDS()` function for more details 
+on the parameters).
 
 # Illustrative data
 
@@ -135,12 +136,12 @@ saveRDS(phenoData, file = "phenoData.rds")
 saveRDS(chStats, file = "chStats.rds")
 ```
 
-# Visulization of the MDS projection
+# Visualization of the MDS projection
 
 The `MDSgui` function `run_app` launches the interactive Shiny app and the
 three tabs window in the figure below gets opened. In the
 'Input files' tab the objects can be loaded for visualization. The plots
-are then shown in the 'View' tab while the 'General settings' contains more
+are then shown in the 'View' tab while the 'General Settings' contains more
 technical plot settings controls. All the input files are expected to
 have .rds extension and at least a file containing MDS object has
 to be loaded. Optionally a phenodata file containing a phenodata dataframe
@@ -150,13 +151,15 @@ can be loaded.
 ![](images/InputFiles.png)
 We can select the previously created files and proceed with the visualization.
 Note that when a phenodata file is selected a new control appears allowing
-to select only a subset of variables (by default all are selected).
+to select only a subset of variables (by default all are selected). These 
+phenodata selected variables will be the only ones available in the drop-down 
+list controls in the 'View' tab.
 
 ![](images/InputFiles2.png)
 We can now open the 'View' tab to see the plot of the projection results.
 The controls on the side allow to choose the projection axes, colour, label,
 or shape the points according to phenodata variables, add biplot,
-show a plotly plot for interactive plot exploration or flip axes. 
+show a `plotly` plot for interactive plot exploration or flip axes. 
 
 ![](images/View.png)
 For example we can colour the points according to group_id and label the points
@@ -167,17 +170,28 @@ We can also add a biplot created based on sample statistics by clicking on the
 biplot checkbox. The idea is to calculate the correlation of the sample
 statistics w.r.t. the axes of projection, so that these correlations can be
 represented on a correlation circle overlaid on the projection plot.
-The desired statistic can be selected from the dropdown menu and
-it's possible to show only the arrows that respect a selected threshold. In the
-example below the chosen statistic is the median while the arrow length
+The desired statistic can be selected from the drop down menu and
+it is possible to show only the arrows that respect a selected length threshold.  
+In the example below, the chosen statistic is the median while the arrow length
 threshold is 0.8.
 
-![(images/ViewBiplot.png)
+![](images/ViewBiplot.png)
 
-Finally it's possible to display an interactive plotly plot below the regular
-one by selecting the corresponding checkbox. We can also add new plotly tooltips
-and see the information for each point by hovering over them.
+Finally it is possible to display an interactive `plotly` plot below the regular
+one by selecting the corresponding checkbox. We can also add new `plotly` 
+tooltips and highlight the corresponding information for each point 
+by hovering over them.
 
 ![](images/ViewPlotly.png)
+# General Settings
 
+(TO DO)  
+
+# Session information {-}
+
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
+```
+
+# References {-}
 
