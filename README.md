@@ -3,12 +3,10 @@
 The MDSgui package implements visualization of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of cytometry samples.
 Such objects can be obtained using the functionalities implemented in the
-`CytoMDS` package. For more information see the `CytoMDS` vignette
-[`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html). 
-The visualization is realised via a Shiny app that allows 
+`CytoMDS` package. The visualization is realised via a Shiny app that allows 
 the user to interactively customise the plots depending on a series of input
-parameters (see the `CytoMDS::ggplotSampleMDS()` function for more details 
-on the parameters).
+parameters.
+
 Below a screenshot of the app 'View' tab. The controls on the side allow to
 choose the projection axes, colour, label, or shape the points according to
 phenodata variables, add biplot, show a `plotly` plot for interactive plot
