@@ -141,7 +141,7 @@ saveRDS(chStats, file = "chStats.rds")
 The `MDSgui` function `run_app` launches the interactive Shiny app and the
 three tabs window in the figure below gets opened. In the
 'Input files' tab the objects can be loaded for visualization. The plots
-are then shown in the 'View' tab while the 'General Settings' contains more
+are then shown in the 'View' tab while the 'General settings' contains more
 technical plot settings controls. All the input files are expected to
 have .rds extension and at least a file containing MDS object has
 to be loaded. Optionally a phenodata file containing a phenodata dataframe
@@ -183,9 +183,15 @@ tooltips and highlight the corresponding information for each point
 by hovering over them.
 
 ![](images/ViewPlotly.png)
-# General Settings
 
-(TO DO)  
+# General settings
+
+For completeness we show below the 'General settings' tab which
+contains some general controls regarding e.g. points features, the
+corresponding labels and biplot arrows. For more details see the
+`CytoMDS::ggplotSampleMDS()` function parameters.
+
+![](images/GeneralSettings.png)
 
 # Session information {-}
 
