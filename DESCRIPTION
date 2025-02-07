@@ -28,3 +28,10 @@ Imports:
     plotly,
     shiny,
     shinyjs
+Suggests:
+    knitr,
+    rmarkdown,
+    BiocStyle,
+    HDCytoData,
+    flowCore
+VignetteBuilder: knitr
