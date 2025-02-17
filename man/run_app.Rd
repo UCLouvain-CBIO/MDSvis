@@ -9,3 +9,8 @@ run_app()
 \description{
 Launch shiny app for MDS visualization
 }
+\examples{
+if (interactive()) {
+  run_app()
+}
+}
