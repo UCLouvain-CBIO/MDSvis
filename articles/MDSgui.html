@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MDSgui</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/MDSgui.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/MDSgui.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
@@ -203,21 +203,21 @@ the input files are expected to have .rds extension and at least a file
 containing MDS object has to be loaded. Optionally a phenodata file
 containing a phenodata dataframe and/or a file containing a list of
 statistics for biplot visualization can be loaded.</p>
-<p><img src="images%2FInputFiles.png"> We can select the previously
+<p><img src="images/InputFiles.png"> We can select the previously
 created files and proceed with the visualization. Note that when a
 phenodata file is selected a new control appears allowing to select only
 a subset of variables (by default all are selected). These phenodata
 selected variables will be the only ones available in the drop-down list
 controls in the ‘View’ tab.</p>
-<p><img src="images%2FInputFiles2.png"> We can now open the ‘View’ tab
+<p><img src="images/InputFiles2.png"> We can now open the ‘View’ tab
 to see the plot of the projection results. The controls on the side
 allow to choose the projection axes, colour, label, or shape the points
 according to phenodata variables, add biplot, show a <code>plotly</code>
 plot for interactive plot exploration or flip axes.</p>
-<p><img src="images%2FView.png"> For example we can colour the points
+<p><img src="images/View.png"> For example we can colour the points
 according to group_id and label the points according to patient_id as
 shown in the figure below.</p>
-<p><img src="images%2FView2.png"> We can also add a biplot created based
+<p><img src="images/View2.png"> We can also add a biplot created based
 on sample statistics by clicking on the biplot checkbox. The idea is to
 calculate the correlation of the sample statistics w.r.t. the axes of
 projection, so that these correlations can be represented on a
@@ -226,12 +226,12 @@ statistic can be selected from the drop down menu and it is possible to
 show only the arrows that respect a selected length threshold.<br>
 In the example below, the chosen statistic is the median while the arrow
 length threshold is 0.8.</p>
-<p><img src="images%2FViewBiplot.png"></p>
+<p><img src="images/ViewBiplot.png"></p>
 <p>Finally it is possible to display an interactive <code>plotly</code>
 plot below the regular one by selecting the corresponding checkbox. We
 can also add new <code>plotly</code> tooltips and highlight the
 corresponding information for each point by hovering over them.</p>
-<p><img src="images%2FViewPlotly.png"></p>
+<p><img src="images/ViewPlotly.png"></p>
 </div>
 <div class="section level2">
 <h2 id="general-settings">General settings<a class="anchor" aria-label="anchor" href="#general-settings"></a>
@@ -240,91 +240,96 @@ corresponding information for each point by hovering over them.</p>
 contains some general controls regarding e.g. points features, the
 corresponding labels and biplot arrows. For more details see the
 <code><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/ggplotSampleMDS.html" class="external-link">CytoMDS::ggplotSampleMDS()</a></code> function parameters.</p>
-<p><img src="images%2FGeneralSettings.png"></p>
+<p><img src="images/GeneralSettings.png"></p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.4.2 (2024-10-31)</span></span>
-<span><span class="co">## Platform: x86_64-apple-darwin20</span></span>
-<span><span class="co">## Running under: macOS Ventura 13.6.6</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2025-02-12 r87715)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.1 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRblas.0.dylib </span></span>
-<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
-<span><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span><span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span><span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span><span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span><span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## time zone: Europe/Brussels</span></span>
-<span><span class="co">## tzcode source: internal</span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] MDSgui_0.1.1                CytoMDS_1.3.5              </span></span>
-<span><span class="co">##  [3] HDCytoData_1.24.0           flowCore_2.16.0            </span></span>
-<span><span class="co">##  [5] SummarizedExperiment_1.34.0 Biobase_2.64.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.56.2        GenomeInfoDb_1.40.1        </span></span>
-<span><span class="co">##  [9] IRanges_2.38.1              S4Vectors_0.42.1           </span></span>
-<span><span class="co">## [11] MatrixGenerics_1.16.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">## [13] ExperimentHub_2.12.0        AnnotationHub_3.12.0       </span></span>
-<span><span class="co">## [15] BiocFileCache_2.12.0        dbplyr_2.5.0               </span></span>
-<span><span class="co">## [17] BiocGenerics_0.50.0         BiocStyle_2.32.1           </span></span>
+<span><span class="co">##  [1] MDSgui_0.1.2                CytoMDS_1.3.5              </span></span>
+<span><span class="co">##  [3] HDCytoData_1.27.0           flowCore_2.19.0            </span></span>
+<span><span class="co">##  [5] SummarizedExperiment_1.37.0 Biobase_2.67.0             </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.59.1        GenomeInfoDb_1.43.4        </span></span>
+<span><span class="co">##  [9] IRanges_2.41.3              S4Vectors_0.45.4           </span></span>
+<span><span class="co">## [11] MatrixGenerics_1.19.1       matrixStats_1.5.0          </span></span>
+<span><span class="co">## [13] ExperimentHub_2.15.0        AnnotationHub_3.15.0       </span></span>
+<span><span class="co">## [15] BiocFileCache_2.15.1        dbplyr_2.5.0               </span></span>
+<span><span class="co">## [17] BiocGenerics_0.53.6         generics_0.1.3             </span></span>
+<span><span class="co">## [19] BiocStyle_2.35.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] splines_4.4.2           later_1.4.1             filelock_1.0.3         </span></span>
-<span><span class="co">##   [4] tibble_3.2.1            graph_1.82.0            XML_3.99-0.18          </span></span>
-<span><span class="co">##   [7] rpart_4.1.23            lifecycle_1.0.4         Rdpack_2.6.2           </span></span>
-<span><span class="co">##  [10] doParallel_1.0.17       flowWorkspace_4.16.0    lattice_0.22-6         </span></span>
-<span><span class="co">##  [13] MASS_7.3-61             backports_1.5.0         magrittr_2.0.3         </span></span>
+<span><span class="co">##   [1] splines_4.5.0           later_1.4.1             filelock_1.0.3         </span></span>
+<span><span class="co">##   [4] tibble_3.2.1            graph_1.85.1            XML_3.99-0.18          </span></span>
+<span><span class="co">##   [7] rpart_4.1.24            lifecycle_1.0.4         Rdpack_2.6.2           </span></span>
+<span><span class="co">##  [10] doParallel_1.0.17       flowWorkspace_4.19.0    lattice_0.22-6         </span></span>
+<span><span class="co">##  [13] MASS_7.3-64             backports_1.5.0         magrittr_2.0.3         </span></span>
 <span><span class="co">##  [16] Hmisc_5.2-2             plotly_4.10.4           sass_0.4.9             </span></span>
 <span><span class="co">##  [19] rmarkdown_2.29          jquerylib_0.1.4         yaml_2.3.10            </span></span>
 <span><span class="co">##  [22] plotrix_3.8-4           httpuv_1.6.15           DBI_1.2.3              </span></span>
 <span><span class="co">##  [25] minqa_1.2.8             RColorBrewer_1.1-3      abind_1.4-8            </span></span>
-<span><span class="co">##  [28] zlibbioc_1.50.0         ggcyto_1.32.0           purrr_1.0.2            </span></span>
-<span><span class="co">##  [31] nnet_7.3-19             pracma_2.4.4            rappdirs_0.3.3         </span></span>
-<span><span class="co">##  [34] transport_0.15-4        GenomeInfoDbData_1.2.12 gdata_3.0.1            </span></span>
-<span><span class="co">##  [37] ellipse_0.5.0           pkgdown_2.1.1           codetools_0.2-20       </span></span>
-<span><span class="co">##  [40] DelayedArray_0.30.1     tidyselect_1.2.1        shape_1.4.6.1          </span></span>
-<span><span class="co">##  [43] UCSC.utils_1.0.0        lme4_1.1-36             base64enc_0.1-3        </span></span>
-<span><span class="co">##  [46] jsonlite_1.8.9          e1071_1.7-16            mitml_0.4-5            </span></span>
-<span><span class="co">##  [49] Formula_1.2-5           survival_3.7-0          iterators_1.0.14       </span></span>
-<span><span class="co">##  [52] systemfonts_1.2.1       foreach_1.5.2           tools_4.4.2            </span></span>
-<span><span class="co">##  [55] ragg_1.3.3              Rcpp_1.0.14             glue_1.8.0             </span></span>
-<span><span class="co">##  [58] gridExtra_2.3           pan_1.9                 SparseArray_1.4.8      </span></span>
-<span><span class="co">##  [61] xfun_0.50               dplyr_1.1.4             withr_3.0.2            </span></span>
-<span><span class="co">##  [64] BiocManager_1.30.25     fastmap_1.2.0           boot_1.3-31            </span></span>
-<span><span class="co">##  [67] shinyjs_2.1.0           digest_0.6.37           R6_2.5.1               </span></span>
-<span><span class="co">##  [70] mime_0.12               mice_3.17.0             textshaping_0.4.0      </span></span>
-<span><span class="co">##  [73] colorspace_2.1-1        gtools_3.9.5            RSQLite_2.3.9          </span></span>
-<span><span class="co">##  [76] weights_1.0.4           tidyr_1.3.1             generics_0.1.3         </span></span>
-<span><span class="co">##  [79] hexbin_1.28.5           data.table_1.16.4       class_7.3-22           </span></span>
-<span><span class="co">##  [82] httr_1.4.7              htmlwidgets_1.6.4       S4Arrays_1.4.1         </span></span>
-<span><span class="co">##  [85] pkgconfig_2.0.3         gtable_0.3.6            blob_1.2.4             </span></span>
-<span><span class="co">##  [88] RProtoBufLib_2.16.0     XVector_0.44.0          htmltools_0.5.8.1      </span></span>
-<span><span class="co">##  [91] bookdown_0.41           scales_1.3.0            png_0.1-8              </span></span>
-<span><span class="co">##  [94] wordcloud_2.6           reformulas_0.4.0        knitr_1.49             </span></span>
-<span><span class="co">##  [97] rstudioapi_0.17.1       checkmate_2.3.2         nlme_3.1-166           </span></span>
-<span><span class="co">## [100] curl_6.1.0              nloptr_2.1.1            proxy_0.4-27           </span></span>
-<span><span class="co">## [103] cachem_1.1.0            stringr_1.5.1           BiocVersion_3.19.1     </span></span>
-<span><span class="co">## [106] parallel_4.4.2          foreign_0.8-87          AnnotationDbi_1.66.0   </span></span>
-<span><span class="co">## [109] desc_1.4.3              pillar_1.10.1           grid_4.4.2             </span></span>
-<span><span class="co">## [112] vctrs_0.6.5             promises_1.3.2          cytolib_2.16.0         </span></span>
-<span><span class="co">## [115] jomo_2.7-6              xtable_1.8-4            cluster_2.1.6          </span></span>
-<span><span class="co">## [118] htmlTable_2.4.3         Rgraphviz_2.48.0        evaluate_1.0.3         </span></span>
-<span><span class="co">## [121] cli_3.6.3               compiler_4.4.2          rlang_1.1.5            </span></span>
-<span><span class="co">## [124] crayon_1.5.3            smacof_2.1-7            ncdfFlow_2.50.0        </span></span>
-<span><span class="co">## [127] plyr_1.8.9              fs_1.6.5                stringi_1.8.4          </span></span>
-<span><span class="co">## [130] viridisLite_0.4.2       BiocParallel_1.38.0     nnls_1.6               </span></span>
-<span><span class="co">## [133] munsell_0.5.1           Biostrings_2.72.1       lazyeval_0.2.2         </span></span>
-<span><span class="co">## [136] glmnet_4.1-8            Matrix_1.7-1            bit64_4.6.0-1          </span></span>
-<span><span class="co">## [139] CytoPipeline_1.4.0      ggplot2_3.5.1           KEGGREST_1.44.1        </span></span>
-<span><span class="co">## [142] shiny_1.10.0            rbibutils_2.3           broom_1.0.7            </span></span>
-<span><span class="co">## [145] memoise_2.0.1           bslib_0.8.0             bit_4.5.0.1            </span></span>
-<span><span class="co">## [148] polynom_1.4-1</span></span></code></pre>
+<span><span class="co">##  [28] ggcyto_1.35.0           purrr_1.0.4             nnet_7.3-20            </span></span>
+<span><span class="co">##  [31] pracma_2.4.4            rappdirs_0.3.3          transport_0.15-4       </span></span>
+<span><span class="co">##  [34] GenomeInfoDbData_1.2.13 gdata_3.0.1             ellipse_0.5.0          </span></span>
+<span><span class="co">##  [37] pkgdown_2.1.1.9000      codetools_0.2-20        DelayedArray_0.33.6    </span></span>
+<span><span class="co">##  [40] tidyselect_1.2.1        shape_1.4.6.1           UCSC.utils_1.3.1       </span></span>
+<span><span class="co">##  [43] lme4_1.1-36             base64enc_0.1-3         jsonlite_1.8.9         </span></span>
+<span><span class="co">##  [46] e1071_1.7-16            mitml_0.4-5             Formula_1.2-5          </span></span>
+<span><span class="co">##  [49] survival_3.8-3          iterators_1.0.14        systemfonts_1.2.1      </span></span>
+<span><span class="co">##  [52] foreach_1.5.2           tools_4.5.0             ragg_1.3.3             </span></span>
+<span><span class="co">##  [55] Rcpp_1.0.14             glue_1.8.0              gridExtra_2.3          </span></span>
+<span><span class="co">##  [58] pan_1.9                 SparseArray_1.7.5       xfun_0.50              </span></span>
+<span><span class="co">##  [61] dplyr_1.1.4             withr_3.0.2             BiocManager_1.30.25    </span></span>
+<span><span class="co">##  [64] fastmap_1.2.0           boot_1.3-31             shinyjs_2.1.0          </span></span>
+<span><span class="co">##  [67] digest_0.6.37           R6_2.6.1                mime_0.12              </span></span>
+<span><span class="co">##  [70] mice_3.17.0             textshaping_1.0.0       colorspace_2.1-1       </span></span>
+<span><span class="co">##  [73] gtools_3.9.5            RSQLite_2.3.9           weights_1.0.4          </span></span>
+<span><span class="co">##  [76] tidyr_1.3.1             hexbin_1.28.5           data.table_1.16.4      </span></span>
+<span><span class="co">##  [79] class_7.3-23            httr_1.4.7              htmlwidgets_1.6.4      </span></span>
+<span><span class="co">##  [82] S4Arrays_1.7.3          pkgconfig_2.0.3         gtable_0.3.6           </span></span>
+<span><span class="co">##  [85] blob_1.2.4              RProtoBufLib_2.19.0     XVector_0.47.2         </span></span>
+<span><span class="co">##  [88] htmltools_0.5.8.1       bookdown_0.42           scales_1.3.0           </span></span>
+<span><span class="co">##  [91] png_0.1-8               wordcloud_2.6           reformulas_0.4.0       </span></span>
+<span><span class="co">##  [94] knitr_1.49              rstudioapi_0.17.1       checkmate_2.3.2        </span></span>
+<span><span class="co">##  [97] nlme_3.1-167            curl_6.2.1              nloptr_2.1.1           </span></span>
+<span><span class="co">## [100] proxy_0.4-27            cachem_1.1.0            stringr_1.5.1          </span></span>
+<span><span class="co">## [103] BiocVersion_3.21.1      parallel_4.5.0          foreign_0.8-88         </span></span>
+<span><span class="co">## [106] AnnotationDbi_1.69.0    desc_1.4.3              pillar_1.10.1          </span></span>
+<span><span class="co">## [109] grid_4.5.0              vctrs_0.6.5             promises_1.3.2         </span></span>
+<span><span class="co">## [112] cytolib_2.19.3          jomo_2.7-6              xtable_1.8-4           </span></span>
+<span><span class="co">## [115] cluster_2.1.8           htmlTable_2.4.3         Rgraphviz_2.51.0       </span></span>
+<span><span class="co">## [118] evaluate_1.0.3          cli_3.6.4               compiler_4.5.0         </span></span>
+<span><span class="co">## [121] rlang_1.1.5             crayon_1.5.3            smacof_2.1-7           </span></span>
+<span><span class="co">## [124] ncdfFlow_2.53.1         plyr_1.8.9              fs_1.6.5               </span></span>
+<span><span class="co">## [127] stringi_1.8.4           viridisLite_0.4.2       BiocParallel_1.41.0    </span></span>
+<span><span class="co">## [130] nnls_1.6                munsell_0.5.1           Biostrings_2.75.3      </span></span>
+<span><span class="co">## [133] lazyeval_0.2.2          glmnet_4.1-8            Matrix_1.7-2           </span></span>
+<span><span class="co">## [136] bit64_4.6.0-1           CytoPipeline_1.7.0      ggplot2_3.5.1          </span></span>
+<span><span class="co">## [139] KEGGREST_1.47.0         shiny_1.10.0            rbibutils_2.3          </span></span>
+<span><span class="co">## [142] broom_1.0.7             memoise_2.0.1           bslib_0.9.0            </span></span>
+<span><span class="co">## [145] bit_4.5.0.1             polynom_1.4-1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -363,7 +368,7 @@ Benchmark Datasets in Bioconductor Object Formats.”</span>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
 </div>
 
     </footer>

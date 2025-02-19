@@ -1,9 +1,9 @@
-pandoc: '3.2'
-pkgdown: 2.1.1
-pkgdown_sha: ~
+pandoc: 3.6.3
+pkgdown: 2.1.1.9000
+pkgdown_sha: 18cca452d736fea33d47b19b4ef4973db9104a75
 articles:
   MDSgui: MDSgui.html
-last_built: 2025-02-06T11:54Z
+last_built: 2025-02-19T13:10Z
 urls:
   reference: https://uclouvain-cbio.github.io/MDSgui/reference
   article: https://uclouvain-cbio.github.io/MDSgui/articles
