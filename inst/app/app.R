@@ -53,19 +53,14 @@ ui <- fluidPage(
     tabPanel("General Settings",
              sidebarLayout(
                sidebarPanel(
-                 checkboxInput("displayPointLabels", "Display point labels",
+                 numericInput("pointLabelSize", "Point label size",
+                              value = 3.88, step = 0.1),
+                 checkboxInput("repelPointLabels", "Repel overlapping labels",
                                value = TRUE),
                  conditionalPanel(
-                   condition = "input.displayPointLabels == true",
-                   numericInput("pointLabelSize", "Point label size",
-                                value = 3.88, step = 0.1),
-                   checkboxInput("repelPointLabels", "Repel overlapping labels",
-                                 value = TRUE),
-                   conditionalPanel(
-                     condition = "input.repelPointLabels == true",
-                     numericInput("maxOverlaps", "Maximum overlaps", value = 10,
-                                  step = 1)
-                   )
+                   condition = "input.repelPointLabels == true",
+                   numericInput("maxOverlaps", "Maximum overlaps", value = 10,
+                                step = 1)
                  ),
                  checkboxInput("displayPseudoRSq", "Display pseudo RSquare",
                                value = TRUE),
@@ -227,7 +222,7 @@ server <- function(input, output, session) {
       flipXAxis = input$flipXAxis,
       flipYAxis = input$flipYAxis,
       pointLabelSize = input$pointLabelSize,
-      displayPointLabels = input$displayPointLabels,
+      displayPointLabels = FALSE,
       repelPointLabels = input$repelPointLabels,
       displayPseudoRSq = input$displayPseudoRSq,
       pointSizeReflectingStress = input$pointSizeReflectingStress,
@@ -251,6 +246,7 @@ server <- function(input, output, session) {
       }
       if (input$labelBy != "_") {
         plotargs$pDataForLabel = input$labelBy
+        plotargs$displayPointLabels = TRUE
       }
       if (input$shapeBy != "_") {
         plotargs$pDataForShape = input$shapeBy
