@@ -10,5 +10,5 @@
 #'   run_app()
 #' }
 run_app <- function() {
-  runApp(system.file("app/app.R", package = "MDSgui"))
+  runApp(system.file("app/app.R", package = "MDSvis"))
 }

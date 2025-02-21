@@ -1,6 +1,6 @@
-# MDSgui
+# MDSvis
 
-The MDSgui package implements visualization of Multi Dimensional Scaling (MDS)
+The MDSvis package implements visualization of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of cytometry samples.
 Such objects can be obtained using the functionalities implemented in the
 `CytoMDS` package. The visualization is realised via a Shiny app that allows 
@@ -16,14 +16,14 @@ exploration or flip axes.
 
 ### License
 
-The `MDSgui` code is provided under [GPL license version 3.0 or 
+The `MDSvis` code is provided under [GPL license version 3.0 or 
 higher](https://opensource.org/licenses/GPL-3.0). The documentation, 
 including the manual pages and the vignettes, are distributed under a [CC BY-SA 
 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/).
 
 ### Citation
 
-If you use `MDSgui` in your research, please use the following citation:
+If you use `MDSvis` in your research, please use the following citation:
 
 >Hauchamps, Philippe, Simon Delandre, Stephane T. Temmerman, 
 > Dan Lin, and Laurent Gatto. 2024. 

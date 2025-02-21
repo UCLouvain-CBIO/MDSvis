@@ -3,16 +3,16 @@ title: "Visualization of Multi Dimensional Scaling (MDS) objects"
 author:
     - name: Andrea Vicini
     - name: Philippe Hauchamps
-package: MDSgui
+package: MDSvis
 abstract: >
- This vignette describes the functionality implemented in the `MDSgui`
- package. `MDSgui` provides support for visualization of Multi Dimensional
+ This vignette describes the functionality implemented in the `MDSvis`
+ package. `MDSvis` provides support for visualization of Multi Dimensional
  Scaling (MDS) objects.  
  This vignette is distributed under a CC BY-SA 4.0 license.
 output:
   BiocStyle::html_document:
     toc_float: true
-bibliography: MDSgui.bib
+bibliography: MDSvis.bib
 vignette: >
   %\VignetteIndexEntry{Visualization of Multi Dimensional Scaling (MDS) objects}
   %\VignetteEngine{knitr::rmarkdown}
@@ -32,7 +32,7 @@ To install this package, start R and enter (un-commented):
 # if (!require("devtools", quietly = TRUE))
 #     install.packages("devtools")
 # 
-# devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSgui')
+# devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')
 ```
 
 We now load the packages needed in the current vignette:
@@ -40,12 +40,12 @@ We now load the packages needed in the current vignette:
 ```{r rlibs, results=FALSE}
 suppressPackageStartupMessages(library(HDCytoData))
 library(CytoMDS)
-library(MDSgui)
+library(MDSvis)
 ```
 
 # Introduction
 
-The `MDSgui` package implements visualization of Multi Dimensional Scaling (MDS)
+The `MDSvis` package implements visualization of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of cytometry samples.
 Such objects can be obtained using the functionalities implemented in the
 `CytoMDS` package (@Hauchamps2024-nn). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html). 
@@ -138,7 +138,7 @@ saveRDS(chStats, file = "chStats.rds")
 
 # Visualization of the MDS projection
 
-The `MDSgui` function `run_app` launches the interactive Shiny app and the
+The `MDSvis` function `run_app` launches the interactive Shiny app and the
 three tabs window in the figure below gets opened. In the
 'Input files' tab the objects can be loaded for visualization. The plots
 are then shown in the 'View' tab while the 'General settings' contains more

@@ -1,4 +1,4 @@
-Package: MDSgui
+Package: MDSvis
 Title: Plots of MDS results
 Version: 0.1.2
 Authors@R: 
