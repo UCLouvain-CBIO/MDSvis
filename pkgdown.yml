@@ -2,8 +2,8 @@ pandoc: 3.6.3
 pkgdown: 2.1.1.9000
 pkgdown_sha: 18cca452d736fea33d47b19b4ef4973db9104a75
 articles:
-  MDSgui: MDSgui.html
-last_built: 2025-02-19T13:10Z
+  MDSvis: MDSvis.html
+last_built: 2025-02-21T16:13Z
 urls:
-  reference: https://uclouvain-cbio.github.io/MDSgui/reference
-  article: https://uclouvain-cbio.github.io/MDSgui/articles
+  reference: https://uclouvain-cbio.github.io/MDSvis/reference
+  article: https://uclouvain-cbio.github.io/MDSvis/articles
