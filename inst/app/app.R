@@ -96,9 +96,15 @@ server <- function(input, output, session) {
   pData <- reactiveVal(NULL)
   pDataSubs <- reactiveVal(NULL)
   stats <- reactiveVal(NULL)
-
+  
+  isMdsObjValid <- reactiveVal(TRUE)
+  isPDataValid <- reactiveVal(TRUE)
+  isStatsValid <- reactiveVal(TRUE)
+  areMDSPdataCompatible <- reactiveVal(TRUE)
+  areMDSStatsCompatible <- reactiveVal(TRUE)
+  
   observe({
-    if (is.null(input$mdsObjFile)) {
+    if (is.null(input$mdsObjFile) || !isMdsObjValid()) {
       shinyjs::disable("axis1")
       shinyjs::disable("axis2")
       shinyjs::disable("colourBy")
@@ -118,7 +124,8 @@ server <- function(input, output, session) {
       shinyjs::disable("arrowLabelSize")
       shinyjs::disable("repelArrowLabels")
       shinyjs::disable("maxOverlaps")
-    } else {
+    } 
+    if (!is.null(input$mdsObjFile) && isMdsObjValid()){
       shinyjs::enable("axis1")
       shinyjs::enable("axis2")
       shinyjs::enable("flipXAxis")
@@ -131,16 +138,25 @@ server <- function(input, output, session) {
       shinyjs::enable("pointSizeReflectingStress")
       shinyjs::enable("plotlytooltipping")
       shinyjs::enable("maxOverlaps")
-      if (!is.null(input$statsFile)) {
+      if (!is.null(input$statsFile) && isStatsValid() && areMDSStatsCompatible()) {#anche se non sono compatibili ma
         shinyjs::enable("biplot")
         shinyjs::enable("displayArrowLabels")
         shinyjs::enable("arrowLabelSize")
         shinyjs::enable("repelArrowLabels")
+      } else {
+        shinyjs::disable("biplot")
+        shinyjs::disable("displayArrowLabels")
+        shinyjs::disable("arrowLabelSize")
+        shinyjs::disable("repelArrowLabels")
       }
-      if (!is.null(input$pDataFile)){
+      if (!is.null(input$pDataFile) && isPDataValid() && areMDSPdataCompatible()){
         shinyjs::enable("colourBy")
         shinyjs::enable("labelBy")
         shinyjs::enable("shapeBy")
+      } else {
+        shinyjs::disable("colourBy")
+        shinyjs::disable("labelBy")
+        shinyjs::disable("shapeBy")
       }
     }
   })
@@ -150,9 +166,10 @@ server <- function(input, output, session) {
     tryCatch({
       mds <- readRDS(input$mdsObjFile$datapath)
       if (is(mds)[1] != "MDS") {
+        isMdsObjValid(FALSE)
         stop("The selected file does not contain a MDS object.")
       }
-
+      isMdsObjValid(TRUE)
       mdsObj(mds)
       updateSelectInput(session, "axis1",
                         choices = seq_len(CytoMDS::nDim(mdsObj())),
@@ -171,9 +188,12 @@ server <- function(input, output, session) {
       pdata <- readRDS(input$pDataFile$datapath)
 
       if (!is.data.frame(pdata)) {
+        isPDataValid(FALSE)
+        pData(NULL)
         stop("The selected file does not contain a data.frame object.")
       }
-
+      
+      isPDataValid(TRUE)
       pData(pdata)
       pDataSubs(pdata)
 
@@ -200,10 +220,13 @@ server <- function(input, output, session) {
     req(input$statsFile)
     tryCatch({
       stats_ <- readRDS(input$statsFile$datapath)
-
       if (!(is.list(stats_) && all(sapply(stats_, is.matrix)))) {
+        isStatsValid(FALSE)
+        stats(NULL)
         stop("The selected file does not contain a list of matrices")
       }
+      
+      isStatsValid(TRUE)
       stats(stats_)
       updateSelectInput(session, "extVariables", choices = names(stats()),
                         selected = names(stats())[1])
@@ -213,53 +236,89 @@ server <- function(input, output, session) {
     })
   })
 
-
+  observeEvent(c(input$mdsObjFile, input$pDataFile, input$statsFile), {
+    tryCatch({
+      dims <- rep(NA, 3)
+      names(dims) <- c("MDS", "phenodata", "stats")
+      if (!is.null(input$mdsObjFile) && isMdsObjValid()) {
+        dims[1] <- CytoMDS::nPoints(readRDS(input$mdsObjFile$datapath))
+      }
+      if (!is.null(input$pDataFile) && isPDataValid()) {
+        dims[2] <- nrow(readRDS(input$pDataFile$datapath))
+      }
+      if (!is.null(input$statsFile) && isStatsValid()) {
+        dims[3] <- nrow(readRDS(input$statsFile$datapath)[[1]])
+      }
+      if (!is.na(dims[1])) {
+        if (!is.na(dims[2]) && dims[1] != dims[2])
+          areMDSPdataCompatible(FALSE)
+        if (!is.na(dims[3]) && dims[1] != dims[3])
+          areMDSStatsCompatible(FALSE)
+      }
+      notNAdims <- dims[!is.na(dims)]
+      if(length(unique(notNAdims)) > 1) {
+        stop(paste0("The loaded objects have incompatible number of samples (",
+                    paste(sapply(seq_along(notNAdims),
+                                 function(i) paste(notNAdims[i],
+                                                   names(notNAdims)[i],
+                                                   sep = ": ")),
+                          collapse = ", "),
+                    ")"))
+      }
+      areMDSPdataCompatible(TRUE)
+      areMDSStatsCompatible(TRUE)
+    }, error = function(e) {
+      showNotification(as.character(e$message), type = "error", duration = NULL)
+    })
+  })
 
   p <- reactive({
-    plotargs = list(
-      mdsObj = mdsObj(),
-      projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
-      flipXAxis = input$flipXAxis,
-      flipYAxis = input$flipYAxis,
-      pointLabelSize = input$pointLabelSize,
-      displayPointLabels = FALSE,
-      repelPointLabels = input$repelPointLabels,
-      displayPseudoRSq = input$displayPseudoRSq,
-      pointSizeReflectingStress = input$pointSizeReflectingStress,
-      pointSize = input$pointSize
-    )
-    if (!is.null(input$maxOverlaps)) {
-      plotargs$max.overlaps = input$maxOverlaps
+    if (isMdsObjValid()) {
+      plotargs = list(
+        mdsObj = mdsObj(),
+        projectionAxes = c(as.integer(input$axis1), as.integer(input$axis2)),
+        flipXAxis = input$flipXAxis,
+        flipYAxis = input$flipYAxis,
+        pointLabelSize = input$pointLabelSize,
+        displayPointLabels = FALSE,
+        repelPointLabels = input$repelPointLabels,
+        displayPseudoRSq = input$displayPseudoRSq,
+        pointSizeReflectingStress = input$pointSizeReflectingStress,
+        pointSize = input$pointSize
+      )
+      if (!is.null(input$maxOverlaps)) {
+        plotargs$max.overlaps = input$maxOverlaps
+      }
+      if (!is.null(input$statsFile) && isStatsValid() && areMDSStatsCompatible()) {
+        plotargs$biplot = input$biplot
+        plotargs$extVariables = stats()[[input$extVariables]]
+        plotargs$displayArrowLabels = input$displayArrowLabels
+        plotargs$arrowLabelSize = input$arrowLabelSize
+        plotargs$repelArrowLabels = input$repelArrowLabels
+        plotargs$arrowThreshold = input$arrowThreshold
+      }
+      if (!is.null(input$pDataFile) && isPDataValid() && areMDSPdataCompatible()) {
+        plotargs$pData = pDataSubs()
+        if (input$colourBy != "_") {
+          plotargs$pDataForColour = input$colourBy
+        }
+        if (input$labelBy != "_") {
+          plotargs$pDataForLabel = input$labelBy
+          plotargs$displayPointLabels = TRUE
+        }
+        if (input$shapeBy != "_") {
+          plotargs$pDataForShape = input$shapeBy
+        }
+      }
+      if (length(input$pDataForAdditionalLabelling)) {
+        plotargs$pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
+      }
+      pltargs = plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]
+      pltlyargs = plotargs[!(names(plotargs) %in% "biplot")]
+      pltlyargs$repelPointLabels = FALSE
+      list(plt = do.call(CytoMDS::ggplotSampleMDS, pltargs),
+           pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs))
     }
-    if (!is.null(input$statsFile)) {
-      plotargs$biplot = input$biplot
-      plotargs$extVariables = stats()[[input$extVariables]]
-      plotargs$displayArrowLabels = input$displayArrowLabels
-      plotargs$arrowLabelSize = input$arrowLabelSize
-      plotargs$repelArrowLabels = input$repelArrowLabels
-      plotargs$arrowThreshold = input$arrowThreshold
-     }
-    if (!is.null(input$pDataFile)) {
-      plotargs$pData = pDataSubs()
-      if (input$colourBy != "_") {
-        plotargs$pDataForColour = input$colourBy
-      }
-      if (input$labelBy != "_") {
-        plotargs$pDataForLabel = input$labelBy
-        plotargs$displayPointLabels = TRUE
-      }
-      if (input$shapeBy != "_") {
-        plotargs$pDataForShape = input$shapeBy
-      }
-     }
-    if (length(input$pDataForAdditionalLabelling)) {
-      plotargs$pDataForAdditionalLabelling = input$pDataForAdditionalLabelling
-    }
-    pltargs = plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]
-    pltlyargs = plotargs[!(names(plotargs) %in% "biplot")]
-    pltlyargs$repelPointLabels = FALSE
-    list(plt = do.call(CytoMDS::ggplotSampleMDS, pltargs),
-         pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs))
   })
 
   output$mdsPlot <- renderPlot({

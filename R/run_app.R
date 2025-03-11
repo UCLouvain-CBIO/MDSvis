@@ -1,4 +1,4 @@
-#' Launch shiny app for MDS visualization
+#' Launch shiny app for MDS projection visualization
 #'
 #' @export
 #' @importFrom shinyjs useShinyjs enable disable
