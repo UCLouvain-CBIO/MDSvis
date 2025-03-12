@@ -156,10 +156,16 @@ server <- function(input, output, session) {
         shinyjs::enable("colourBy")
         shinyjs::enable("labelBy")
         shinyjs::enable("shapeBy")
+        if(input$plotlytooltipping) {
+          shinyjs::enable("pDataForAdditionalLabelling")
+        }
       } else {
         shinyjs::disable("colourBy")
         shinyjs::disable("labelBy")
         shinyjs::disable("shapeBy")
+        if(input$plotlytooltipping) {
+          shinyjs::disable("pDataForAdditionalLabelling")
+        }
       }
     }
   })
@@ -193,6 +199,7 @@ server <- function(input, output, session) {
       if (!is.data.frame(pdata)) {
         isPDataValid(FALSE)
         pData(NULL)
+        pDataSubs(NULL)
         stop("The selected file does not contain a data.frame object.")
       }
       
