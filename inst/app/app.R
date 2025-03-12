@@ -42,7 +42,8 @@ ui <- fluidPage(
                                choices = NULL, multiple = TRUE)
                  ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
-                 checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE)
+                 checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE),
+                 downloadButton("exportPlot", "Export plot as PDF")
                ),
                mainPanel(
                  plotOutput("mdsPlot"),
@@ -124,6 +125,7 @@ server <- function(input, output, session) {
       shinyjs::disable("arrowLabelSize")
       shinyjs::disable("repelArrowLabels")
       shinyjs::disable("maxOverlaps")
+      shinyjs::disable("exportPlot")
     } 
     if (!is.null(input$mdsObjFile) && isMdsObjValid()){
       shinyjs::enable("axis1")
@@ -138,6 +140,7 @@ server <- function(input, output, session) {
       shinyjs::enable("pointSizeReflectingStress")
       shinyjs::enable("plotlytooltipping")
       shinyjs::enable("maxOverlaps")
+      shinyjs::enable("exportPlot")
       if (!is.null(input$statsFile) && isStatsValid() && areMDSStatsCompatible()) {#anche se non sono compatibili ma
         shinyjs::enable("biplot")
         shinyjs::enable("displayArrowLabels")
@@ -341,6 +344,13 @@ server <- function(input, output, session) {
                 multiple = TRUE)
   })
 
+  output$exportPlot <- downloadHandler(
+    filename = function() { "MDSplot.pdf" },
+    content = function(file) {
+      ggsave(file, plot = p()$plt, device = "pdf")
+    }
+  )
+  
   observeEvent(input$pDataVariableSelection, {
     req(pData(), input$pDataVariableSelection)
     pDataSubs(pData()[, input$pDataVariableSelection, drop = FALSE])
@@ -358,6 +368,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, "pDataForAdditionalLabelling",
                       choices = colnames(pDataSubs()))
   })
+
 }
 
 shinyApp(ui = ui, server = server)
