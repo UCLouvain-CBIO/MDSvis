@@ -12,7 +12,20 @@ choose the projection axes, colour, label, or shape the points according to
 phenodata variables, add biplot, show a `plotly` plot for interactive plot
 exploration or flip axes.
 
-![](vignettes/images/ViewPlotly.png) 
+![](vignettes/images/ViewPlotly.png)
+
+### Installation
+
+To install the package run the following lines:
+
+```r
+if (!require("devtools", quietly = TRUE))
+    install.packages("devtools")
+
+devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')
+```
+
+Note that CytoMDS version 1.3.5 or above needs to be installed before.
 
 ### License
 
