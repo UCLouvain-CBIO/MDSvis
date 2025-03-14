@@ -53,6 +53,17 @@
 <p>Below a screenshot of the app ‘View’ tab. The controls on the side allow to choose the projection axes, colour, label, or shape the points according to phenodata variables, add biplot, show a <code>plotly</code> plot for interactive plot exploration or flip axes.</p>
 <p><img src="articles/images/ViewPlotly.png"></p>
 <div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>To install the package run the following lines:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span>repo <span class="op">=</span> <span class="st">'https://github.com/UCLouvain-CBIO/MDSvis'</span><span class="op">)</span></span></code></pre></div>
+<p>Note that CytoMDS version 1.3.5 or above needs to be installed before.</p>
+</div>
+<div class="section level3">
 <h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h3>
 <p>The <code>MDSvis</code> code is provided under <a href="https://opensource.org/licenses/GPL-3.0" class="external-link">GPL license version 3.0 or higher</a>. The documentation, including the manual pages and the vignettes, are distributed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC BY-SA 4.0 license</a>.</p>
