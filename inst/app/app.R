@@ -126,6 +126,16 @@ server <- function(input, output, session) {
       shinyjs::disable("repelArrowLabels")
       shinyjs::disable("maxOverlaps")
       shinyjs::disable("exportPlot")
+      if (input$repelPointLabels) {
+        shinyjs::disable("maxOverlaps")
+      }
+      if (!input$pointSizeReflectingStress) {
+        shinyjs::disable("pointSize")
+      }
+      if (input$displayArrowLabels) {
+        shinyjs::disable("arrowLabelSize")
+        shinyjs::disable("repelArrowLabels")
+      } 
     } 
     if (!is.null(input$mdsObjFile) && isMdsObjValid()){
       shinyjs::enable("axis1")
@@ -141,16 +151,34 @@ server <- function(input, output, session) {
       shinyjs::enable("plotlytooltipping")
       shinyjs::enable("maxOverlaps")
       shinyjs::enable("exportPlot")
-      if (!is.null(input$statsFile) && isStatsValid() && areMDSStatsCompatible()) {#anche se non sono compatibili ma
+      if (input$repelPointLabels) {
+        shinyjs::enable("maxOverlaps")
+      }
+      if (!input$pointSizeReflectingStress) {
+        shinyjs::enable("pointSize")
+      }
+      if (input$displayArrowLabels) {
+        shinyjs::enable("arrowLabelSize")
+        shinyjs::enable("repelArrowLabels")
+      } 
+      if (!is.null(input$statsFile) && isStatsValid() && areMDSStatsCompatible()) {
         shinyjs::enable("biplot")
         shinyjs::enable("displayArrowLabels")
         shinyjs::enable("arrowLabelSize")
         shinyjs::enable("repelArrowLabels")
+        if (input$biplot) {
+          shinyjs::enable("extVariables")
+          shinyjs::enable("arrowThreshold")
+        }
       } else {
         shinyjs::disable("biplot")
         shinyjs::disable("displayArrowLabels")
         shinyjs::disable("arrowLabelSize")
         shinyjs::disable("repelArrowLabels")
+        if (input$biplot) {
+          shinyjs::disable("extVariables")
+          shinyjs::disable("arrowThreshold")
+        }
       }
       if (!is.null(input$pDataFile) && isPDataValid() && areMDSPdataCompatible()){
         shinyjs::enable("colourBy")
@@ -233,6 +261,7 @@ server <- function(input, output, session) {
       if (!(is.list(stats_) && all(sapply(stats_, is.matrix)))) {
         isStatsValid(FALSE)
         stats(NULL)
+        updateSelectInput(session, "extVariables", choices = c("_"))
         stop("The selected file does not contain a list of matrices")
       }
       
