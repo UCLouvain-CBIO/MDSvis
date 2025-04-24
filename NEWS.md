@@ -4,6 +4,7 @@
 
 - Error handling when incompatible input files are loaded.
 - Added option to export the main plot as a pdf.
+- Added facet by feature.
 
 ### MDSvis 0.1.2
 

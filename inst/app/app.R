@@ -25,6 +25,7 @@ ui <- fluidPage(
                  selectInput("colourBy", "Colour by:", choices = NULL),
                  selectInput("labelBy", "Label by:", choices = NULL),
                  selectInput("shapeBy", "Shape by:", choices = NULL),
+                 selectInput("facetBy", "Facet by:", choices = NULL),
                  checkboxInput("biplot", "Show biplot", value = FALSE),
                  conditionalPanel(
                    condition = "input.biplot == true",
@@ -110,6 +111,7 @@ server <- function(input, output, session) {
       shinyjs::disable("axis2")
       shinyjs::disable("colourBy")
       shinyjs::disable("labelBy")
+      shinyjs::disable("facetBy")
       shinyjs::disable("shapeBy")
       shinyjs::disable("biplot")
       shinyjs::disable("plotlytooltipping")
@@ -184,6 +186,7 @@ server <- function(input, output, session) {
         shinyjs::enable("colourBy")
         shinyjs::enable("labelBy")
         shinyjs::enable("shapeBy")
+        shinyjs::enable("facetBy")
         if(input$plotlytooltipping) {
           shinyjs::enable("pDataForAdditionalLabelling")
         }
@@ -191,6 +194,7 @@ server <- function(input, output, session) {
         shinyjs::disable("colourBy")
         shinyjs::disable("labelBy")
         shinyjs::disable("shapeBy")
+        shinyjs::disable("facetBy")
         if(input$plotlytooltipping) {
           shinyjs::disable("pDataForAdditionalLabelling")
         }
@@ -243,6 +247,11 @@ server <- function(input, output, session) {
                         selected = "_")
       updateSelectInput(session, "shapeBy",
                         choices = c("_",
+                                    colnames(pDataSubs())[sapply(pDataSubs(),
+                                                                 is.factor)]),
+                        selected = "_")
+      updateSelectInput(session, "facetBy",
+                        choices = c("_", 
                                     colnames(pDataSubs())[sapply(pDataSubs(),
                                                                  is.factor)]),
                         selected = "_")
@@ -355,8 +364,14 @@ server <- function(input, output, session) {
       pltargs = plotargs[!(names(plotargs) %in% "pDataForAdditionalLabelling")]
       pltlyargs = plotargs[!(names(plotargs) %in% "biplot")]
       pltlyargs$repelPointLabels = FALSE
-      list(plt = do.call(CytoMDS::ggplotSampleMDS, pltargs),
-           pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs))
+      plt = do.call(CytoMDS::ggplotSampleMDS, pltargs)
+      pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs)
+      if (input$facetBy != "_") {
+        plt = plt + ggplot2::facet_wrap(~ .data[[input$facetBy]])
+        pltly = pltly + ggplot2::facet_wrap(~ .data[[input$facetBy]])
+      }
+      list(plt = plt,
+           pltly = pltly)
     }
   })
 
@@ -397,6 +412,11 @@ server <- function(input, output, session) {
                       choices = c("_", colnames(pDataSubs())),
                       selected = "_")
     updateSelectInput(session, "shapeBy",
+                      choices = c("_",
+                                  colnames(pDataSubs())[sapply(pDataSubs(),
+                                                               is.factor)]),
+                      selected = "_")
+    updateSelectInput(session, "facetBy",
                       choices = c("_",
                                   colnames(pDataSubs())[sapply(pDataSubs(),
                                                                is.factor)]),
