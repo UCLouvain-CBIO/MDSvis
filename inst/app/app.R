@@ -44,7 +44,7 @@ ui <- fluidPage(
                  ),
                  checkboxInput("flipXAxis", "Flip X-axis", value = FALSE),
                  checkboxInput("flipYAxis", "Flip Y-axis", value = FALSE),
-                 downloadButton("exportPlot", "Export plot as PDF")
+                 actionButton("exportPlot", "Export plot as PDF")
                ),
                mainPanel(
                  plotOutput("mdsPlot"),
@@ -394,13 +394,6 @@ server <- function(input, output, session) {
                 selected = colnames(pData()),
                 multiple = TRUE)
   })
-
-  output$exportPlot <- downloadHandler(
-    filename = function() { "MDSplot.pdf" },
-    content = function(file) {
-      ggplot2::ggsave(file, plot = p()$plt, device = "pdf")
-    }
-  )
   
   observeEvent(input$pDataVariableSelection, {
     req(pData(), input$pDataVariableSelection)
@@ -424,7 +417,39 @@ server <- function(input, output, session) {
     updateSelectInput(session, "pDataForAdditionalLabelling",
                       choices = colnames(pDataSubs()))
   })
+  
+  observeEvent(input$exportPlot, {
+    showModal(modalDialog(
+      title = "Export Settings",
+      numericInput("modal_width", "Width (inches)", value = 7, min = 1),
+      numericInput("modal_height", "Height (inches)", value = 5, min = 1),
+      downloadButton("confirmDownload", "Download PDF"),
+      easyClose = TRUE
+    ))
+  })
+  
+  output$confirmDownload <- downloadHandler(
+    filename = function() { "Multi Dimensional Scaling.pdf" },
+    
+    content = function(file) {
+      width <- input$modal_width
+      height <- input$modal_height
+      
+      validate(
+        need(!is.null(width) && !is.null(height), "Width and height must be specified.")
+      )
+      
+      ggplot2::ggsave(file, plot = p()$plt, device = "pdf", width = width, height = height)
+    }
+  )
 
 }
 
 shinyApp(ui = ui, server = server)
+
+# output$exportPlot <- downloadHandler(
+#   filename = function() { "MDSplot.pdf" },
+#   content = function(file) {
+#     ggplot2::ggsave(file, plot = p()$plt, device = "pdf")
+#   }
+# )
