@@ -366,7 +366,7 @@ server <- function(input, output, session) {
       pltlyargs$repelPointLabels = FALSE
       plt = do.call(CytoMDS::ggplotSampleMDS, pltargs)
       pltly = do.call(CytoMDS::ggplotSampleMDS, pltlyargs)
-      if (input$facetBy != "_") {
+      if (!is.null(input$pDataFile) && input$facetBy != "_") {
         plt = plt + ggplot2::facet_wrap(~ .data[[input$facetBy]])
         pltly = pltly + ggplot2::facet_wrap(~ .data[[input$facetBy]])
       }
@@ -398,7 +398,7 @@ server <- function(input, output, session) {
   output$exportPlot <- downloadHandler(
     filename = function() { "MDSplot.pdf" },
     content = function(file) {
-      ggsave(file, plot = p()$plt, device = "pdf")
+      ggplot2::ggsave(file, plot = p()$plt, device = "pdf")
     }
   )
   
