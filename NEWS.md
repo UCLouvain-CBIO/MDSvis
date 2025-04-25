@@ -1,5 +1,9 @@
 ## MDSvis 0.1
 
+### MDSvis 0.1.4
+
+- Added expert functionality to allow the choice of the image size.
+
 ### MDSvis 0.1.3
 
 - Error handling when incompatible input files are loaded.
