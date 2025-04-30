@@ -432,6 +432,9 @@ server <- function(input, output, session) {
     filename = function() { "Multi Dimensional Scaling.pdf" },
     
     content = function(file) {
+      
+      removeModal()
+      
       width <- input$modal_width
       height <- input$modal_height
       
