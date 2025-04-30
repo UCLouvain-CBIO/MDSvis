@@ -421,8 +421,9 @@ server <- function(input, output, session) {
   observeEvent(input$exportPlot, {
     showModal(modalDialog(
       title = "Export Settings",
-      numericInput("modal_width", "Width (inches)", value = 7, min = 1),
-      numericInput("modal_height", "Height (inches)", value = 5, min = 1),
+      textInput("plot_title", "Plot title", value = "Multi Dimensional Scaling"),
+      numericInput("plot_width", "Width (inches)", value = 7, min = 1),
+      numericInput("plot_height", "Height (inches)", value = 5, min = 1),
       downloadButton("confirmDownload", "Download PDF"),
       easyClose = TRUE
     ))
@@ -435,14 +436,15 @@ server <- function(input, output, session) {
       
       removeModal()
       
-      width <- input$modal_width
-      height <- input$modal_height
+      title <- input$plot_title
+      width <- input$plot_width
+      height <- input$plot_height
       
       validate(
         need(!is.null(width) && !is.null(height), "Width and height must be specified.")
       )
       
-      ggplot2::ggsave(file, plot = p()$plt, device = "pdf", width = width, height = height)
+      ggplot2::ggsave(file, plot = p()$plt + ggplot2::labs(title = title), device = "pdf", width = width, height = height)
     }
   )
 
