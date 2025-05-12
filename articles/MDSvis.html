@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MDSvis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,103 +91,144 @@ Hauchamps</h4>
 </h2>
 <p>The <code>MDSvis</code> package implements visualization of Multi
 Dimensional Scaling (MDS) objects representing a low dimensional
-projection of cytometry samples. Such objects can be obtained using the
-functionalities implemented in the <code>CytoMDS</code> package (<span class="citation">Hauchamps et al. (2024)</span>). For more information
+projection of sample distances. Such objects can be obtained using the
+functionalities implemented in the <code>CytoMDS</code> package (<span class="citation">Hauchamps et al. (2025)</span>). For more information
 see the <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html" class="external-link"><code>CytoMDS</code>
-vignette</a>. The visualization is realised via a Shiny app that allows
-the user to interactively customise the plots depending on a series of
-input parameters (see the <code><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/ggplotSampleMDS.html" class="external-link">CytoMDS::ggplotSampleMDS()</a></code>
-function for more details on the parameters).</p>
+vignette</a>.</p>
+<p>The visualization is done via a Shiny app that allows the user to
+interactively customise the plots depending on a series of input
+parameters (see the <code><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/ggplotSampleMDS.html" class="external-link">CytoMDS::ggplotSampleMDS()</a></code> function for
+more details on the parameters).</p>
+<p><strong>IMPORTANT</strong>: the example provided in the current
+vignette uses cytometry data. As a result, the distance matrix, which
+contains the pairwise sample distances, and serves as input to the MDS
+projection, is here calculated from cytometry data samples using the
+<code>CytoMDS</code> package. However, the input MDS object can also be
+calculated from any distance matrix, where the units of interest are not
+necessarily cytometry samples.</p>
 </div>
 <div class="section level2">
-<h2 id="illustrative-data">Illustrative data<a class="anchor" aria-label="anchor" href="#illustrative-data"></a>
+<h2 id="illustrative-dataset">Illustrative dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset"></a>
 </h2>
 <p>We load an illustrative mass cytometry (<em>CyTOF</em>) dataset from
-<span class="citation">(Bodenmiller et al. 2012)</span>, and provided in
-the Bioconductor <em>HDCytoData</em> data package (<span class="citation">Weber and Soneson (2019)</span>). For more information
-see <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html" class="external-link"><code>CytoMDS</code>
-vignette</a>.</p>
+<span class="citation">(Krieg et al. 2018)</span>, accessible from the
+Bioconductor <em>HDCytoData</em> data package (<span class="citation">Weber and Soneson (2019)</span>).</p>
+<p><em>Krieg_Anti_PD_1</em> was used to characterize immune cell subsets
+in peripheral blood from melanoma skin cancer patients treated with
+anti-PD-1 immunotherapy.</p>
+<p>This study found that the frequency of CD14+CD16-HLA-DRhi monocytes
+in baseline samples (taken from patients prior to treatment) was a
+strong predictor of survival in response to immunotherapy treatment.</p>
+<p>Notably, this dataset contains a strong batch effect, due to sample
+acquisition on two different days (<span class="citation">Krieg et al.
+(2018)</span>).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">BCRXL_fs</span> <span class="op">&lt;-</span> <span class="fu">HDCytoData</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/HDCytoData/man/Bodenmiller_BCR_XL_SE.html" class="external-link">Bodenmiller_BCR_XL_flowSet</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Krieg_fs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/HDCytoData/man/Krieg_Anti_PD_1_SE.html" class="external-link">Krieg_Anti_PD_1_flowSet</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?HDCytoData and browseVignettes('HDCytoData') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in updateObjectFromSlots(object, ..., verbose = verbose): dropping</span></span>
 <span><span class="co">## slot(s) 'colnames' from object = 'flowSet'</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">BCRXL_fs</span></span></code></pre></div>
-<pre><code><span><span class="co">## A flowSet with 16 experiments.</span></span>
+<code class="sourceCode R"><span><span class="va">Krieg_fs</span></span></code></pre></div>
+<pre><code><span><span class="co">## A flowSet with 20 experiments.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## column names(39): Time Cell_length ... sample_id population_id</span></span></code></pre>
+<span><span class="co">## column names(49): Pd104Di Pd105Di ... batch_id sample_id</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 id="computation-of-input-files-">Computation of input files.<a class="anchor" aria-label="anchor" href="#computation-of-input-files-"></a>
+<h2 id="computation-of-input-files">Computation of input files<a class="anchor" aria-label="anchor" href="#computation-of-input-files"></a>
 </h2>
-<p>Next we compute the phenodata dataframe with experimental design
-information, the MDS projection of the dataset as well as a list of
-sample statistics. For a detailed description of each step see the <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html" class="external-link"><code>CytoMDS</code>
-vignette</a>.</p>
+<p>Next we build a <em>phenodata</em> dataframe with experimental design
+information, which are here found in the cytometry data structures.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">phenoData</span> <span class="op">&lt;-</span> <span class="fu">flowCore</span><span class="fu">::</span><span class="fu">pData</span><span class="op">(</span><span class="va">BCRXL_fs</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># update phenoData structure</span></span>
+<span></span>
+<span><span class="va">chLabels</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"MARKER_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">MARKER_INFO</span><span class="op">$</span><span class="va">channel_name</span></span>
+<span><span class="va">chMarkers</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"MARKER_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">MARKER_INFO</span><span class="op">$</span><span class="va">marker_name</span></span>
+<span><span class="va">marker_class</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"MARKER_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">MARKER_INFO</span><span class="op">$</span><span class="va">marker_class</span></span>
+<span></span>
+<span><span class="va">chLabels</span> <span class="op">&lt;-</span> <span class="va">chLabels</span><span class="op">[</span><span class="va">marker_class</span> <span class="op">!=</span> <span class="st">"none"</span><span class="op">]</span></span>
+<span><span class="va">chMarkers</span> <span class="op">&lt;-</span> <span class="va">chMarkers</span><span class="op">[</span><span class="va">marker_class</span> <span class="op">!=</span> <span class="st">"none"</span><span class="op">]</span></span>
+<span><span class="co"># marker_class all equal to "type", 24 markers are left</span></span>
+<span></span>
+<span><span class="va">phenoData</span> <span class="op">&lt;-</span> <span class="fu">flowCore</span><span class="fu">::</span><span class="fu">pData</span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">)</span></span>
 <span><span class="va">additionalPhenoData</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">BCRXL_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"EXPERIMENT_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">EXPERIMENT_INFO</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"EXPERIMENT_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">EXPERIMENT_INFO</span></span>
 <span><span class="va">phenoData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">phenoData</span>, <span class="va">additionalPhenoData</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">flowCore</span><span class="fu">::</span><span class="fu">pData</span><span class="op">(</span><span class="va">BCRXL_fs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">phenoData</span></span></code></pre></div>
+<span>    </span>
+<span><span class="fu">flowCore</span><span class="fu">::</span><span class="fu">pData</span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">phenoData</span></span></code></pre></div>
+<p>Next, we scale-transform the mass cytometry data and calculate the
+pairwise distance matrix.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Select markers</span></span>
-<span><span class="va">markerInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/keyword-methods.html" class="external-link">keyword</a></span><span class="op">(</span><span class="va">BCRXL_fs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"MARKER_INFO"</span><span class="op">)</span><span class="op">$</span><span class="va">MARKER_INFO</span></span>
-<span><span class="va">chClass</span> <span class="op">&lt;-</span> <span class="va">markerInfo</span><span class="op">$</span><span class="va">marker_class</span></span>
-<span></span>
-<span><span class="va">chLabels</span> <span class="op">&lt;-</span> <span class="va">markerInfo</span><span class="op">$</span><span class="va">channel_name</span><span class="op">[</span><span class="va">chClass</span> <span class="op">!=</span> <span class="st">"none"</span><span class="op">]</span></span>
-<span><span class="op">(</span><span class="va">chMarkers</span> <span class="op">&lt;-</span> <span class="va">markerInfo</span><span class="op">$</span><span class="va">marker_name</span><span class="op">[</span><span class="va">chClass</span> <span class="op">!=</span> <span class="st">"none"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "CD3"    "CD45"   "pNFkB"  "pp38"   "CD4"    "CD20"   "CD33"   "pStat5"</span></span>
-<span><span class="co">##  [9] "CD123"  "pAkt"   "pStat1" "pSHP2"  "pZap70" "pStat3" "CD14"   "pSlp76"</span></span>
-<span><span class="co">## [17] "pBtk"   "pPlcg2" "pErk"   "pLat"   "IgM"    "pS6"    "HLA-DR" "CD7"</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># arcsinh() transformation</span></span>
+<code class="sourceCode R"><span><span class="co"># transform flow set (arcsinh(cofactor = 5))</span></span>
 <span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/arcsinhTransform.html" class="external-link">arcsinhTransform</a></span><span class="op">(</span></span>
 <span>    transformationId<span class="op">=</span><span class="st">"ArcsinhTransform"</span>, </span>
 <span>    a <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>    b <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">5</span>, </span>
 <span>    c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Scale transforming the raw data</span></span>
-<span><span class="va">BCRXL_fs_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/transform.html" class="external-link">transform</a></span><span class="op">(</span></span>
-<span>    <span class="va">BCRXL_fs</span>,</span>
+<span><span class="co"># Applying arcsinh() transformation</span></span>
+<span><span class="va">Krieg_fs_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/transform.html" class="external-link">transform</a></span><span class="op">(</span></span>
+<span>    <span class="va">Krieg_fs</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/transformList-class.html" class="external-link">transformList</a></span><span class="op">(</span><span class="va">chLabels</span>, <span class="va">trans</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Calculating distances between samples</span></span>
+<span><span class="co"># Calculating Sample distances</span></span>
 <span><span class="va">pwDist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/pairwiseEMDDist.html" class="external-link">pairwiseEMDDist</a></span><span class="op">(</span></span>
-<span>    <span class="va">BCRXL_fs_trans</span>,</span>
+<span>    <span class="va">Krieg_fs_trans</span>,</span>
 <span>    channels <span class="op">=</span> <span class="va">chMarkers</span>,</span>
 <span>    verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>From the distance matrix, we can now calculate the MDS projection.
+This is also done using the <code>CytoMDS</code> package.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mdsObj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/computeMetricMDS.html" class="external-link">computeMetricMDS</a></span><span class="op">(</span></span>
+<span>    <span class="va">pwDist</span>,</span>
+<span>    seed <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Computing the MDS projection</span></span>
-<span><span class="va">mdsObj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/computeMetricMDS.html" class="external-link">computeMetricMDS</a></span><span class="op">(</span><span class="va">pwDist</span>, seed <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu">show</span><span class="op">(</span><span class="va">mdsObj</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## MDS object containing MDS projection (using Smacof algorithm)  data:</span></span>
-<span><span class="co">## Nb of dimensions:  4 </span></span>
-<span><span class="co">## Nb of points:  16 </span></span>
-<span><span class="co">## Stress:  0.040668 </span></span>
-<span><span class="co">## Pseudo RSquare:  0.981489 </span></span>
-<span><span class="co">## Goodness of fit:  0.998346</span></span></code></pre>
+<span><span class="co">## Nb of dimensions:  2 </span></span>
+<span><span class="co">## Nb of points:  20 </span></span>
+<span><span class="co">## Stress:  0.052363 </span></span>
+<span><span class="co">## Pseudo RSquare:  0.984008 </span></span>
+<span><span class="co">## Goodness of fit:  0.997258</span></span></code></pre>
+<p>Optionally, for the use of biplots as an interpretation tool, sample
+specific statistics can be provided by the user. Here we calculate
+standard univariate statistics from each variable of the
+multidimensional distribution (again using the <code>CytoMDS</code>
+package).</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Computing sample statistics</span></span>
+<span></span>
+<span><span class="co"># statFUNs = c("median" = stats::median,</span></span>
+<span><span class="co">#              "Q25" = function(x, na.rm) {</span></span>
+<span><span class="co">#                  stats::quantile(x, probs = 0.25)</span></span>
+<span><span class="co">#              },</span></span>
+<span><span class="co">#              "Q75" = function(x, na.rm) {</span></span>
+<span><span class="co">#                  stats::quantile(x, probs = 0.75)</span></span>
+<span><span class="co">#              },</span></span>
+<span><span class="co">#              "standard deviation" = stats::sd)</span></span>
+<span><span class="co"># chStats &lt;- channelSummaryStats(BCRXL_fs_trans,</span></span>
+<span><span class="co">#                                channels = chLabels, </span></span>
+<span><span class="co">#                                statFUNs = statFUNs)</span></span>
+<span></span>
+<span><span class="va">statFUNs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span>,</span>
+<span>              <span class="st">"std-dev"</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span>,</span>
+<span>              <span class="st">"mean"</span> <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span>,</span>
+<span>              <span class="st">"Q25"</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span><span class="op">)</span> </span>
+<span>                  <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs <span class="op">=</span> <span class="fl">0.25</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span><span class="op">)</span>,</span>
+<span>              <span class="st">"Q75"</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span><span class="op">)</span> </span>
+<span>                  <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs <span class="op">=</span> <span class="fl">0.75</span>, na.rm <span class="op">=</span> <span class="va">na.rm</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chStats</span> <span class="op">&lt;-</span> <span class="fu">CytoMDS</span><span class="fu">::</span><span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/channelSummaryStats.html" class="external-link">channelSummaryStats</a></span><span class="op">(</span></span>
+<span>    <span class="va">Krieg_fs_trans</span>,</span>
+<span>    channels <span class="op">=</span> <span class="va">chMarkers</span>,</span>
+<span>    statFUNs <span class="op">=</span> <span class="va">statFUNs</span><span class="op">)</span></span></code></pre></div>
+<p>We save the newly created objects as .rds files. These files can now
+be selected within the shiny app for visualization.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Computiong sample statistics</span></span>
-<span><span class="va">statFUNs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span>,</span>
-<span>             <span class="st">"Q25"</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span><span class="op">)</span> <span class="op">{</span></span>
-<span>                 <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
-<span>             <span class="op">}</span>,</span>
-<span>             <span class="st">"Q75"</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">na.rm</span><span class="op">)</span> <span class="op">{</span></span>
-<span>                 <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, probs <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span>
-<span>             <span class="op">}</span>,</span>
-<span>             <span class="st">"standard deviation"</span> <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">)</span></span>
-<span><span class="va">chStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/channelSummaryStats.html" class="external-link">channelSummaryStats</a></span><span class="op">(</span><span class="va">BCRXL_fs_trans</span>,</span>
-<span>                               channels <span class="op">=</span> <span class="va">chLabels</span>, </span>
-<span>                               statFUNs <span class="op">=</span> <span class="va">statFUNs</span><span class="op">)</span></span></code></pre></div>
-<p>We save the newly created objects as .rds files. These files can be
-selected within the shiny app for visualization.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">mdsObj</span>, file <span class="op">=</span> <span class="st">"mdsObj.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">phenoData</span>, file <span class="op">=</span> <span class="st">"phenoData.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">chStats</span>, file <span class="op">=</span> <span class="st">"chStats.rds"</span><span class="op">)</span></span></code></pre></div>
@@ -195,13 +236,15 @@ selected within the shiny app for visualization.</p>
 <div class="section level2">
 <h2 id="visualization-of-the-mds-projection">Visualization of the MDS projection<a class="anchor" aria-label="anchor" href="#visualization-of-the-mds-projection"></a>
 </h2>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># MDSvis::run_app()</span></span></code></pre></div>
 <p>The <code>MDSvis</code> function <code>run_app</code> launches the
 interactive Shiny app and the three tabs window in the figure below gets
 opened. In the ‘Input files’ tab the objects can be loaded for
 visualization. The plots are then shown in the ‘View’ tab while the
 ‘General settings’ contains more technical plot settings controls. All
 the input files are expected to have .rds extension and at least a file
-containing MDS object has to be loaded. Optionally a phenodata file
+containing the MDS object has to be loaded. Optionally a phenodata file
 containing a phenodata dataframe and/or a file containing a list of
 statistics for biplot visualization can be loaded.</p>
 <p><img src="images/InputFiles.png"> We can select the previously
@@ -212,27 +255,37 @@ selected variables will be the only ones available in the drop-down list
 controls in the ‘View’ tab.</p>
 <p><img src="images/InputFiles2.png"> We can now open the ‘View’ tab
 to see the plot of the projection results. The controls on the side
-allow to choose the projection axes, colour, label, or shape the points
-according to phenodata variables, add biplot, show a <code>plotly</code>
-plot for interactive plot exploration or flip axes.</p>
+allow to choose the projection axes; colour, label, define facet or
+shape the points according to phenodata variables; add biplot; show a
+<code>plotly</code> plot for interactive plot exploration or flip
+axes.</p>
 <p><img src="images/View.png"> For example we can colour the points
-according to group_id and label the points according to patient_id as
-shown in the figure below.</p>
-<p><img src="images/View2.png"> We can also add a biplot created based
-on sample statistics by clicking on the biplot checkbox. The idea is to
-calculate the correlation of the sample statistics w.r.t. the axes of
-projection, so that these correlations can be represented on a
-correlation circle overlaid on the projection plot. The desired
-statistic can be selected from the drop down menu and it is possible to
-show only the arrows that respect a selected length threshold.<br>
+according to group_id, label the points according to sample_id, and use
+shapes according to batch_id, as shown in the figure below.</p>
+<p><img src="images/View2.png"> We can also defne facets according to
+the two batches, as in the figure below:</p>
+<p><img src="images/View3.png"></p>
+<p>We can also add a biplot created based on sample statistics by
+clicking on the biplot checkbox. The idea is to calculate the
+correlation of the sample statistics w.r.t. the axes of projection, so
+that these correlations can be represented on a correlation circle
+overlaid on the projection plot.</p>
+<p>The desired statistic can be selected from the drop down menu and it
+is possible to show only the arrows that respect a selected length
+threshold.<br>
 In the example below, the chosen statistic is the median while the arrow
 length threshold is 0.8.</p>
 <p><img src="images/ViewBiplot.png"></p>
-<p>Finally it is possible to display an interactive <code>plotly</code>
-plot below the regular one by selecting the corresponding checkbox. We
-can also add new <code>plotly</code> tooltips and highlight the
+<p>When some data are too large to be displayed as labels, one possible
+solution is to display an interactive <code>plotly</code> plot below the
+regular one by selecting the corresponding checkbox.<br>
+We can add new <code>plotly</code> tooltips and highlight the
 corresponding information for each point by hovering over them.</p>
 <p><img src="images/ViewPlotly.png"></p>
+<p>Finally, the obtained plots can be exported as a pdf file. The user
+can defined the corresponding plot title, pdf file name and plot size
+(with and height) to be used.</p>
+<p><img src="images/PDFExport.png"></p>
 </div>
 <div class="section level2">
 <h2 id="general-settings">General settings<a class="anchor" aria-label="anchor" href="#general-settings"></a>
@@ -270,85 +323,85 @@ corresponding labels and biplot arrows. For more details see the
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] MDSvis_0.1.4                CytoMDS_1.5.0              </span></span>
+<span><span class="co">##  [1] MDSvis_0.1.5                CytoMDS_1.5.0              </span></span>
 <span><span class="co">##  [3] HDCytoData_1.29.0           flowCore_2.21.0            </span></span>
 <span><span class="co">##  [5] SummarizedExperiment_1.39.0 Biobase_2.69.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.61.0        GenomeInfoDb_1.45.0        </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.61.0        GenomeInfoDb_1.45.3        </span></span>
 <span><span class="co">##  [9] IRanges_2.43.0              S4Vectors_0.47.0           </span></span>
 <span><span class="co">## [11] MatrixGenerics_1.21.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">## [13] ExperimentHub_2.99.0        AnnotationHub_3.99.0       </span></span>
+<span><span class="co">## [13] ExperimentHub_2.99.0        AnnotationHub_3.99.1       </span></span>
 <span><span class="co">## [15] BiocFileCache_2.99.0        dbplyr_2.5.0               </span></span>
-<span><span class="co">## [17] BiocGenerics_0.55.0         generics_0.1.3             </span></span>
+<span><span class="co">## [17] BiocGenerics_0.55.0         generics_0.1.4             </span></span>
 <span><span class="co">## [19] BiocStyle_2.37.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] splines_4.5.0           later_1.4.2             filelock_1.0.3         </span></span>
-<span><span class="co">##   [4] tibble_3.2.1            graph_1.87.0            XML_3.99-0.18          </span></span>
-<span><span class="co">##   [7] rpart_4.1.24            lifecycle_1.0.4         httr2_1.1.2            </span></span>
-<span><span class="co">##  [10] Rdpack_2.6.4            doParallel_1.0.17       flowWorkspace_4.21.0   </span></span>
-<span><span class="co">##  [13] lattice_0.22-7          MASS_7.3-65             backports_1.5.0        </span></span>
-<span><span class="co">##  [16] magrittr_2.0.3          Hmisc_5.2-3             plotly_4.10.4          </span></span>
-<span><span class="co">##  [19] sass_0.4.10             rmarkdown_2.29          jquerylib_0.1.4        </span></span>
-<span><span class="co">##  [22] yaml_2.3.10             plotrix_3.8-4           httpuv_1.6.16          </span></span>
-<span><span class="co">##  [25] DBI_1.2.3               minqa_1.2.8             RColorBrewer_1.1-3     </span></span>
-<span><span class="co">##  [28] abind_1.4-8             ggcyto_1.37.0           purrr_1.0.4            </span></span>
-<span><span class="co">##  [31] nnet_7.3-20             pracma_2.4.4            rappdirs_0.3.3         </span></span>
-<span><span class="co">##  [34] transport_0.15-4        GenomeInfoDbData_1.2.14 gdata_3.0.1            </span></span>
-<span><span class="co">##  [37] ellipse_0.5.0           pkgdown_2.1.2.9000      codetools_0.2-20       </span></span>
-<span><span class="co">##  [40] DelayedArray_0.35.1     tidyselect_1.2.1        shape_1.4.6.1          </span></span>
-<span><span class="co">##  [43] UCSC.utils_1.5.0        farver_2.1.2            lme4_1.1-37            </span></span>
-<span><span class="co">##  [46] base64enc_0.1-3         jsonlite_2.0.0          e1071_1.7-16           </span></span>
-<span><span class="co">##  [49] mitml_0.4-5             Formula_1.2-5           survival_3.8-3         </span></span>
-<span><span class="co">##  [52] iterators_1.0.14        systemfonts_1.2.2       foreach_1.5.2          </span></span>
-<span><span class="co">##  [55] tools_4.5.0             ragg_1.4.0              Rcpp_1.0.14            </span></span>
-<span><span class="co">##  [58] glue_1.8.0              gridExtra_2.3           pan_1.9                </span></span>
-<span><span class="co">##  [61] SparseArray_1.9.0       xfun_0.52               dplyr_1.1.4            </span></span>
-<span><span class="co">##  [64] withr_3.0.2             BiocManager_1.30.25     fastmap_1.2.0          </span></span>
-<span><span class="co">##  [67] boot_1.3-31             shinyjs_2.1.0           digest_0.6.37          </span></span>
-<span><span class="co">##  [70] R6_2.6.1                mime_0.13               mice_3.17.0            </span></span>
-<span><span class="co">##  [73] textshaping_1.0.0       colorspace_2.1-1        gtools_3.9.5           </span></span>
-<span><span class="co">##  [76] RSQLite_2.3.9           weights_1.0.4           tidyr_1.3.1            </span></span>
-<span><span class="co">##  [79] hexbin_1.28.5           data.table_1.17.0       class_7.3-23           </span></span>
-<span><span class="co">##  [82] httr_1.4.7              htmlwidgets_1.6.4       S4Arrays_1.9.0         </span></span>
-<span><span class="co">##  [85] pkgconfig_2.0.3         gtable_0.3.6            blob_1.2.4             </span></span>
-<span><span class="co">##  [88] RProtoBufLib_2.21.0     XVector_0.49.0          htmltools_0.5.8.1      </span></span>
-<span><span class="co">##  [91] bookdown_0.43           scales_1.4.0            png_0.1-8              </span></span>
-<span><span class="co">##  [94] wordcloud_2.6           reformulas_0.4.0        knitr_1.50             </span></span>
-<span><span class="co">##  [97] rstudioapi_0.17.1       checkmate_2.3.2         nlme_3.1-168           </span></span>
-<span><span class="co">## [100] curl_6.2.2              nloptr_2.2.1            proxy_0.4-27           </span></span>
-<span><span class="co">## [103] cachem_1.1.0            stringr_1.5.1           BiocVersion_3.22.0     </span></span>
-<span><span class="co">## [106] parallel_4.5.0          foreign_0.8-90          AnnotationDbi_1.71.0   </span></span>
-<span><span class="co">## [109] desc_1.4.3              pillar_1.10.2           grid_4.5.0             </span></span>
-<span><span class="co">## [112] vctrs_0.6.5             promises_1.3.2          cytolib_2.21.0         </span></span>
-<span><span class="co">## [115] jomo_2.7-6              xtable_1.8-4            cluster_2.1.8.1        </span></span>
-<span><span class="co">## [118] htmlTable_2.4.3         Rgraphviz_2.53.0        evaluate_1.0.3         </span></span>
-<span><span class="co">## [121] cli_3.6.5               compiler_4.5.0          rlang_1.1.6            </span></span>
-<span><span class="co">## [124] crayon_1.5.3            smacof_2.1-7            ncdfFlow_2.55.0        </span></span>
-<span><span class="co">## [127] plyr_1.8.9              fs_1.6.6                stringi_1.8.7          </span></span>
-<span><span class="co">## [130] viridisLite_0.4.2       BiocParallel_1.43.0     nnls_1.6               </span></span>
-<span><span class="co">## [133] Biostrings_2.77.0       lazyeval_0.2.2          glmnet_4.1-8           </span></span>
-<span><span class="co">## [136] Matrix_1.7-3            bit64_4.6.0-1           CytoPipeline_1.9.0     </span></span>
-<span><span class="co">## [139] ggplot2_3.5.2           KEGGREST_1.49.0         shiny_1.10.0           </span></span>
-<span><span class="co">## [142] rbibutils_2.3           broom_1.0.8             memoise_2.0.1          </span></span>
-<span><span class="co">## [145] bslib_0.9.0             bit_4.6.0               polynom_1.4-1</span></span></code></pre>
+<span><span class="co">##   [1] splines_4.5.0        later_1.4.2          filelock_1.0.3      </span></span>
+<span><span class="co">##   [4] tibble_3.2.1         graph_1.87.0         XML_3.99-0.18       </span></span>
+<span><span class="co">##   [7] rpart_4.1.24         lifecycle_1.0.4      httr2_1.1.2         </span></span>
+<span><span class="co">##  [10] Rdpack_2.6.4         doParallel_1.0.17    flowWorkspace_4.21.0</span></span>
+<span><span class="co">##  [13] lattice_0.22-7       MASS_7.3-65          backports_1.5.0     </span></span>
+<span><span class="co">##  [16] magrittr_2.0.3       Hmisc_5.2-3          plotly_4.10.4       </span></span>
+<span><span class="co">##  [19] sass_0.4.10          rmarkdown_2.29       jquerylib_0.1.4     </span></span>
+<span><span class="co">##  [22] yaml_2.3.10          plotrix_3.8-4        httpuv_1.6.16       </span></span>
+<span><span class="co">##  [25] DBI_1.2.3            minqa_1.2.8          RColorBrewer_1.1-3  </span></span>
+<span><span class="co">##  [28] abind_1.4-8          ggcyto_1.37.0        purrr_1.0.4         </span></span>
+<span><span class="co">##  [31] nnet_7.3-20          pracma_2.4.4         rappdirs_0.3.3      </span></span>
+<span><span class="co">##  [34] transport_0.15-4     gdata_3.0.1          ellipse_0.5.0       </span></span>
+<span><span class="co">##  [37] pkgdown_2.1.2.9000   codetools_0.2-20     DelayedArray_0.35.1 </span></span>
+<span><span class="co">##  [40] tidyselect_1.2.1     shape_1.4.6.1        UCSC.utils_1.5.0    </span></span>
+<span><span class="co">##  [43] farver_2.1.2         lme4_1.1-37          base64enc_0.1-3     </span></span>
+<span><span class="co">##  [46] jsonlite_2.0.0       e1071_1.7-16         mitml_0.4-5         </span></span>
+<span><span class="co">##  [49] Formula_1.2-5        survival_3.8-3       iterators_1.0.14    </span></span>
+<span><span class="co">##  [52] systemfonts_1.2.3    foreach_1.5.2        tools_4.5.0         </span></span>
+<span><span class="co">##  [55] ragg_1.4.0           Rcpp_1.0.14          glue_1.8.0          </span></span>
+<span><span class="co">##  [58] gridExtra_2.3        pan_1.9              SparseArray_1.9.0   </span></span>
+<span><span class="co">##  [61] xfun_0.52            dplyr_1.1.4          withr_3.0.2         </span></span>
+<span><span class="co">##  [64] BiocManager_1.30.25  fastmap_1.2.0        boot_1.3-31         </span></span>
+<span><span class="co">##  [67] shinyjs_2.1.0        digest_0.6.37        R6_2.6.1            </span></span>
+<span><span class="co">##  [70] mime_0.13            mice_3.17.0          textshaping_1.0.1   </span></span>
+<span><span class="co">##  [73] colorspace_2.1-1     gtools_3.9.5         RSQLite_2.3.11      </span></span>
+<span><span class="co">##  [76] weights_1.0.4        tidyr_1.3.1          hexbin_1.28.5       </span></span>
+<span><span class="co">##  [79] data.table_1.17.0    class_7.3-23         httr_1.4.7          </span></span>
+<span><span class="co">##  [82] htmlwidgets_1.6.4    S4Arrays_1.9.0       pkgconfig_2.0.3     </span></span>
+<span><span class="co">##  [85] gtable_0.3.6         blob_1.2.4           RProtoBufLib_2.21.0 </span></span>
+<span><span class="co">##  [88] XVector_0.49.0       htmltools_0.5.8.1    bookdown_0.43       </span></span>
+<span><span class="co">##  [91] scales_1.4.0         png_0.1-8            wordcloud_2.6       </span></span>
+<span><span class="co">##  [94] reformulas_0.4.1     knitr_1.50           rstudioapi_0.17.1   </span></span>
+<span><span class="co">##  [97] checkmate_2.3.2      nlme_3.1-168         curl_6.2.2          </span></span>
+<span><span class="co">## [100] nloptr_2.2.1         proxy_0.4-27         cachem_1.1.0        </span></span>
+<span><span class="co">## [103] stringr_1.5.1        BiocVersion_3.22.0   parallel_4.5.0      </span></span>
+<span><span class="co">## [106] foreign_0.8-90       AnnotationDbi_1.71.0 desc_1.4.3          </span></span>
+<span><span class="co">## [109] pillar_1.10.2        grid_4.5.0           vctrs_0.6.5         </span></span>
+<span><span class="co">## [112] promises_1.3.2       cytolib_2.21.0       jomo_2.7-6          </span></span>
+<span><span class="co">## [115] xtable_1.8-4         cluster_2.1.8.1      htmlTable_2.4.3     </span></span>
+<span><span class="co">## [118] Rgraphviz_2.53.0     evaluate_1.0.3       cli_3.6.5           </span></span>
+<span><span class="co">## [121] compiler_4.5.0       rlang_1.1.6          crayon_1.5.3        </span></span>
+<span><span class="co">## [124] smacof_2.1-7         ncdfFlow_2.55.0      plyr_1.8.9          </span></span>
+<span><span class="co">## [127] fs_1.6.6             stringi_1.8.7        viridisLite_0.4.2   </span></span>
+<span><span class="co">## [130] BiocParallel_1.43.0  nnls_1.6             Biostrings_2.77.0   </span></span>
+<span><span class="co">## [133] lazyeval_0.2.2       glmnet_4.1-8         Matrix_1.7-3        </span></span>
+<span><span class="co">## [136] bit64_4.6.0-1        CytoPipeline_1.9.0   ggplot2_3.5.2       </span></span>
+<span><span class="co">## [139] KEGGREST_1.49.0      shiny_1.10.0         rbibutils_2.3       </span></span>
+<span><span class="co">## [142] broom_1.0.8          memoise_2.0.1        bslib_0.9.0         </span></span>
+<span><span class="co">## [145] bit_4.6.0            polynom_1.4-1</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Bodenmiller2012-re" class="csl-entry">
-Bodenmiller, Bernd, Eli R Zunder, Rachel Finck, Tiffany J Chen, Erica S
-Savig, Robert V Bruggner, Erin F Simonds, et al. 2012.
-<span>“Multiplexed Mass Cytometry Profiling of Cellular States Perturbed
-by Small-Molecule Regulators.”</span> <em>Nat. Biotechnol.</em> 30 (9):
-858–67.
+<div id="ref-Hauchamps2025-zm" class="csl-entry">
+Hauchamps, Philippe, Simon Delandre, Stéphane T. Temmerman, Dan Lin, and
+Laurent Gatto. 2025. <span>“Visual Quality Control with CytoMDS, a
+Bioconductor Package for Low Dimensional Representation of Cytometry
+Sample Distances.”</span> <em>Cytometry Part A</em> 107 (3): 177–86.
+https://doi.org/<a href="https://doi.org/10.1002/cyto.a.24921" class="external-link">https://doi.org/10.1002/cyto.a.24921</a>.
 </div>
-<div id="ref-Hauchamps2024-nn" class="csl-entry">
-Hauchamps, Philippe, Simon Delandre, Stephane T Temmerman, Dan Lin, and
-Laurent Gatto. 2024. <span>“Visual Quality Control with
-<span>CytoMDS</span>, a Bioconductor Package for Low Dimensional
-Representation of Cytometry Sample Distances.”</span> <em>bioRxiv</em>,
-July, 2024.07.01.601465.
+<div id="ref-Krieg2018-zs" class="csl-entry">
+Krieg, Carsten, Malgorzata Nowicka, Silvia Guglietta, Sabrina Schindler,
+Felix J Hartmann, Lukas M Weber, Reinhard Dummer, Mark D Robinson,
+Mitchell P Levesque, and Burkhard Becher. 2018. <span>“High-Dimensional
+Single-Cell Analysis Predicts Response to <span class="nocase">anti-PD-1</span> Immunotherapy.”</span> <em>Nat.
+Med.</em> 24 (2): 144–53.
 </div>
 <div id="ref-Weber2019-qp" class="csl-entry">
 Weber, Lukas M, and Charlotte Soneson. 2019.
