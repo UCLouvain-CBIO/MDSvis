@@ -46,89 +46,143 @@ library(MDSvis)
 # Introduction
 
 The `MDSvis` package implements visualization of Multi Dimensional Scaling (MDS)
-objects representing a low dimensional projection of cytometry samples.
+objects representing a low dimensional projection of sample distances.
 Such objects can be obtained using the functionalities implemented in the
-`CytoMDS` package (@Hauchamps2024-nn). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html). 
-The visualization is realised via a Shiny app that allows 
+`CytoMDS` package (@Hauchamps2025-zm). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).  
+
+The visualization is done via a Shiny app that allows 
 the user to interactively customise the plots depending on a series of input
 parameters (see the `CytoMDS::ggplotSampleMDS()` function for more details 
-on the parameters).
+on the parameters).  
 
-# Illustrative data
+**IMPORTANT**: the example provided in the current vignette uses cytometry data. 
+As a result, the distance matrix, which contains the pairwise sample distances, 
+and serves as input to the MDS projection, is here 
+calculated from cytometry data samples using the `CytoMDS` package. 
+However, the input  MDS object can also be calculated from any distance matrix, 
+where the units of interest are not necessarily cytometry samples. 
+
+# Illustrative dataset
 
 We load an illustrative mass cytometry (*CyTOF*) dataset from
-[@Bodenmiller2012-re], and provided in the Bioconductor *HDCytoData* data
-package (@Weber2019-qp). For more information see [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).
+[@Krieg2018-zs], accessible from the Bioconductor *HDCytoData* data
+package (@Weber2019-qp).   
+
+*Krieg_Anti_PD_1* was used to characterize immune cell subsets in 
+peripheral blood from melanoma skin cancer patients treated 
+with anti-PD-1 immunotherapy.   
+
+This study found that the frequency of CD14+CD16-HLA-DRhi monocytes 
+in baseline samples (taken from patients prior to treatment) was a strong 
+predictor of survival in response to immunotherapy treatment.  
+
+Notably, this dataset contains a strong batch effect, 
+due to sample acquisition on two different days (@Krieg2018-zs).
 
 ```{r loadDataSet}
-BCRXL_fs <- HDCytoData::Bodenmiller_BCR_XL_flowSet()
-BCRXL_fs
+Krieg_fs <- Krieg_Anti_PD_1_flowSet()
+Krieg_fs
 ```
 
-# Computation of input files.
+# Computation of input files
 
-Next we compute the phenodata dataframe with experimental design information,
-the MDS projection of the dataset as well as a list of sample statistics.
-For a detailed description of each step see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).
+Next we build a *phenodata* dataframe with experimental design information, 
+which are here found in the cytometry data structures.
 
 ```{r convertPhenoData}
-phenoData <- flowCore::pData(BCRXL_fs)
-additionalPhenoData <- 
-    keyword(BCRXL_fs[[1]], "EXPERIMENT_INFO")$EXPERIMENT_INFO
-phenoData <- cbind(phenoData, additionalPhenoData)
+# update phenoData structure
 
-flowCore::pData(BCRXL_fs) <- phenoData
+chLabels <- 
+    keyword(Krieg_fs[[1]], "MARKER_INFO")$MARKER_INFO$channel_name
+chMarkers <- 
+    keyword(Krieg_fs[[1]], "MARKER_INFO")$MARKER_INFO$marker_name
+marker_class <- 
+    keyword(Krieg_fs[[1]], "MARKER_INFO")$MARKER_INFO$marker_class
+
+chLabels <- chLabels[marker_class != "none"]
+chMarkers <- chMarkers[marker_class != "none"]
+# marker_class all equal to "type", 24 markers are left
+
+phenoData <- flowCore::pData(Krieg_fs)
+additionalPhenoData <- 
+    keyword(Krieg_fs[[1]], "EXPERIMENT_INFO")$EXPERIMENT_INFO
+phenoData <- cbind(phenoData, additionalPhenoData)
+    
+flowCore::pData(Krieg_fs) <- phenoData
 ```
 
-```{r MDSCalc}
-# Select markers
-markerInfo <- keyword(BCRXL_fs[[1]], "MARKER_INFO")$MARKER_INFO
-chClass <- markerInfo$marker_class
+Next, we scale-transform the mass cytometry data and calculate the pairwise 
+distance matrix.
 
-chLabels <- markerInfo$channel_name[chClass != "none"]
-(chMarkers <- markerInfo$marker_name[chClass != "none"])
-
-# arcsinh() transformation
+```{r distCalc}
+# transform flow set (arcsinh(cofactor = 5))
 trans <- arcsinhTransform(
     transformationId="ArcsinhTransform", 
     a = 0, 
     b = 1/5, 
     c = 0)
 
-# Scale transforming the raw data
-BCRXL_fs_trans <- transform(
-    BCRXL_fs,
+# Applying arcsinh() transformation
+Krieg_fs_trans <- transform(
+    Krieg_fs,
     transformList(chLabels, trans))
 
-# Calculating distances between samples
+# Calculating Sample distances
 pwDist <- pairwiseEMDDist(
-    BCRXL_fs_trans,
+    Krieg_fs_trans,
     channels = chMarkers,
     verbose = FALSE
 )
+```
 
-# Computing the MDS projection
-mdsObj <- computeMetricMDS(pwDist, seed = 0)
+From the distance matrix, we can now calculate the MDS projection. This is also 
+done using the `CytoMDS` package.
+
+```{r MDSCalc}
+mdsObj <- computeMetricMDS(
+    pwDist,
+    seed = 0)
+
 show(mdsObj)
 ```
 
+Optionally, for the use of biplots as an interpretation tool, sample specific 
+statistics can be provided by the user. Here we calculate standard univariate 
+statistics from each variable of the multidimensional distribution (again using 
+the `CytoMDS` package). 
+
 ```{r statsCalc}
-# Computiong sample statistics
-statFUNs = c("median" = stats::median,
-             "Q25" = function(x, na.rm) {
-                 stats::quantile(x, probs = 0.25)
-             },
-             "Q75" = function(x, na.rm) {
-                 stats::quantile(x, probs = 0.75)
-             },
-             "standard deviation" = stats::sd)
-chStats <- channelSummaryStats(BCRXL_fs_trans,
-                               channels = chLabels, 
-                               statFUNs = statFUNs)
+# Computing sample statistics
+
+# statFUNs = c("median" = stats::median,
+#              "Q25" = function(x, na.rm) {
+#                  stats::quantile(x, probs = 0.25)
+#              },
+#              "Q75" = function(x, na.rm) {
+#                  stats::quantile(x, probs = 0.75)
+#              },
+#              "standard deviation" = stats::sd)
+# chStats <- channelSummaryStats(BCRXL_fs_trans,
+#                                channels = chLabels, 
+#                                statFUNs = statFUNs)
+
+statFUNs <- c("median" = stats::median,
+              "std-dev" = stats::sd,
+              "mean" = base::mean,
+              "Q25" = function(x, na.rm) 
+                  stats::quantile(x, probs = 0.25, na.rm = na.rm),
+              "Q75" = function(x, na.rm) 
+                  stats::quantile(x, probs = 0.75, na.rm = na.rm))
+
+chStats <- CytoMDS::channelSummaryStats(
+    Krieg_fs_trans,
+    channels = chMarkers,
+    statFUNs = statFUNs)
+
 ```
 
-We save the newly created objects as .rds files. These files can be selected
-within the shiny app for visualization.
+We save the newly created objects as .rds files. These files can now 
+be selected within the shiny app for visualization.
 
 ```{r}
 saveRDS(mdsObj, file = "mdsObj.rds")
@@ -137,13 +191,17 @@ saveRDS(chStats, file = "chStats.rds")
 ```
 
 # Visualization of the MDS projection
+```{r}
+# MDSvis::run_app()
+```
+
 
 The `MDSvis` function `run_app` launches the interactive Shiny app and the
 three tabs window in the figure below gets opened. In the
 'Input files' tab the objects can be loaded for visualization. The plots
 are then shown in the 'View' tab while the 'General settings' contains more
 technical plot settings controls. All the input files are expected to
-have .rds extension and at least a file containing MDS object has
+have .rds extension and at least a file containing the MDS object has
 to be loaded. Optionally a phenodata file containing a phenodata dataframe
 and/or a file containing a list of statistics for biplot visualization
 can be loaded.
@@ -157,19 +215,25 @@ list controls in the 'View' tab.
 
 ![](images/InputFiles2.png)
 We can now open the 'View' tab to see the plot of the projection results.
-The controls on the side allow to choose the projection axes, colour, label,
-or shape the points according to phenodata variables, add biplot,
+The controls on the side allow to choose the projection axes; colour, label, 
+define facet or shape the points according to phenodata variables; add biplot;
 show a `plotly` plot for interactive plot exploration or flip axes. 
 
 ![](images/View.png)
-For example we can colour the points according to group_id and label the points
-according to patient_id as shown in the figure below.
+For example we can colour the points according to group_id, 
+label the points according to sample_id, 
+and use shapes according to batch_id, as shown in the figure below.
 
 ![](images/View2.png)
+We can also defne facets according to the two batches, as in the figure below:  
+
+![](images/View3.png)
+
 We can also add a biplot created based on sample statistics by clicking on the
 biplot checkbox. The idea is to calculate the correlation of the sample
 statistics w.r.t. the axes of projection, so that these correlations can be
-represented on a correlation circle overlaid on the projection plot.
+represented on a correlation circle overlaid on the projection plot.  
+
 The desired statistic can be selected from the drop down menu and
 it is possible to show only the arrows that respect a selected length threshold.  
 In the example below, the chosen statistic is the median while the arrow length
@@ -177,12 +241,19 @@ threshold is 0.8.
 
 ![](images/ViewBiplot.png)
 
-Finally it is possible to display an interactive `plotly` plot below the regular
-one by selecting the corresponding checkbox. We can also add new `plotly` 
-tooltips and highlight the corresponding information for each point 
-by hovering over them.
+When some data are too large to be displayed as labels, 
+one possible solution is to display an interactive `plotly` plot 
+below the regular one by selecting the corresponding checkbox.   
+We can add new `plotly` tooltips and highlight the corresponding information 
+for each point by hovering over them.
 
 ![](images/ViewPlotly.png)
+
+Finally, the obtained plots can be exported as a pdf file. 
+The user can defined the corresponding plot title, pdf file name 
+and plot size (with and height) to be used. 
+
+![](images/PDFExport.png)
 
 # General settings
 

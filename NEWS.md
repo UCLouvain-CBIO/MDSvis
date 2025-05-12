@@ -1,5 +1,10 @@
 ## MDSvis 0.1
 
+### MDSvis 0.1.5
+
+- amended citation.
+- updated main vignette, now using Krieg dataset.
+
 ### MDSvis 0.1.4
 
 - Added expert functionality to allow the choice of the image size.

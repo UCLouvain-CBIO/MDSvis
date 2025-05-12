@@ -1,38 +1,37 @@
-@ARTICLE{Bodenmiller2012-re,
-  title    = "Multiplexed mass cytometry profiling of cellular states perturbed
-              by small-molecule regulators",
-  author   = "Bodenmiller, Bernd and Zunder, Eli R and Finck, Rachel and Chen,
-              Tiffany J and Savig, Erica S and Bruggner, Robert V and Simonds,
-              Erin F and Bendall, Sean C and Sachs, Karen and Krutzik, Peter O
-              and Nolan, Garry P",
-  abstract = "Mass cytometry facilitates high-dimensional, quantitative
-              analysis of the effects of bioactive molecules on human samples
-              at single-cell resolution, but instruments process only one
-              sample at a time. Here we describe mass-tag cellular barcoding
-              (MCB), which increases mass cytometry throughput by using n metal
-              ion tags to multiplex up to 2n samples. We used seven tags to
-              multiplex an entire 96-well plate, and applied MCB to
-              characterize human peripheral blood mononuclear cell (PBMC)
-              signaling dynamics and cell-to-cell communication, signaling
-              variability between PBMCs from eight human donors, and the
-              effects of 27 inhibitors on this system. For each inhibitor, we
-              measured 14 phosphorylation sites in 14 PBMC types at 96
-              conditions, resulting in 18,816 quantified phosphorylation levels
-              from each multiplexed sample. This high-dimensional,
-              systems-level inquiry allowed analysis across cell-type and
-              signaling space, reclassified inhibitors and revealed off-target
-              effects. High-content, high-throughput screening with MCB should
-              be useful for drug discovery, preclinical testing and mechanistic
-              investigation of human disease.",
-  journal  = "Nat. Biotechnol.",
-  volume   =  30,
-  number   =  9,
-  pages    = "858--867",
-  month    =  sep,
-  year     =  2012,
+@ARTICLE{Krieg2018-zs,
+  title    = "High-dimensional single-cell analysis predicts response to
+              {anti-PD-1} immunotherapy",
+  author   = "Krieg, Carsten and Nowicka, Malgorzata and Guglietta, Silvia and
+              Schindler, Sabrina and Hartmann, Felix J and Weber, Lukas M and
+              Dummer, Reinhard and Robinson, Mark D and Levesque, Mitchell P
+              and Becher, Burkhard",
+  abstract = "Immune-checkpoint blockade has revolutionized cancer therapy. In
+              particular, inhibition of programmed cell death protein 1 (PD-1)
+              has been found to be effective for the treatment of metastatic
+              melanoma and other cancers. Despite a dramatic increase in
+              progression-free survival, a large proportion of patients do not
+              show durable responses. Therefore, predictive biomarkers of a
+              clinical response are urgently needed. Here we used
+              high-dimensional single-cell mass cytometry and a bioinformatics
+              pipeline for the in-depth characterization of the immune cell
+              subsets in the peripheral blood of patients with stage IV
+              melanoma before and after 12 weeks of anti-PD-1 immunotherapy.
+              During therapy, we observed a clear response to immunotherapy in
+              the T cell compartment. However, before commencing therapy, a
+              strong predictor of progression-free and overall survival in
+              response to anti-PD-1 immunotherapy was the frequency of
+              CD14+CD16-HLA-DRhi monocytes. We confirmed this by conventional
+              flow cytometry in an independent, blinded validation cohort, and
+              we propose that the frequency of monocytes in PBMCs may serve in
+              clinical decision support.",
+  journal  = "Nat. Med.",
+  volume   =  24,
+  number   =  2,
+  pages    = "144--153",
+  month    =  feb,
+  year     =  2018,
   language = "en"
 }
-
 
 @ARTICLE{Weber2019-qp,
   title    = "{HDCytoData}: Collection of high-dimensional cytometry benchmark
@@ -66,41 +65,16 @@
   language = "en"
 }
 
-@ARTICLE{Hauchamps2024-nn,
-  title    = "Visual quality control with {CytoMDS}, a Bioconductor package for
-              low dimensional representation of cytometry sample distances",
-  author   = "Hauchamps, Philippe and Delandre, Simon and Temmerman, Stephane T
-              and Lin, Dan and Gatto, Laurent",
-  journal  = "bioRxiv",
-  pages    = "2024.07.01.601465",
-  abstract = "Quality Control (QC) of samples is an essential preliminary step
-              in cytometry data analysis. Notably, identification of potential
-              batch effects and outlying samples is paramount, to avoid
-              mistaking these effects for true biological signal in downstream
-              analyses. However, this task can prove to be delicate and tedious,
-              especially for datasets with many samples. Here, we present
-              CytoMDS, a Bioconductor package implementing a dedicated method
-              for low dimensional representation of cytometry samples composed
-              of marker expressions for up to millions of single cells. This
-              method allows a global representation of all samples of a study,
-              with one single point per sample, in such a way that projected
-              distances can be visually interpreted. It uses Earth Mover's
-              Distance for assessing dissimilarities between multi-dimensional
-              distributions of marker expression, and Multi Dimensional Scaling
-              for low dimensional projection of distances. Some additional
-              visualization tools, both for projection quality diagnosis and for
-              user interpretation of the projection coordinates, are also
-              provided in the package. We demonstrate the strengths and
-              advantages of CytoMDS for QC of cytometry data on three real
-              biological datasets, revealing the presence of low quality
-              samples, batch effects and biological signal between sample
-              groups. \#\#\# Competing Interest Statement S.D., S.T., and D.L.
-              are employees of the GSK group of companies and report ownership
-              of GSK shares. S.T. is listed as inventor on patents owned by the
-              GSK group of companies. P.H. is a student at the de Duve Institute
-              (UCLouvain) and participates in a post graduate studentship
-              program at GSK. L.G. reports no competing interest.",
-  month    =  jul,
-  year     =  2024,
-  language = "en"
+@article{Hauchamps2025-zm,
+author = {Hauchamps, Philippe and Delandre, Simon and Temmerman, Stéphane T. and Lin, Dan and Gatto, Laurent},
+title = {Visual Quality Control With CytoMDS, a Bioconductor Package for Low Dimensional Representation of Cytometry Sample Distances},
+journal = {Cytometry Part A},
+volume = {107},
+number = {3},
+pages = {177-186},
+doi = {https://doi.org/10.1002/cyto.a.24921},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/cyto.a.24921},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/cyto.a.24921},
+abstract = {ABSTRACT Quality Control (QC) of samples is an essential preliminary step in cytometry data analysis. Notably, the identification of potential batch effects and outlying samples is paramount to avoid mistaking these effects for true biological signals in downstream analyses. However, this task can prove to be delicate and tedious, especially for datasets with dozens of samples. Here, we present CytoMDS, a Bioconductor package implementing a dedicated method for low-dimensional representation of cytometry samples composed of marker expressions for up to millions of single cells. This method allows a global representation of all samples of a study, with one single point per sample, in such a way that projected distances can be visually interpreted. CytoMDS uses Earth Mover's Distance for assessing dissimilarities between multi-dimensional distributions of marker expression and Multi-Dimensional Scaling for low-dimensional projection of distances. Some additional visualization tools, both for projection quality diagnosis and for user interpretation of the projection coordinates, are also provided in the package. We demonstrate the strengths and advantages of CytoMDS for QC of cytometry data on three real biological datasets, revealing the presence of low-quality samples, batch effects, and biological signal between sample groups.},
+year = {2025}
 }
