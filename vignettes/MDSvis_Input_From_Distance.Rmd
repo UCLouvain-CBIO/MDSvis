@@ -61,7 +61,8 @@ corresponding to a known anuran cytolytic peptide.
 
 Distance between these peptides can be obtained, by aligning them and computing 
 an appropriate dissimilarity metric between the corresponding amino acid 
-sequences. For details, see the [fsap dataset methods section](#fsap_methods)  below.   
+sequences. For details, see the [fsap dataset methods section](#fsap_methods) 
+below.   
 
 On top of the peptide distances, peptide properties have also been collected:  
 - Uniprot accession number  
@@ -196,14 +197,11 @@ The following parameters were calculated for each mature FSAP sequence:
 7)	cysteine content (%)
 8)	ratio of lysines to arginines (e.g., changes in this ratio in α-helical peptides can affect the hydrophobicity required for membrane perturbation)
 
-
-
-
 # Acknowledgement
 We would like to thank Shabnam Zaman, from the Amphibian Evolution Lab of the 
 Vrije Universiteit Brussel (VUB), for providing us with the `fsap` dataset, as
-well as the associated Methods section. 
-
+well as the corresponding [fsap dataset methods section](#fsap_methods) 
+in the current vignette. 
 
 # Session information {-}
 
