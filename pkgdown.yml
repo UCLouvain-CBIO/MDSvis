@@ -2,8 +2,9 @@ pandoc: 3.6.4
 pkgdown: 2.1.2.9000
 pkgdown_sha: 99457e7fa7f36696ae743b06aca59c0fdd97a7d6
 articles:
+  MDSvis_Input_From_Distance: MDSvis_Input_From_Distance.html
   MDSvis: MDSvis.html
-last_built: 2025-05-12T15:14Z
+last_built: 2025-05-14T12:16Z
 urls:
   reference: https://uclouvain-cbio.github.io/MDSvis/reference
   article: https://uclouvain-cbio.github.io/MDSvis/articles
