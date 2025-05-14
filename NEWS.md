@@ -1,5 +1,9 @@
 ## MDSvis 0.1
 
+### MDSvis 0.1.6
+
+- added the `MDSvis_Input_From_Distance` vignette with *fsap* dataset
+
 ### MDSvis 0.1.5
 
 - amended citation.

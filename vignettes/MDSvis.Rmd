@@ -5,9 +5,10 @@ author:
     - name: Philippe Hauchamps
 package: MDSvis
 abstract: >
- This vignette describes the functionality implemented in the `MDSvis`
- package. `MDSvis` provides support for visualization of Multi Dimensional
- Scaling (MDS) objects.  
+ This vignette is the main one describing the functionality implemented 
+ in the `MDSvis` package.  
+ `MDSvis` conatins a shiny application enabling interactive visualization of 
+ Multi Dimensional Scaling (MDS) objects.  
  This vignette is distributed under a CC BY-SA 4.0 license.
 output:
   BiocStyle::html_document:
@@ -39,7 +40,7 @@ We now load the packages needed in the current vignette:
 
 ```{r rlibs, results=FALSE}
 suppressPackageStartupMessages(library(HDCytoData))
-library(CytoMDS)
+suppressPackageStartupMessages(library(CytoMDS))
 library(MDSvis)
 ```
 
@@ -47,8 +48,8 @@ library(MDSvis)
 
 The `MDSvis` package implements visualization of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of sample distances.
-Such objects can be obtained using the functionalities implemented in the
-`CytoMDS` package (@Hauchamps2025-zm). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).  
+Such objects can be obtained using features implemented in the `CytoMDS` 
+package (@Hauchamps2025-zm). For more information see the [`CytoMDS` vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/CytoMDS/inst/doc/CytoMDS.html).  
 
 The visualization is done via a Shiny app that allows 
 the user to interactively customise the plots depending on a series of input
@@ -60,7 +61,8 @@ As a result, the distance matrix, which contains the pairwise sample distances,
 and serves as input to the MDS projection, is here 
 calculated from cytometry data samples using the `CytoMDS` package. 
 However, the input  MDS object can also be calculated from any distance matrix, 
-where the units of interest are not necessarily cytometry samples. 
+where the units of interest are not necessarily cytometry samples. This is 
+demonstrated in this additional [vignette](MDSvis_Input_From_Distance.html).
 
 # Illustrative dataset
 
@@ -181,13 +183,14 @@ chStats <- CytoMDS::channelSummaryStats(
 
 ```
 
-We save the newly created objects as .rds files. These files can now 
-be selected within the shiny app for visualization.
+We save the newly created objects as .rds files.  
+(Uncomment the corresponding code to do it).  
+These files can now be selected within the shiny app for visualization.  
 
 ```{r}
-saveRDS(mdsObj, file = "mdsObj.rds")
-saveRDS(phenoData, file = "phenoData.rds")
-saveRDS(chStats, file = "chStats.rds")
+#saveRDS(mdsObj, file = "Krieg_mdsObj.rds")
+#saveRDS(phenoData, file = "Krieg_phenoData.rds")
+#saveRDS(chStats, file = "Krieg_chStats.rds")
 ```
 
 # Visualization of the MDS projection

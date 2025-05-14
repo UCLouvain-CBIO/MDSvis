@@ -1,0 +1,213 @@
+---
+title: "Preparing `MDSvis` input objects from a distance matrix and sample properties"
+author:
+    - name: Philippe Hauchamps
+package: MDSvis
+abstract: >
+ This vignette shows an example of building input objects for using `MDSvis`.  
+ Here the starting point is: (1) a pairwise distance matrix, where each row 
+ and each column correspond to one sample, and (2) additional sample specific 
+ properties.  
+ This vignette is distributed under a CC BY-SA 4.0 license.
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Preparing input objects from a distance matrix and sample properties}
+  %\VignetteEngine{knitr::rmarkdown}
+  %%\VignetteKeywords{multidimensionalScaling, Software, Visualization}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r style, echo = FALSE, results = 'hide'}
+BiocStyle::markdown()
+```
+
+# Introduction
+
+This short vignette is complementary to the [main](MDSvis.html) `MDSvis` package 
+vignette, which provides an overview of `MDSvis` Shiny application (app) 
+features.  
+
+Here we focus on 'how to' create some input objects, which need to be provided 
+to the Shiny app. In this vignette, we show that we can take advantage of the 
+*Multi Dimensional Scaling (MDS)* interactive visualisations, 
+starting from any distance matrix, and some sample specific properties.  
+
+# Installation and loading dependencies
+
+To install this package, start R and enter (un-commented):
+
+```{r}
+# if (!require("devtools", quietly = TRUE))
+#     install.packages("devtools")
+# 
+# devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')
+```
+
+We now load the packages needed in the current vignette:
+
+```{r rlibs, results=FALSE}
+suppressPackageStartupMessages(library(CytoMDS))
+library(MDSvis)
+```
+
+
+# Dataset
+
+For this vignette, we use the *frog skin active peptide (fsap)* dataset. 
+It consists of 226 samples, each sample representing here a amino acid sequence 
+corresponding to a known anuran cytolytic peptide.  
+
+Distance between these peptides can be obtained, by aligning them and computing 
+an appropriate dissimilarity metric between the corresponding amino acid 
+sequences. For details, see the [fsap dataset methods section](#fsap_methods)  below.   
+
+On top of the peptide distances, peptide properties have also been collected:  
+- Uniprot accession number  
+- family, genius, species  
+- some physicochemical parameters  
+
+In the following code, we import the two text files of the dataset:  
+- the distance matrix file (imported as a R `matrix`)  
+- the sample properties file (imported as a R `data.frame`)  
+
+```{r loadDataSet}
+# inputs
+inputDir <- system.file("extdata", package = "MDSvis")
+distPath <- file.path(inputDir, "fsap_mature_226_distances.txt")
+propPath <- file.path(inputDir, "fsap_mature_226_properties.txt")
+
+# reading distance matrix from disk
+distData <- read.delim(distPath)
+rownames(distData) <- distData$X
+distData$X <- NULL
+distMat <- as.matrix(distData)
+
+# reading properties
+propDF <- read.delim(propPath)
+```
+
+# Generation of input files for the Shiny application
+
+We still need to pre-process the data properties and split them into two parts:
+- the variables that will be used to annotate the plots, or associate colour,
+shape, faceting etc. These variable are mostly factor variables. We extract 
+them into the *phenoData* object - which needs to be a `data.frame`.
+- the continuous variables that can be exploited as sample *statistics* in the 
+bi-plots. These need to be included in a list of statistics object.
+
+```{r convertPhenoData}
+# split properties between factors and continuous variables (stats)
+
+statMat <- as.matrix(propDF[, -1])
+statList <- list(quant_properties = statMat)
+
+propDF <- propDF[, 1, drop = FALSE]
+propDF$family <- factor(substr(propDF$Sequence_Name, start = 1, stop = 3))
+propDF$genus <- factor(substr(propDF$Sequence_Name, start = 1, stop = 6))
+propDF$species <- factor(substr(propDF$Sequence_Name, start = 1, stop = 8))
+```
+
+Below are frequency tables for peptides belonging to the different families, genius and species.
+
+```{r tables}
+table(propDF$family)
+table(propDF$genus)
+table(propDF$species)
+```
+
+From the distance matrix, we now need to calculate the MDS projection object, 
+which will be used as main input in the Shiny app.  
+This is done using the `CytoMDS` package. Here we set the number of projection 
+dimensions to 10. See the documentation of `CytoMDS::computeMetricMDS()` for 
+details on other possible options.
+
+```{r MDSCalc}
+MDSObj <- CytoMDS::computeMetricMDS(pwDist = distMat, 
+                                    nDim = 10)
+
+show(MDSObj)
+```
+
+Finally, we can save the newly created objects as .rds files on disk.  
+(Uncomment the corresponding code to do it).  
+These files can now be selected within the shiny app for visualization.  
+
+```{r}
+# outputs (for shiny app)
+MDSRDSPath <- "fsap_mature_MDS.rds"
+statRDSPath <- "fsap_mature_stats.rds"
+propRDSPath <- "fsap_mature_props.rds"
+
+# saving objects 
+#saveRDS(MDSObj, file = MDSRDSPath)
+#saveRDS(statList, file = statRDSPath)
+#saveRDS(propDF, file = propRDSPath)
+```
+
+# Visualization of the MDS projection
+
+The `MDSvis` function `run_app` launches the interactive Shiny app. 
+From here, you can take a look at the [main](MDSvis.html) `MDSvis` vignette 
+for an overview of the Shiny app features.   
+
+```{r}
+#MDSvis::run_app()
+```
+
+  
+Here below is a screen shot from the Shiny app, 
+displaying a view of the MDS projection of the `fsap` dataset.
+
+![](images/fsap_view.png)
+
+
+# fsap dataset methods
+<a name="fsap_methods">
+</a>
+
+
+## Data mining and assembly of a reference dataset  
+
+For the construction of an initial dataset of known anuran cytolytic peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. This superfamily has been shown to have evolved at the latest in an early ancestor of the Neobatrachia (Vanhoye et al. 2003), a clade including almost 95% of anuran species (Frost 2024). A total of 226 precursor protein sequences representing FSAP was selected in order to encompass maximal phylogenetic diversity and sequence diversity. (Note: the superfamily Ranoidea contains the families Ranidae and Microhylidae. These FSAP have been differentiated using the prefixes RAN_and MIC_. All FSAP from Hyloidea include the prefix HYL_. Each prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, as well as its Uniprot accession.)  
+
+## Phylogenetic reconstruction of the FSAP superfamily  
+
+Multiple sequence alignment of a dataset containing 225 FSAP precursor protein sequences (52 from Hyloidea and 183 from Ranoidea) was carried out using the E-INS-I algorithm in MAFFT v.7 (Katoh and Standley 2013) and manually curated to remove large gaps and poorly aligned regions in Mesquite v.3.81 (Maddison 2023). Reconstruction of FSAP phylogeny involved the use of two different methods: Bayesian phylogenetic inference and maximum likelihood (ML) estimation, as implemented in MrBayes v.3.2.7. (Ronquist et al. 2012) and RAxML (Stamatakis 2014), respectively. Results of the two approaches were compared to verify the absence of major conflicts related to the choice of method and to obtain a single consensus evolutionary synthesis.  
+
+## Identification of mature FSAP sequences  
+
+Comparison of unannotated or newly predicted precursor proteins with previously characterised FSAP allowed us to predict the position and predicted cleavage sites of mature peptide sequences. The most common cleavage recognition motifs for FSAP are as follows: -RXXR-, -KR-, -RR-. A total of 226 mature FSAP were thus identified and used for subsequent analyses (the discrepancy in total number of sequences arises from the fact that multiple cytolytic peptides may be cleaved from the same precursor protein; in this dataset, the relevant sequences are differentiated by a numbered suffix, and pertain to HYL_LIfa_B5LUQ3_1 and HYL_LIfa_B5LUQ3_2).  
+
+## Pairwise alignments using primary structure and hydrophobicity  
+
+Pairwise alignments of mature FSAP sequences were generated with AlignMe 1.2 (Khafizov et al. 2010; Stamm et al. 2013) using a combined scale that incorporates the Hessa, White and von Heinje hydropathy scale (HWvH; weight: 2.6) (Hessa et al. 2007) and the VTML substitution matrix (weight: 0.5), according to the developer’s recommendations. Gap penalties were similarly and were set as follows: below threshold gap opening penalty: 18.0, below threshold gap extension penalty: 1.3, above threshold gap opening penalty: 11.0, above threshold gap extension penalty 4.4: thresholds for penalties: 0; termini gap opening penalty 13.1; termini gap extension penalty: 0.9 (Stamm et al. 2014). Given the short lengths of mature FSAP sequences, window size was set to 0 to prevent a smoothing effect. Absolute differences between the hydrophobicity measurements generated for each peptide pair were calculated and used to construct a distance, or dissimilarity matrix.  
+
+## Physicochemical parameters distinguishing FSAP  
+
+The following parameters were calculated for each mature FSAP sequence:
+1)	peptide length (number of amino acids)
+2)	grand average of hydropathy, or GRAVY index (obtained by dividing the sum of hydropathy values of all amino acids by total sequence length), to determine the hydrophobicity/hydrophilicity of the protein; a positive index indicates a more hydrophobic character, whereas a negative index indicates a more hydrophilic character
+3)	hydrophobic moment (measure of the amphipathicity of a structure, or asymmetry of hydrophobicity, by quantifying the distribution of hydrophobic and hydrophilic residues along its length; particularly relevant for α-helices)
+4)	isoelectric point, or pI (pH at which the peptide carries a net electrical charge of zero)
+5)	molar mass
+6)	net charge at pH 7
+7)	cysteine content (%)
+8)	ratio of lysines to arginines (e.g., changes in this ratio in α-helical peptides can affect the hydrophobicity required for membrane perturbation)
+
+
+
+
+# Acknowledgement
+We would like to thank Shabnam Zaman, from the Amphibian Evolution Lab of the 
+Vrije Universiteit Brussel (VUB), for providing us with the `fsap` dataset, as
+well as the associated Methods section. 
+
+
+# Session information {-}
+
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
+```
+
