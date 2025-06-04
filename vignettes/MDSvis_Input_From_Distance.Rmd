@@ -2,6 +2,7 @@
 title: "Preparing `MDSvis` input objects from a distance matrix and sample properties"
 author:
     - name: Philippe Hauchamps
+    - name: Shabnam Zaman
 package: MDSvis
 abstract: >
  This vignette shows an example of building input objects for using `MDSvis`.  
