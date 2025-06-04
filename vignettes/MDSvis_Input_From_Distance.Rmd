@@ -56,17 +56,17 @@ library(MDSvis)
 # Dataset
 
 For this vignette, we use the *frog skin active peptide (fsap)* dataset. 
-It consists of 226 samples, each sample representing here a amino acid sequence 
-corresponding to a known anuran cytolytic peptide.  
+It consists of 226 samples, where each sample represents an amino acid sequence 
+corresponding to a reported amphibian host defence peptide.
 
-Distance between these peptides can be obtained, by aligning them and computing 
-an appropriate dissimilarity metric between the corresponding amino acid 
+Distances between these peptides can be obtained using pairwise alignments and 
+computing an appropriate dissimilarity metric between their amino acid 
 sequences. For details, see the [fsap dataset methods section](#fsap_methods) 
 below.   
 
 On top of the peptide distances, peptide properties have also been collected:  
 - Uniprot accession number  
-- family, genius, species  
+- taxonomic family, genus, species  
 - some physicochemical parameters  
 
 In the following code, we import the two text files of the dataset:  
@@ -110,7 +110,7 @@ propDF$genus <- factor(substr(propDF$Sequence_Name, start = 1, stop = 6))
 propDF$species <- factor(substr(propDF$Sequence_Name, start = 1, stop = 8))
 ```
 
-Below are frequency tables for peptides belonging to the different families, genius and species.
+Below are frequency tables for peptides belonging to the different families, genera and species.
 
 ```{r tables}
 table(propDF$family)
@@ -171,19 +171,11 @@ displaying a view of the MDS projection of the `fsap` dataset.
 
 ## Data mining and assembly of a reference dataset  
 
-For the construction of an initial dataset of known anuran cytolytic peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. This superfamily has been shown to have evolved at the latest in an early ancestor of the Neobatrachia (Vanhoye et al. 2003), a clade including almost 95% of anuran species (Frost 2024). A total of 226 precursor protein sequences representing FSAP was selected in order to encompass maximal phylogenetic diversity and sequence diversity. (Note: the superfamily Ranoidea contains the families Ranidae and Microhylidae. These FSAP have been differentiated using the prefixes RAN_and MIC_. All FSAP from Hyloidea include the prefix HYL_. Each prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, as well as its Uniprot accession.)  
-
-## Phylogenetic reconstruction of the FSAP superfamily  
-
-Multiple sequence alignment of a dataset containing 225 FSAP precursor protein sequences (52 from Hyloidea and 183 from Ranoidea) was carried out using the E-INS-I algorithm in MAFFT v.7 (Katoh and Standley 2013) and manually curated to remove large gaps and poorly aligned regions in Mesquite v.3.81 (Maddison 2023). Reconstruction of FSAP phylogeny involved the use of two different methods: Bayesian phylogenetic inference and maximum likelihood (ML) estimation, as implemented in MrBayes v.3.2.7. (Ronquist et al. 2012) and RAxML (Stamatakis 2014), respectively. Results of the two approaches were compared to verify the absence of major conflicts related to the choice of method and to obtain a single consensus evolutionary synthesis.  
-
-## Identification of mature FSAP sequences  
-
-Comparison of unannotated or newly predicted precursor proteins with previously characterised FSAP allowed us to predict the position and predicted cleavage sites of mature peptide sequences. The most common cleavage recognition motifs for FSAP are as follows: -RXXR-, -KR-, -RR-. A total of 226 mature FSAP were thus identified and used for subsequent analyses (the discrepancy in total number of sequences arises from the fact that multiple cytolytic peptides may be cleaved from the same precursor protein; in this dataset, the relevant sequences are differentiated by a numbered suffix, and pertain to HYL_LIfa_B5LUQ3_1 and HYL_LIfa_B5LUQ3_2).  
+For the construction of an initial dataset of known amphibian host defence peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. FSAP from the higher-level taxonomic classifications of Ranidae, Microhylidae and Hyloidea are differentiated using the prefixes RAN_, MIC_ and HYL_, respectively. These designations are broadly referred to as "family" throughout this vignette. Each family prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, followed by its unique Uniprot accession. Each FSAP precursor protein is composed of a tripartite structure in which the N-terminal signal peptide and spacer regions are enzymatically cleaved to release the bioactive, or "mature" peptide. A total of 226 mature FSAP were thus identified and used for subsequent analysis.
 
 ## Pairwise alignments using primary structure and hydrophobicity  
 
-Pairwise alignments of mature FSAP sequences were generated with AlignMe 1.2 (Khafizov et al. 2010; Stamm et al. 2013) using a combined scale that incorporates the Hessa, White and von Heinje hydropathy scale (HWvH; weight: 2.6) (Hessa et al. 2007) and the VTML substitution matrix (weight: 0.5), according to the developer’s recommendations. Gap penalties were similarly and were set as follows: below threshold gap opening penalty: 18.0, below threshold gap extension penalty: 1.3, above threshold gap opening penalty: 11.0, above threshold gap extension penalty 4.4: thresholds for penalties: 0; termini gap opening penalty 13.1; termini gap extension penalty: 0.9 (Stamm et al. 2014). Given the short lengths of mature FSAP sequences, window size was set to 0 to prevent a smoothing effect. Absolute differences between the hydrophobicity measurements generated for each peptide pair were calculated and used to construct a distance, or dissimilarity matrix.  
+Pairwise alignments of mature FSAP sequences were generated with AlignMe 1.2 (Stamm et al., 2013) using a combined scale that incorporates the Hessa, White and von Heinje hydropathy scale (HWvH; weight: 2.6 [Hessa et al., 2007]) and the VTML substitution matrix (weight: 0.5), according to the developer’s recommendations. Gap penalties were similarly based on Stamm et al. (2014) and were set as follows: below threshold gap opening penalty: 18.0, below threshold gap extension penalty: 1.3, above threshold gap opening penalty: 11.0, above threshold gap extension penalty 4.4: thresholds for penalties: 0; termini gap opening penalty 13.1; termini gap extension penalty: 0.9 (Stamm et al. 2014). Given the short lengths of mature FSAP sequences, window size was set to 0 to prevent a smoothing effect. Absolute differences between the hydrophobicity measurements generated for each peptide pair were calculated and used to construct a distance, or dissimilarity matrix.
 
 ## Physicochemical parameters distinguishing FSAP  
 
@@ -198,8 +190,8 @@ The following parameters were calculated for each mature FSAP sequence:
 8)	ratio of lysines to arginines (e.g., changes in this ratio in α-helical peptides can affect the hydrophobicity required for membrane perturbation)
 
 # Acknowledgement
-We would like to thank Shabnam Zaman, from the Amphibian Evolution Lab of the 
-Vrije Universiteit Brussel (VUB), for providing us with the `fsap` dataset, as
+We would like to thank Shabnam Zaman and Kim Roelants from the Ecology, Evolution & Genetics (bDIV)
+research group at the Vrije Universiteit Brussel (VUB) for providing us with the `fsap` dataset, as
 well as the corresponding [fsap dataset methods section](#fsap_methods) 
 in the current vignette. 
 
