@@ -107,17 +107,16 @@ specific properties.</p>
 <h2 id="dataset">Dataset<a class="anchor" aria-label="anchor" href="#dataset"></a>
 </h2>
 <p>For this vignette, we use the <em>frog skin active peptide
-(fsap)</em> dataset. It consists of 226 samples, each sample
-representing here a amino acid sequence corresponding to a known anuran
-cytolytic peptide.</p>
-<p>Distance between these peptides can be obtained, by aligning them and
-computing an appropriate dissimilarity metric between the corresponding
-amino acid sequences. For details, see the <a href="#fsap_methods">fsap
-dataset methods section</a> below.</p>
+(fsap)</em> dataset. It consists of 226 samples, where each sample
+represents an amino acid sequence corresponding to a reported amphibian
+host defence peptide.</p>
+<p>Distances between these peptides can be obtained using pairwise
+alignments and computing an appropriate dissimilarity metric between
+their amino acid sequences. For details, see the <a href="#fsap_methods">fsap dataset methods section</a> below.</p>
 <p>On top of the peptide distances, peptide properties have also been
 collected:<br>
 - Uniprot accession number<br>
-- family, genius, species<br>
+- taxonomic family, genus, species<br>
 - some physicochemical parameters</p>
 <p>In the following code, we import the two text files of the
 dataset:<br>
@@ -160,7 +159,7 @@ need to be included in a list of statistics object.</p>
 <span><span class="va">propDF</span><span class="op">$</span><span class="va">genus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">propDF</span><span class="op">$</span><span class="va">Sequence_Name</span>, start <span class="op">=</span> <span class="fl">1</span>, stop <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">propDF</span><span class="op">$</span><span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">propDF</span><span class="op">$</span><span class="va">Sequence_Name</span>, start <span class="op">=</span> <span class="fl">1</span>, stop <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Below are frequency tables for peptides belonging to the different
-families, genius and species.</p>
+families, genera and species.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">propDF</span><span class="op">$</span><span class="va">family</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -238,68 +237,39 @@ the MDS projection of the <code>fsap</code> dataset.</p>
 <div class="section level3">
 <h3 id="data-mining-and-assembly-of-a-reference-dataset">Data mining and assembly of a reference dataset<a class="anchor" aria-label="anchor" href="#data-mining-and-assembly-of-a-reference-dataset"></a>
 </h3>
-<p>For the construction of an initial dataset of known anuran cytolytic
-peptides, sequences belonging to the “frog skin active peptide”
+<p>For the construction of an initial dataset of known amphibian host
+defence peptides, sequences belonging to the “frog skin active peptide”
 superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot
-database and relevant literature. This superfamily has been shown to
-have evolved at the latest in an early ancestor of the Neobatrachia
-(Vanhoye et al. 2003), a clade including almost 95% of anuran species
-(Frost 2024). A total of 226 precursor protein sequences representing
-FSAP was selected in order to encompass maximal phylogenetic diversity
-and sequence diversity. (Note: the superfamily Ranoidea contains the
-families Ranidae and Microhylidae. These FSAP have been differentiated
-using the prefixes RAN_and MIC_. All FSAP from Hyloidea include the
-prefix HYL_. Each prefix is followed by a letter code to identify the
-genus and species from which the FSAP was identified, as well as its
-Uniprot accession.)</p>
-</div>
-<div class="section level3">
-<h3 id="phylogenetic-reconstruction-of-the-fsap-superfamily">Phylogenetic reconstruction of the FSAP superfamily<a class="anchor" aria-label="anchor" href="#phylogenetic-reconstruction-of-the-fsap-superfamily"></a>
-</h3>
-<p>Multiple sequence alignment of a dataset containing 225 FSAP
-precursor protein sequences (52 from Hyloidea and 183 from Ranoidea) was
-carried out using the E-INS-I algorithm in MAFFT v.7 (Katoh and Standley
-2013) and manually curated to remove large gaps and poorly aligned
-regions in Mesquite v.3.81 (Maddison 2023). Reconstruction of FSAP
-phylogeny involved the use of two different methods: Bayesian
-phylogenetic inference and maximum likelihood (ML) estimation, as
-implemented in MrBayes v.3.2.7. (Ronquist et al. 2012) and RAxML
-(Stamatakis 2014), respectively. Results of the two approaches were
-compared to verify the absence of major conflicts related to the choice
-of method and to obtain a single consensus evolutionary synthesis.</p>
-</div>
-<div class="section level3">
-<h3 id="identification-of-mature-fsap-sequences">Identification of mature FSAP sequences<a class="anchor" aria-label="anchor" href="#identification-of-mature-fsap-sequences"></a>
-</h3>
-<p>Comparison of unannotated or newly predicted precursor proteins with
-previously characterised FSAP allowed us to predict the position and
-predicted cleavage sites of mature peptide sequences. The most common
-cleavage recognition motifs for FSAP are as follows: -RXXR-, -KR-, -RR-.
-A total of 226 mature FSAP were thus identified and used for subsequent
-analyses (the discrepancy in total number of sequences arises from the
-fact that multiple cytolytic peptides may be cleaved from the same
-precursor protein; in this dataset, the relevant sequences are
-differentiated by a numbered suffix, and pertain to HYL_LIfa_B5LUQ3_1
-and HYL_LIfa_B5LUQ3_2).</p>
+database and relevant literature. FSAP from the higher-level taxonomic
+classifications of Ranidae, Microhylidae and Hyloidea are differentiated
+using the prefixes RAN_, MIC_ and HYL_, respectively. These designations
+are broadly referred to as “family” throughout this vignette. Each
+family prefix is followed by a letter code to identify the genus and
+species from which the FSAP was identified, followed by its unique
+Uniprot accession. Each FSAP precursor protein is composed of a
+tripartite structure in which the N-terminal signal peptide and spacer
+regions are enzymatically cleaved to release the bioactive, or “mature”
+peptide. A total of 226 mature FSAP were thus identified and used for
+subsequent analysis.</p>
 </div>
 <div class="section level3">
 <h3 id="pairwise-alignments-using-primary-structure-and-hydrophobicity">Pairwise alignments using primary structure and hydrophobicity<a class="anchor" aria-label="anchor" href="#pairwise-alignments-using-primary-structure-and-hydrophobicity"></a>
 </h3>
 <p>Pairwise alignments of mature FSAP sequences were generated with
-AlignMe 1.2 (Khafizov et al. 2010; Stamm et al. 2013) using a combined
-scale that incorporates the Hessa, White and von Heinje hydropathy scale
-(HWvH; weight: 2.6) (Hessa et al. 2007) and the VTML substitution matrix
+AlignMe 1.2 (Stamm et al., 2013) using a combined scale that
+incorporates the Hessa, White and von Heinje hydropathy scale (HWvH;
+weight: 2.6 [Hessa et al., 2007]) and the VTML substitution matrix
 (weight: 0.5), according to the developer’s recommendations. Gap
-penalties were similarly and were set as follows: below threshold gap
-opening penalty: 18.0, below threshold gap extension penalty: 1.3, above
-threshold gap opening penalty: 11.0, above threshold gap extension
-penalty 4.4: thresholds for penalties: 0; termini gap opening penalty
-13.1; termini gap extension penalty: 0.9 (Stamm et al. 2014). Given the
-short lengths of mature FSAP sequences, window size was set to 0 to
-prevent a smoothing effect. Absolute differences between the
-hydrophobicity measurements generated for each peptide pair were
-calculated and used to construct a distance, or dissimilarity
-matrix.</p>
+penalties were similarly based on Stamm et al. (2014) and were set as
+follows: below threshold gap opening penalty: 18.0, below threshold gap
+extension penalty: 1.3, above threshold gap opening penalty: 11.0, above
+threshold gap extension penalty 4.4: thresholds for penalties: 0;
+termini gap opening penalty 13.1; termini gap extension penalty: 0.9
+(Stamm et al. 2014). Given the short lengths of mature FSAP sequences,
+window size was set to 0 to prevent a smoothing effect. Absolute
+differences between the hydrophobicity measurements generated for each
+peptide pair were calculated and used to construct a distance, or
+dissimilarity matrix.</p>
 </div>
 <div class="section level3">
 <h3 id="physicochemical-parameters-distinguishing-fsap">Physicochemical parameters distinguishing FSAP<a class="anchor" aria-label="anchor" href="#physicochemical-parameters-distinguishing-fsap"></a>
@@ -324,10 +294,11 @@ perturbation)</p>
 <div class="section level2">
 <h2 id="acknowledgement">Acknowledgement<a class="anchor" aria-label="anchor" href="#acknowledgement"></a>
 </h2>
-<p>We would like to thank Shabnam Zaman, from the Amphibian Evolution
-Lab of the Vrije Universiteit Brussel (VUB), for providing us with the
-<code>fsap</code> dataset, as well as the corresponding <a href="#fsap_methods">fsap dataset methods section</a> in the current
-vignette.</p>
+<p>We would like to thank Shabnam Zaman and Kim Roelants from the
+Ecology, Evolution &amp; Genetics (bDIV) research group at the Vrije
+Universiteit Brussel (VUB) for providing us with the <code>fsap</code>
+dataset, as well as the corresponding <a href="#fsap_methods">fsap
+dataset methods section</a> in the current vignette.</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
@@ -364,10 +335,10 @@ vignette.</p>
 <span><span class="co">##   [7] matrixStats_1.5.0    compiler_4.5.0       gdata_3.0.1         </span></span>
 <span><span class="co">##  [10] systemfonts_1.2.3    vctrs_0.6.5          stringr_1.5.1       </span></span>
 <span><span class="co">##  [13] pkgconfig_2.0.3      shape_1.4.6.1        fastmap_1.2.0       </span></span>
-<span><span class="co">##  [16] backports_1.5.0      promises_1.3.2       ncdfFlow_2.55.0     </span></span>
+<span><span class="co">##  [16] backports_1.5.0      promises_1.3.3       ncdfFlow_2.55.0     </span></span>
 <span><span class="co">##  [19] rmarkdown_2.29       nloptr_2.2.1         graph_1.87.0        </span></span>
 <span><span class="co">##  [22] ragg_1.4.0           purrr_1.0.4          xfun_0.52           </span></span>
-<span><span class="co">##  [25] glmnet_4.1-8         jomo_2.7-6           cachem_1.1.0        </span></span>
+<span><span class="co">##  [25] glmnet_4.1-9         jomo_2.7-6           cachem_1.1.0        </span></span>
 <span><span class="co">##  [28] jsonlite_2.0.0       flowWorkspace_4.21.0 later_1.4.2         </span></span>
 <span><span class="co">##  [31] pan_1.9              parallel_4.5.0       broom_1.0.8         </span></span>
 <span><span class="co">##  [34] cluster_2.1.8.1      R6_2.6.1             bslib_0.9.0         </span></span>
@@ -382,14 +353,14 @@ vignette.</p>
 <span><span class="co">##  [61] tibble_3.2.1         plyr_1.8.9           shiny_1.10.0        </span></span>
 <span><span class="co">##  [64] evaluate_1.0.3       foreign_0.8-90       desc_1.4.3          </span></span>
 <span><span class="co">##  [67] survival_3.8-3       proxy_0.4-27         pillar_1.10.2       </span></span>
-<span><span class="co">##  [70] BiocManager_1.30.25  mice_3.17.0          checkmate_2.3.2     </span></span>
+<span><span class="co">##  [70] BiocManager_1.30.25  mice_3.18.0          checkmate_2.3.2     </span></span>
 <span><span class="co">##  [73] foreach_1.5.2        stats4_4.5.0         ellipse_0.5.0       </span></span>
 <span><span class="co">##  [76] reformulas_0.4.1     shinyjs_2.1.0        plotly_4.10.4       </span></span>
 <span><span class="co">##  [79] S4Vectors_0.47.0     ggplot2_3.5.2        ggcyto_1.37.0       </span></span>
 <span><span class="co">##  [82] scales_1.4.0         minqa_1.2.8          gtools_3.9.5        </span></span>
 <span><span class="co">##  [85] xtable_1.8-4         class_7.3-23         glue_1.8.0          </span></span>
 <span><span class="co">##  [88] Hmisc_5.2-3          lazyeval_0.2.2       tools_4.5.0         </span></span>
-<span><span class="co">##  [91] hexbin_1.28.5        data.table_1.17.2    lme4_1.1-37         </span></span>
+<span><span class="co">##  [91] hexbin_1.28.5        data.table_1.17.4    lme4_1.1-37         </span></span>
 <span><span class="co">##  [94] fs_1.6.6             XML_3.99-0.18        grid_4.5.0          </span></span>
 <span><span class="co">##  [97] plotrix_3.8-4        tidyr_1.3.1          RProtoBufLib_2.21.0 </span></span>
 <span><span class="co">## [100] rbibutils_2.3        CytoPipeline_1.9.0   colorspace_2.1-1    </span></span>
@@ -398,7 +369,7 @@ vignette.</p>
 <span><span class="co">## [109] viridisLite_0.4.2    dplyr_1.1.4          Rgraphviz_2.53.0    </span></span>
 <span><span class="co">## [112] gtable_0.3.6         sass_0.4.10          digest_0.6.37       </span></span>
 <span><span class="co">## [115] wordcloud_2.6        htmlwidgets_1.6.4    farver_2.1.2        </span></span>
-<span><span class="co">## [118] htmltools_0.5.8.1    pkgdown_2.1.2.9000   lifecycle_1.0.4     </span></span>
+<span><span class="co">## [118] htmltools_0.5.8.1    pkgdown_2.1.3.9000   lifecycle_1.0.4     </span></span>
 <span><span class="co">## [121] httr_1.4.7           mitml_0.4-5          mime_0.13           </span></span>
 <span><span class="co">## [124] MASS_7.3-65</span></span></code></pre>
 </div>
@@ -413,7 +384,7 @@ vignette.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer>
