@@ -58,7 +58,7 @@ library(MDSvis)
 
 For this vignette, we use the *frog skin active peptide (fsap)* dataset. 
 It consists of 226 samples, where each sample represents an amino acid sequence 
-corresponding to a reported amphibian host defence peptide.
+corresponding to a reported amphibian host defense peptide.
 
 Distances between these peptides can be obtained using pairwise alignments and 
 computing an appropriate dissimilarity metric between their amino acid 
@@ -172,7 +172,7 @@ displaying a view of the MDS projection of the `fsap` dataset.
 
 ## Data mining and assembly of a reference dataset  
 
-For the construction of an initial dataset of known amphibian host defence peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. FSAP from the higher-level taxonomic classifications of Ranidae, Microhylidae and Hyloidea are differentiated using the prefixes RAN_, MIC_ and HYL_, respectively. These designations are broadly referred to as "family" throughout this vignette. Each family prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, followed by its unique Uniprot accession. Each FSAP precursor protein is composed of a tripartite structure in which the N-terminal signal peptide and spacer regions are enzymatically cleaved to release the bioactive, or "mature" peptide. A total of 226 mature FSAP were thus identified and used for subsequent analysis.
+For the construction of an initial dataset of known amphibian host defense peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. FSAP from the higher-level taxonomic classifications of Ranidae, Microhylidae and Hyloidea are differentiated using the prefixes RAN_, MIC_ and HYL_, respectively. These designations are broadly referred to as "family" throughout this vignette. Each family prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, followed by its unique Uniprot accession. Each FSAP precursor protein is composed of a tripartite structure in which the N-terminal signal peptide and spacer regions are enzymatically cleaved to release the bioactive, or "mature" peptide. A total of 226 mature FSAP were thus identified and used for subsequent analysis.
 
 ## Pairwise alignments using primary structure and hydrophobicity  
 
@@ -180,20 +180,21 @@ Pairwise alignments of mature FSAP sequences were generated with AlignMe 1.2 (St
 
 ## Physicochemical parameters distinguishing FSAP  
 
-The following parameters were calculated for each mature FSAP sequence:
-1)	peptide length (number of amino acids)
-2)	grand average of hydropathy, or GRAVY index (obtained by dividing the sum of hydropathy values of all amino acids by total sequence length), to determine the hydrophobicity/hydrophilicity of the protein; a positive index indicates a more hydrophobic character, whereas a negative index indicates a more hydrophilic character
-3)	hydrophobic moment (measure of the amphipathicity of a structure, or asymmetry of hydrophobicity, by quantifying the distribution of hydrophobic and hydrophilic residues along its length; particularly relevant for α-helices)
-4)	isoelectric point, or pI (pH at which the peptide carries a net electrical charge of zero)
-5)	molar mass
-6)	net charge at pH 7
-7)	cysteine content (%)
+The following parameters were calculated for each mature FSAP sequence:  
+1)	peptide length (number of amino acids)  
+2)	grand average of hydropathy, or GRAVY index (obtained by dividing the sum of hydropathy values of all amino acids by total sequence length), to determine the hydrophobicity/hydrophilicity of the protein; a positive index indicates a more hydrophobic character, whereas a negative index indicates a more hydrophilic character  
+3)	hydrophobic moment (measure of the amphipathicity of a structure, or asymmetry of hydrophobicity, by quantifying the distribution of hydrophobic and hydrophilic residues along its length; particularly relevant for α-helices)  
+4)	isoelectric point, or pI (pH at which the peptide carries a net electrical charge of zero)  
+5)	molar mass  
+6)	net charge at pH 7  
+7)	cysteine content (%)  
 8)	ratio of lysines to arginines (e.g., changes in this ratio in α-helical peptides can affect the hydrophobicity required for membrane perturbation)
 
+
 # Acknowledgement
-We would like to thank Shabnam Zaman and Kim Roelants from the Ecology, Evolution & Genetics (bDIV)
-research group at the Vrije Universiteit Brussel (VUB) for providing us with the `fsap` dataset, as
-well as the corresponding [fsap dataset methods section](#fsap_methods) 
+We would like to thank Kim Roelants from the Ecology, Evolution & Genetics (bDIV)
+research group at the Vrije Universiteit Brussel (VUB) for devising a method to calculate distances between FSAP, 
+as described in the corresponding [fsap dataset methods section](#fsap_methods) 
 in the current vignette. 
 
 # Session information {-}
