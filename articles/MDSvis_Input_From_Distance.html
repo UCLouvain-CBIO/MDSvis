@@ -258,44 +258,45 @@ subsequent analysis.</p>
 <h3 id="pairwise-alignments-using-primary-structure-and-hydrophobicity">Pairwise alignments using primary structure and hydrophobicity<a class="anchor" aria-label="anchor" href="#pairwise-alignments-using-primary-structure-and-hydrophobicity"></a>
 </h3>
 <p>Pairwise alignments of mature FSAP sequences were generated with
-AlignMe 1.2 (Stamm et al., 2013) using a combined scale that
-incorporates the Hessa, White and von Heinje hydropathy scale (HWvH;
-weight: 2.6 [Hessa et al., 2007]) and the VTML substitution matrix
-(weight: 0.5), according to the developer’s recommendations. Gap
-penalties were similarly based on Stamm et al. (2014) and were set as
+AlignMe 1.2 <span class="citation">(Stamm et al. 2013)</span> using a
+combined scale that incorporates the Hessa, White and von Heinje
+hydropathy scale (HWvH; weight: 2.6 <span class="citation">(Hessa et al.
+2007)</span> and the VTML substitution matrix (weight: 0.5), according
+to the developer’s recommendations. Gap penalties were similarly based
+on <span class="citation">(Stamm et al. 2014)</span> and were set as
 follows: below threshold gap opening penalty: 18.0, below threshold gap
 extension penalty: 1.3, above threshold gap opening penalty: 11.0, above
 threshold gap extension penalty 4.4: thresholds for penalties: 0;
 termini gap opening penalty 13.1; termini gap extension penalty: 0.9
-(Stamm et al. 2014). Given the short lengths of mature FSAP sequences,
-window size was set to 0 to prevent a smoothing effect. Absolute
-differences between the hydrophobicity measurements generated for each
-peptide pair were calculated and used to construct a distance, or
-dissimilarity matrix.</p>
+<span class="citation">(Stamm et al. 2014)</span>. Given the short
+lengths of mature FSAP sequences, window size was set to 0 to prevent a
+smoothing effect. Absolute differences between the hydrophobicity
+measurements generated for each peptide pair were calculated and used to
+construct a distance, or dissimilarity matrix.</p>
 </div>
 <div class="section level3">
 <h3 id="physicochemical-parameters-distinguishing-fsap">Physicochemical parameters distinguishing FSAP<a class="anchor" aria-label="anchor" href="#physicochemical-parameters-distinguishing-fsap"></a>
 </h3>
 <p>The following parameters were calculated for each mature FSAP
 sequence:<br>
-1) peptide length (number of amino acids);<br>
-2) grand average of hydropathy, or GRAVY index (obtained by dividing the
+1. peptide length (number of amino acids)<br>
+2. grand average of hydropathy, or GRAVY index (obtained by dividing the
 sum of hydropathy values of all amino acids by total sequence length),
 to determine the hydrophobicity/hydrophilicity of the protein; a
 positive index indicates a more hydrophobic character, whereas a
-negative index indicates a more hydrophilic character;<br>
-3) hydrophobic moment (measure of the amphipathicity of a structure, or
+negative index indicates a more hydrophilic character<br>
+3. hydrophobic moment (measure of the amphipathicity of a structure, or
 asymmetry of hydrophobicity, by quantifying the distribution of
 hydrophobic and hydrophilic residues along its length; particularly
-relevant for α-helices);<br>
-4) isoelectric point, or pI (pH at which the peptide carries a net
-electrical charge of zero);<br>
-5) molar mass;<br>
-6) net charge at pH 7;<br>
-7) cysteine content (%);<br>
-8) ratio of lysines to arginines (e.g., changes in this ratio in
+relevant for α-helices)<br>
+4. isoelectric point, or pI (pH at which the peptide carries a net
+electrical charge of zero)<br>
+5. molar mass<br>
+6. net charge at pH 7<br>
+7. cysteine content (%)<br>
+8. ratio of lysines to arginines (e.g., changes in this ratio in
 α-helical peptides can affect the hydrophobicity required for membrane
-perturbation);</p>
+perturbation)</p>
 </div>
 </div>
 <div class="section level2">
@@ -304,6 +305,10 @@ perturbation);</p>
 <p>We would like to thank Kim Roelants for devising the method to
 calculate distances between FSAP, as described in the <a href="#fsap_methods">fsap dataset methods section</a> in the current
 vignette.</p>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
@@ -377,6 +382,26 @@ vignette.</p>
 <span><span class="co">## [118] htmltools_0.5.8.1    pkgdown_2.1.3.9000   lifecycle_1.0.4     </span></span>
 <span><span class="co">## [121] httr_1.4.7           mitml_0.4-5          mime_0.13           </span></span>
 <span><span class="co">## [124] MASS_7.3-65</span></span></code></pre>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Hessa2007-rc" class="csl-entry">
+Hessa, Tara, Nadja M Meindl-Beinker, Andreas Bernsel, Hyun Kim, Yoko
+Sato, Mirjam Lerch-Bader, Ingmarie Nilsson, Stephen H White, and Gunnar
+von Heijne. 2007. <span>“Molecular Code for Transmembrane-Helix
+Recognition by the <span>Sec61</span> Translocon.”</span>
+<em>Nature</em> 450 (7172): 1026–30.
+</div>
+<div id="ref-Stamm2014-wp" class="csl-entry">
+Stamm, Marcus, René Staritzbichler, Kamil Khafizov, and Lucy R Forrest.
+2014. <span>“AlignMe - a Membrane Protein Sequence Alignment Web
+Server.”</span> <em>Nucleic Acids Res.</em> 42 (Web Server issue):
+W246–51.
+</div>
+<div id="ref-Stamm2013-kz" class="csl-entry">
+Stamm, Marcus, René Staritzbichler, Kamil Khafizov, and Lucy R. Forrest.
+2013. <span>“Alignment of Helical Membrane Protein Sequences Using
+AlignMe.”</span> <em>PLoS One</em> 8 (3): e57731.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
