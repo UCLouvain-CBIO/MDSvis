@@ -78,3 +78,123 @@ eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/cyto.a.24921},
 abstract = {ABSTRACT Quality Control (QC) of samples is an essential preliminary step in cytometry data analysis. Notably, the identification of potential batch effects and outlying samples is paramount to avoid mistaking these effects for true biological signals in downstream analyses. However, this task can prove to be delicate and tedious, especially for datasets with dozens of samples. Here, we present CytoMDS, a Bioconductor package implementing a dedicated method for low-dimensional representation of cytometry samples composed of marker expressions for up to millions of single cells. This method allows a global representation of all samples of a study, with one single point per sample, in such a way that projected distances can be visually interpreted. CytoMDS uses Earth Mover's Distance for assessing dissimilarities between multi-dimensional distributions of marker expression and Multi-Dimensional Scaling for low-dimensional projection of distances. Some additional visualization tools, both for projection quality diagnosis and for user interpretation of the projection coordinates, are also provided in the package. We demonstrate the strengths and advantages of CytoMDS for QC of cytometry data on three real biological datasets, revealing the presence of low-quality samples, batch effects, and biological signal between sample groups.},
 year = {2025}
 }
+
+
+
+
+@ARTICLE{Stamm2014-wp,
+  title     = "AlignMe - a membrane protein sequence alignment web server",
+  author    = "Stamm, Marcus and Staritzbichler, René and Khafizov, Kamil and
+               Forrest, Lucy R",
+  journal   = "Nucleic Acids Res.",
+  publisher = "Oxford University Press (OUP)",
+  volume    =  42,
+  number    = "Web Server issue",
+  pages     = "W246--51",
+  abstract  = "We present a web server for pair-wise alignment of membrane
+               protein sequences, using the program AlignMe. The server makes
+               available two operational modes of AlignMe: (i) sequence to
+               sequence alignment, taking two sequences in fasta format as
+               input, combining information about each sequence from multiple
+               sources and producing a pair-wise alignment (PW mode); and (ii)
+               alignment of two multiple sequence alignments to create
+               family-averaged hydropathy profile alignments (HP mode). For the
+               PW sequence alignment mode, four different optimized parameter
+               sets are provided, each suited to pairs of sequences with a
+               specific similarity level. These settings utilize different types
+               of inputs: (position-specific) substitution matrices, secondary
+               structure predictions and transmembrane propensities from
+               transmembrane predictions or hydrophobicity scales. In the second
+               (HP) mode, each input multiple sequence alignment is converted
+               into a hydrophobicity profile averaged over the provided set of
+               sequence homologs; the two profiles are then aligned. The HP mode
+               enables qualitative comparison of transmembrane topologies (and
+               therefore potentially of 3D folds) of two membrane proteins,
+               which can be useful if the proteins have low sequence similarity.
+               In summary, the AlignMe web server provides user-friendly access
+               to a set of tools for analysis and comparison of membrane protein
+               sequences. Access is available at
+               http://www.bioinfo.mpg.de/AlignMe.",
+  month     =  jul,
+  year      =  2014,
+  language  = "en"
+}
+
+@ARTICLE{Stamm2013-kz,
+  title     = "Alignment of helical membrane protein sequences using AlignMe",
+  author    = "Stamm, Marcus and Staritzbichler, René and Khafizov, Kamil and
+               Forrest, Lucy R.",
+  journal   = "PLoS One",
+  publisher = "Public Library of Science (PLoS)",
+  volume    =  8,
+  number    =  3,
+  pages     = "e57731",
+  abstract  = "Few sequence alignment methods have been designed specifically
+               for integral membrane proteins, even though these important
+               proteins have distinct evolutionary and structural properties
+               that might affect their alignments. Existing approaches typically
+               consider membrane-related information either by using
+               membrane-specific substitution matrices or by assigning distinct
+               penalties for gap creation in transmembrane and non-transmembrane
+               regions. Here, we ask whether favoring matching of predicted
+               transmembrane segments within a standard dynamic programming
+               algorithm can improve the accuracy of pairwise membrane protein
+               sequence alignments. We tested various strategies using a
+               specifically designed program called AlignMe. An updated set of
+               homologous membrane protein structures, called HOMEP2, was used
+               as a reference for optimizing the gap penalties. The best of the
+               membrane-protein optimized approaches were then tested on an
+               independent reference set of membrane protein sequence alignments
+               from the BAliBASE collection. When secondary structure (S)
+               matching was combined with evolutionary information (using a
+               position-specific substitution matrix (P)), in an approach we
+               called AlignMePS, the resultant pairwise alignments were
+               typically among the most accurate over a broad range of sequence
+               similarities when compared to available methods. Matching
+               transmembrane predictions (T), in addition to evolutionary
+               information, and secondary-structure predictions, in an approach
+               called AlignMePST, generally reduces the accuracy of the
+               alignments of closely-related proteins in the BAliBASE set
+               relative to AlignMePS, but may be useful in cases of extremely
+               distantly related proteins for which sequence information is less
+               informative. The open source AlignMe code is available at
+               https://sourceforge.net/projects/alignme/, and at
+               http://www.forrestlab.org, along with an online server and the
+               HOMEP2 data set.",
+  month     =  mar,
+  year      =  2013,
+  language  = "en"
+}
+
+
+@ARTICLE{Hessa2007-rc,
+  title     = "Molecular code for transmembrane-helix recognition by the {Sec61}
+               translocon",
+  author    = "Hessa, Tara and Meindl-Beinker, Nadja M and Bernsel, Andreas and
+               Kim, Hyun and Sato, Yoko and Lerch-Bader, Mirjam and Nilsson,
+               Ingmarie and White, Stephen H and von Heijne, Gunnar",
+  journal   = "Nature",
+  publisher = "Springer Science and Business Media LLC",
+  volume    =  450,
+  number    =  7172,
+  pages     = "1026--1030",
+  abstract  = "Transmembrane alpha-helices in integral membrane proteins are
+               recognized co-translationally and inserted into the membrane of
+               the endoplasmic reticulum by the Sec61 translocon. A full
+               quantitative description of this phenomenon, linking amino acid
+               sequence to membrane insertion efficiency, is still lacking.
+               Here, using in vitro translation of a model protein in the
+               presence of dog pancreas rough microsomes to analyse a large
+               number of systematically designed hydrophobic segments, we
+               present a quantitative analysis of the position-dependent
+               contribution of all 20 amino acids to membrane insertion
+               efficiency, as well as of the effects of transmembrane segment
+               length and flanking amino acids. The emerging picture of
+               translocon-mediated transmembrane helix assembly is simple, with
+               the critical sequence characteristics mirroring the physical
+               properties of the lipid bilayer.",
+  month     =  dec,
+  year      =  2007,
+  language  = "en"
+}
+
