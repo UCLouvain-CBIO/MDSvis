@@ -111,7 +111,7 @@ specific properties.</p>
 <p>For this vignette, we use the <em>frog skin active peptide
 (fsap)</em> dataset. It consists of 226 samples, where each sample
 represents an amino acid sequence corresponding to a reported amphibian
-host defence peptide.</p>
+host defense peptide.</p>
 <p>Distances between these peptides can be obtained using pairwise
 alignments and computing an appropriate dissimilarity metric between
 their amino acid sequences. For details, see the <a href="#fsap_methods">fsap dataset methods section</a> below.</p>
@@ -240,7 +240,7 @@ the MDS projection of the <code>fsap</code> dataset.</p>
 <h3 id="data-mining-and-assembly-of-a-reference-dataset">Data mining and assembly of a reference dataset<a class="anchor" aria-label="anchor" href="#data-mining-and-assembly-of-a-reference-dataset"></a>
 </h3>
 <p>For the construction of an initial dataset of known amphibian host
-defence peptides, sequences belonging to the “frog skin active peptide”
+defense peptides, sequences belonging to the “frog skin active peptide”
 superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot
 database and relevant literature. FSAP from the higher-level taxonomic
 classifications of Ranidae, Microhylidae and Hyloidea are differentiated
@@ -277,30 +277,33 @@ dissimilarity matrix.</p>
 <h3 id="physicochemical-parameters-distinguishing-fsap">Physicochemical parameters distinguishing FSAP<a class="anchor" aria-label="anchor" href="#physicochemical-parameters-distinguishing-fsap"></a>
 </h3>
 <p>The following parameters were calculated for each mature FSAP
-sequence: 1) peptide length (number of amino acids) 2) grand average of
-hydropathy, or GRAVY index (obtained by dividing the sum of hydropathy
-values of all amino acids by total sequence length), to determine the
-hydrophobicity/hydrophilicity of the protein; a positive index indicates
-a more hydrophobic character, whereas a negative index indicates a more
-hydrophilic character 3) hydrophobic moment (measure of the
-amphipathicity of a structure, or asymmetry of hydrophobicity, by
-quantifying the distribution of hydrophobic and hydrophilic residues
-along its length; particularly relevant for α-helices) 4) isoelectric
-point, or pI (pH at which the peptide carries a net electrical charge of
-zero) 5) molar mass 6) net charge at pH 7 7) cysteine content (%) 8)
-ratio of lysines to arginines (e.g., changes in this ratio in α-helical
-peptides can affect the hydrophobicity required for membrane
-perturbation)</p>
+sequence:<br>
+1) peptide length (number of amino acids);<br>
+2) grand average of hydropathy, or GRAVY index (obtained by dividing the
+sum of hydropathy values of all amino acids by total sequence length),
+to determine the hydrophobicity/hydrophilicity of the protein; a
+positive index indicates a more hydrophobic character, whereas a
+negative index indicates a more hydrophilic character;<br>
+3) hydrophobic moment (measure of the amphipathicity of a structure, or
+asymmetry of hydrophobicity, by quantifying the distribution of
+hydrophobic and hydrophilic residues along its length; particularly
+relevant for α-helices);<br>
+4) isoelectric point, or pI (pH at which the peptide carries a net
+electrical charge of zero);<br>
+5) molar mass;<br>
+6) net charge at pH 7;<br>
+7) cysteine content (%);<br>
+8) ratio of lysines to arginines (e.g., changes in this ratio in
+α-helical peptides can affect the hydrophobicity required for membrane
+perturbation);</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="acknowledgement">Acknowledgement<a class="anchor" aria-label="anchor" href="#acknowledgement"></a>
 </h2>
-<p>We would like to thank Shabnam Zaman and Kim Roelants from the
-Ecology, Evolution &amp; Genetics (bDIV) research group at the Vrije
-Universiteit Brussel (VUB) for providing us with the <code>fsap</code>
-dataset, as well as the corresponding <a href="#fsap_methods">fsap
-dataset methods section</a> in the current vignette.</p>
+<p>We would like to thank Kim Roelants for devising the method to
+calculate distances between FSAP, as described in the <a href="#fsap_methods">fsap dataset methods section</a> in the current
+vignette.</p>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
@@ -355,7 +358,7 @@ dataset methods section</a> in the current vignette.</p>
 <span><span class="co">##  [61] tibble_3.2.1         plyr_1.8.9           shiny_1.10.0        </span></span>
 <span><span class="co">##  [64] evaluate_1.0.3       foreign_0.8-90       desc_1.4.3          </span></span>
 <span><span class="co">##  [67] survival_3.8-3       proxy_0.4-27         pillar_1.10.2       </span></span>
-<span><span class="co">##  [70] BiocManager_1.30.25  mice_3.18.0          checkmate_2.3.2     </span></span>
+<span><span class="co">##  [70] BiocManager_1.30.26  mice_3.18.0          checkmate_2.3.2     </span></span>
 <span><span class="co">##  [73] foreach_1.5.2        stats4_4.5.0         ellipse_0.5.0       </span></span>
 <span><span class="co">##  [76] reformulas_0.4.1     shinyjs_2.1.0        plotly_4.10.4       </span></span>
 <span><span class="co">##  [79] S4Vectors_0.47.0     ggplot2_3.5.2        ggcyto_1.37.0       </span></span>
