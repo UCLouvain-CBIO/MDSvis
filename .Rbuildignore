@@ -1,5 +1,9 @@
 ^MDSvis\.Rproj$
 ^\.Rproj\.user$
+^\.git$
+^\.github$
 ^LICENSE\.md$
 ^doc$
+^pkgdown$
+^docs$
 ^Meta$

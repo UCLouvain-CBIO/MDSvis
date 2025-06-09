@@ -195,11 +195,12 @@ The following parameters were calculated for each mature FSAP sequence:
 # Acknowledgement
 We would like to thank Kim Roelants for devising the method to calculate distances between FSAP, as described in the [fsap dataset methods section](#fsap_methods) in the current vignette. 
 
-# References {-}
 
 # Session information {-}
 
 ```{r sessioninfo, echo=FALSE}
 sessionInfo()
 ```
+
+# References {-}
 
