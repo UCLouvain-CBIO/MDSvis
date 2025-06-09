@@ -135,9 +135,11 @@ acquisition on two different days (<span class="citation">Krieg et al.
 <code class="sourceCode R"><span><span class="va">Krieg_fs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/HDCytoData/man/Krieg_Anti_PD_1_SE.html" class="external-link">Krieg_Anti_PD_1_flowSet</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## see ?HDCytoData and browseVignettes('HDCytoData') for documentation</span></span></code></pre>
 <pre><code><span><span class="co">## loading from cache</span></span></code></pre>
+<pre><code><span><span class="co">## Error while performing HEAD request.</span></span>
+<span><span class="co">##    Proceeding without cache information.</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in updateObjectFromSlots(object, ..., verbose = verbose): dropping</span></span>
 <span><span class="co">## slot(s) 'colnames' from object = 'flowSet'</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Krieg_fs</span></span></code></pre></div>
 <pre><code><span><span class="co">## A flowSet with 20 experiments.</span></span>
 <span><span class="co">## </span></span>
@@ -148,7 +150,7 @@ acquisition on two different days (<span class="citation">Krieg et al.
 </h2>
 <p>Next we build a <em>phenodata</em> dataframe with experimental design
 information, which are here found in the cytometry data structures.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># update phenoData structure</span></span>
 <span></span>
 <span><span class="va">chLabels</span> <span class="op">&lt;-</span> </span>
@@ -170,7 +172,7 @@ information, which are here found in the cytometry data structures.</p>
 <span><span class="fu">flowCore</span><span class="fu">::</span><span class="fu">pData</span><span class="op">(</span><span class="va">Krieg_fs</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">phenoData</span></span></code></pre></div>
 <p>Next, we scale-transform the mass cytometry data and calculate the
 pairwise distance matrix.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># transform flow set (arcsinh(cofactor = 5))</span></span>
 <span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/arcsinhTransform.html" class="external-link">arcsinhTransform</a></span><span class="op">(</span></span>
 <span>    transformationId<span class="op">=</span><span class="st">"ArcsinhTransform"</span>, </span>
@@ -191,7 +193,7 @@ pairwise distance matrix.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>From the distance matrix, we can now calculate the MDS projection.
 This is also done using the <code>CytoMDS</code> package.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mdsObj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://uclouvain-cbio.github.io/CytoMDS/reference/computeMetricMDS.html" class="external-link">computeMetricMDS</a></span><span class="op">(</span></span>
 <span>    <span class="va">pwDist</span>,</span>
 <span>    seed <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -208,7 +210,7 @@ specific statistics can be provided by the user. Here we calculate
 standard univariate statistics from each variable of the
 multidimensional distribution (again using the <code>CytoMDS</code>
 package).</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Computing sample statistics</span></span>
 <span></span>
 <span><span class="co"># statFUNs = c("median" = stats::median,</span></span>
@@ -239,7 +241,7 @@ package).</p>
 (Uncomment the corresponding code to do it).<br>
 These files can now be selected within the shiny app for
 visualization.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#saveRDS(mdsObj, file = "Krieg_mdsObj.rds")</span></span>
 <span><span class="co">#saveRDS(phenoData, file = "Krieg_phenoData.rds")</span></span>
 <span><span class="co">#saveRDS(chStats, file = "Krieg_chStats.rds")</span></span></code></pre></div>
@@ -247,7 +249,7 @@ visualization.</p>
 <div class="section level2">
 <h2 id="visualization-of-the-mds-projection">Visualization of the MDS projection<a class="anchor" aria-label="anchor" href="#visualization-of-the-mds-projection"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># MDSvis::run_app()</span></span></code></pre></div>
 <p>The <code>MDSvis</code> function <code>run_app</code> launches the
 interactive Shiny app and the three tabs window in the figure below gets
@@ -378,7 +380,7 @@ corresponding labels and biplot arrows. For more details see the
 <span><span class="co">##  [88] XVector_0.49.0       htmltools_0.5.8.1    bookdown_0.43       </span></span>
 <span><span class="co">##  [91] scales_1.4.0         png_0.1-8            wordcloud_2.6       </span></span>
 <span><span class="co">##  [94] reformulas_0.4.1     knitr_1.50           rstudioapi_0.17.1   </span></span>
-<span><span class="co">##  [97] checkmate_2.3.2      nlme_3.1-168         curl_6.2.3          </span></span>
+<span><span class="co">##  [97] checkmate_2.3.2      nlme_3.1-168         curl_6.3.0          </span></span>
 <span><span class="co">## [100] nloptr_2.2.1         proxy_0.4-27         cachem_1.1.0        </span></span>
 <span><span class="co">## [103] stringr_1.5.1        BiocVersion_3.22.0   parallel_4.5.0      </span></span>
 <span><span class="co">## [106] foreign_0.8-90       AnnotationDbi_1.71.0 desc_1.4.3          </span></span>
