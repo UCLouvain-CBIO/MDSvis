@@ -40,7 +40,7 @@ starting from any distance matrix, and some sample specific properties.
 
 To install this package, start R and enter (un-commented):
 
-```{r}
+```{r package_install}
 # if (!require("devtools", quietly = TRUE))
 #     install.packages("devtools")
 # 
@@ -112,7 +112,8 @@ propDF$genus <- factor(substr(propDF$Sequence_Name, start = 1, stop = 6))
 propDF$species <- factor(substr(propDF$Sequence_Name, start = 1, stop = 8))
 ```
 
-Below are frequency tables for peptides belonging to the different families, genera and species.
+Below are frequency tables for peptides belonging to the different families, 
+genera and species.
 
 ```{r tables}
 table(propDF$family)
@@ -137,7 +138,7 @@ Finally, we can save the newly created objects as .rds files on disk.
 (Uncomment the corresponding code to do it).  
 These files can now be selected within the shiny app for visualization.  
 
-```{r}
+```{r saveRDS}
 # outputs (for shiny app)
 MDSRDSPath <- "fsap_mature_MDS.rds"
 statRDSPath <- "fsap_mature_stats.rds"
@@ -155,11 +156,10 @@ The `MDSvis` function `run_app` launches the interactive Shiny app.
 From here, you can take a look at the [main](MDSvis.html) `MDSvis` vignette 
 for an overview of the Shiny app features.   
 
-```{r}
+```{r launch}
 #MDSvis::run_app()
 ```
 
-  
 Here below is a screen shot from the Shiny app, 
 displaying a view of the MDS projection of the `fsap` dataset.
 
@@ -173,27 +173,70 @@ displaying a view of the MDS projection of the `fsap` dataset.
 
 ## Data mining and assembly of a reference dataset  
 
-For the construction of an initial dataset of known amphibian host defense peptides, sequences belonging to the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) were collected from the Uniprot database and relevant literature. FSAP from the higher-level taxonomic classifications of Ranidae, Microhylidae and Hyloidea are differentiated using the prefixes RAN_, MIC_ and HYL_, respectively. These designations are broadly referred to as "family" throughout this vignette. Each family prefix is followed by a letter code to identify the genus and species from which the FSAP was identified, followed by its unique Uniprot accession. Each FSAP precursor protein is composed of a tripartite structure in which the N-terminal signal peptide and spacer regions are enzymatically cleaved to release the bioactive, or "mature" peptide. A total of 226 mature FSAP were thus identified and used for subsequent analysis.
+For the construction of an initial dataset 
+of known amphibian host defense peptides, sequences belonging to 
+the “frog skin active peptide” superfamily (FSAP; InterPro: IPR016322) 
+were collected from the Uniprot database and relevant literature. 
+FSAP from the higher-level taxonomic classifications of Ranidae, 
+Microhylidae and Hyloidea are differentiated using the prefixes RAN_, MIC_ 
+and HYL_, respectively. These designations are broadly referred to as "family" 
+throughout this vignette. Each family prefix is followed by a letter code 
+to identify the genus and species from which the FSAP was identified, 
+followed by its unique Uniprot accession. 
+Each FSAP precursor protein is composed of a tripartite structure 
+in which the N-terminal signal peptide and spacer regions 
+are enzymatically cleaved to release the bioactive, or "mature" peptide. 
+A total of 226 mature FSAP were thus identified and used 
+for subsequent analysis.
 
 ## Pairwise alignments using primary structure and hydrophobicity  
 
-Pairwise alignments of mature FSAP sequences were generated with AlignMe 1.2 [@Stamm2013-kz] using a combined scale that incorporates the Hessa, White and von Heinje hydropathy scale (HWvH; weight: 2.6 [@Hessa2007-rc] and the VTML substitution matrix (weight: 0.5), according to the developer’s recommendations. Gap penalties were similarly based on [@Stamm2014-wp] and were set as follows: below threshold gap opening penalty: 18.0, below threshold gap extension penalty: 1.3, above threshold gap opening penalty: 11.0, above threshold gap extension penalty 4.4: thresholds for penalties: 0; termini gap opening penalty 13.1; termini gap extension penalty: 0.9 [@Stamm2014-wp]. Given the short lengths of mature FSAP sequences, window size was set to 0 to prevent a smoothing effect. Absolute differences between the hydrophobicity measurements generated for each peptide pair were calculated and used to construct a distance, or dissimilarity matrix.
+Pairwise alignments of mature FSAP sequences were generated 
+with AlignMe 1.2 [@Stamm2013-kz] using a combined scale 
+that incorporates the Hessa, White and von Heinje hydropathy scale 
+(HWvH; weight: 2.6 [@Hessa2007-rc] and the VTML substitution matrix 
+(weight: 0.5), according to the developer’s recommendations. 
+Gap penalties were similarly based on [@Stamm2014-wp] and were set as follows: 
+below threshold gap opening penalty: 18.0, 
+below threshold gap extension penalty: 1.3, 
+above threshold gap opening penalty: 11.0, 
+above threshold gap extension penalty 4.4: 
+thresholds for penalties: 0; 
+termini gap opening penalty 13.1; 
+termini gap extension penalty: 0.9 [@Stamm2014-wp]. 
+Given the short lengths of mature FSAP sequences, 
+window size was set to 0 to prevent a smoothing effect. 
+Absolute differences between the hydrophobicity measurements generated 
+for each peptide pair were calculated and used to construct a distance, 
+or dissimilarity matrix.
 
 ## Physicochemical parameters distinguishing FSAP  
 
 The following parameters were calculated for each mature FSAP sequence:  
 1. peptide length (number of amino acids)  
-2. grand average of hydropathy, or GRAVY index (obtained by dividing the sum of hydropathy values of all amino acids by total sequence length), to determine the hydrophobicity/hydrophilicity of the protein; a positive index indicates a more hydrophobic character, whereas a negative index indicates a more hydrophilic character  
-3. hydrophobic moment (measure of the amphipathicity of a structure, or asymmetry of hydrophobicity, by quantifying the distribution of hydrophobic and hydrophilic residues along its length; particularly relevant for α-helices)  
-4. isoelectric point, or pI (pH at which the peptide carries a net electrical charge of zero)  
+2. grand average of hydropathy, or GRAVY index (obtained by dividing 
+the sum of hydropathy values of all amino acids by total sequence length), 
+to determine the hydrophobicity/hydrophilicity of the protein; 
+a positive index indicates a more hydrophobic character, 
+whereas a negative index indicates a more hydrophilic character  
+3. hydrophobic moment (measure of the amphipathicity of a structure, 
+or asymmetry of hydrophobicity, by quantifying 
+the distribution of hydrophobic and hydrophilic residues along its length; 
+particularly relevant for α-helices)  
+4. isoelectric point, or pI (pH at which the peptide carries 
+a net electrical charge of zero)  
 5. molar mass  
 6. net charge at pH 7  
 7. cysteine content (%)  
-8. ratio of lysines to arginines (e.g., changes in this ratio in α-helical peptides can affect the hydrophobicity required for membrane perturbation)  
+8. ratio of lysines to arginines (e.g., changes in this ratio in α-helical 
+peptides can affect the hydrophobicity required for membrane perturbation)  
 
 
 # Acknowledgement
-We would like to thank Kim Roelants for devising the method to calculate distances between FSAP, as described in the [fsap dataset methods section](#fsap_methods) in the current vignette. 
+We would like to thank Kim Roelants for devising the method 
+to calculate distances between FSAP, 
+as described in the [fsap dataset methods section](#fsap_methods) 
+in the current vignette. 
 
 
 # Session information {-}

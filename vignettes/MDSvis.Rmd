@@ -29,7 +29,7 @@ BiocStyle::markdown()
 
 To install this package, start R and enter (un-commented):
 
-```{r}
+```{r package_install}
 # if (!require("devtools", quietly = TRUE))
 #     install.packages("devtools")
 # 
@@ -156,25 +156,14 @@ the `CytoMDS` package).
 ```{r statsCalc}
 # Computing sample statistics
 
-# statFUNs = c("median" = stats::median,
-#              "Q25" = function(x, na.rm) {
-#                  stats::quantile(x, probs = 0.25)
-#              },
-#              "Q75" = function(x, na.rm) {
-#                  stats::quantile(x, probs = 0.75)
-#              },
-#              "standard deviation" = stats::sd)
-# chStats <- channelSummaryStats(BCRXL_fs_trans,
-#                                channels = chLabels, 
-#                                statFUNs = statFUNs)
-
-statFUNs <- c("median" = stats::median,
-              "std-dev" = stats::sd,
-              "mean" = base::mean,
-              "Q25" = function(x, na.rm) 
-                  stats::quantile(x, probs = 0.25, na.rm = na.rm),
-              "Q75" = function(x, na.rm) 
-                  stats::quantile(x, probs = 0.75, na.rm = na.rm))
+statFUNs <- c(
+    "median" = stats::median, 
+    "std-dev" = stats::sd,
+    "mean" = base::mean,
+    "Q25" = function(x, na.rm) 
+        stats::quantile(x, probs = 0.25, na.rm = na.rm),
+    "Q75" = function(x, na.rm) 
+        stats::quantile(x, probs = 0.75, na.rm = na.rm))
 
 chStats <- CytoMDS::channelSummaryStats(
     Krieg_fs_trans,
@@ -187,14 +176,14 @@ We save the newly created objects as .rds files.
 (Uncomment the corresponding code to do it).  
 These files can now be selected within the shiny app for visualization.  
 
-```{r}
+```{r saveRDS}
 #saveRDS(mdsObj, file = "Krieg_mdsObj.rds")
 #saveRDS(phenoData, file = "Krieg_phenoData.rds")
 #saveRDS(chStats, file = "Krieg_chStats.rds")
 ```
 
 # Visualization of the MDS projection
-```{r}
+```{r launch}
 # MDSvis::run_app()
 ```
 

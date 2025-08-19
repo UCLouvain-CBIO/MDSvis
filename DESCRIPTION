@@ -1,6 +1,6 @@
 Package: MDSvis
 Title: Plots of MDS results
-Version: 0.1.6
+Version: 0.1.7
 Authors@R: 
     c(person(given = "Andrea",
              family = "Vicini",
@@ -42,5 +42,7 @@ Suggests:
     rmarkdown,
     BiocStyle,
     HDCytoData,
-    flowCore
+    flowCore,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3

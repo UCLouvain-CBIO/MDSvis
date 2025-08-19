@@ -6,6 +6,9 @@
 \usage{
 run_app()
 }
+\value{
+no return value
+}
 \description{
 Launch shiny app for MDS projection visualization
 }

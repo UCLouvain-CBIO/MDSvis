@@ -1,5 +1,9 @@
 ## MDSvis 0.1
 
+### MDSvis 0.1.7
+
+- small changes for improving BiocCheck()
+
 ### MDSvis 0.1.6
 
 - added the `MDSvis_Input_From_Distance` vignette with *fsap* dataset
