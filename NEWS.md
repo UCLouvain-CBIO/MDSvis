@@ -1,3 +1,8 @@
+## MDSvis 0.99
+
+### MDSvis 0.99.1
+- version initially submitted to Bioconductor
+
 ## MDSvis 0.1
 
 ### MDSvis 0.1.7
