@@ -36,7 +36,8 @@ Imports:
     CytoMDS (>= 1.3.5),
     plotly,
     shiny,
-    shinyjs
+    shinyjs,
+    methods
 Suggests:
     knitr,
     rmarkdown,

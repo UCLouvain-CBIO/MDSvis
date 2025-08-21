@@ -302,35 +302,37 @@ server <- function(input, output, session) {
 
   observeEvent(c(input$mdsObjFile, input$pDataFile, input$statsFile), {
     tryCatch({
-      dims <- rep(NA, 3)
-      names(dims) <- c("MDS", "phenodata", "stats")
-      if (!is.null(input$mdsObjFile) && isMdsObjValid()) {
-        dims[1] <- CytoMDS::nPoints(readRDS(input$mdsObjFile$datapath))
-      }
-      if (!is.null(input$pDataFile) && isPDataValid()) {
-        dims[2] <- nrow(readRDS(input$pDataFile$datapath))
-      }
-      if (!is.null(input$statsFile) && isStatsValid()) {
-        dims[3] <- nrow(readRDS(input$statsFile$datapath)[[1]])
-      }
-      if (!is.na(dims[1])) {
-        if (!is.na(dims[2]) && dims[1] != dims[2])
-          areMDSPdataCompatible(FALSE)
-        if (!is.na(dims[3]) && dims[1] != dims[3])
-          areMDSStatsCompatible(FALSE)
-      }
-      notNAdims <- dims[!is.na(dims)]
-      if(length(unique(notNAdims)) > 1) {
-        stop(paste0("The loaded objects have incompatible number of samples (",
-                    paste(sapply(seq_along(notNAdims),
-                                 function(i) paste(notNAdims[i],
-                                                   names(notNAdims)[i],
-                                                   sep = ": ")),
-                          collapse = ", "),
-                    ")"))
-      }
-      areMDSPdataCompatible(TRUE)
-      areMDSStatsCompatible(TRUE)
+        tmpMdsObj <- NULL
+        tmpPData <- NULL
+        tmpStats <- NULL
+        if (!is.null(input$mdsObjFile) && isMdsObjValid()) {
+            tmpMdsObj <- readRDS(input$mdsObjFile$datapath)
+        }
+        if (!is.null(input$pDataFile) && isPDataValid()) {
+            tmpPData <- readRDS(input$pDataFile$datapath)
+        }
+        if (!is.null(input$statsFile) && isStatsValid()) {
+            tmpStats <- readRDS(input$statsFile$datapath)
+        }
+
+        dimCheck <- checkDimCompatibility(
+            tmpMdsObj, tmpPData, tmpStats)
+
+        areMDSPdataCompatible(
+            dimCheck$dimCompatibility$areMDSPdataCompatible)
+        areMDSStatsCompatible(
+            dimCheck$dimCompatibility$areMDSStatsCompatible)
+
+        notNAdims <- dimCheck$dims[!is.na(dimCheck$dims)]
+        if(length(unique(notNAdims)) > 1) {
+            stop(paste0("The loaded objects have incompatible number of samples (",
+                        paste(sapply(seq_along(notNAdims),
+                                     function(i) paste(notNAdims[i],
+                                                       names(notNAdims)[i],
+                                                       sep = ": ")),
+                              collapse = ", "),
+                        ")"))
+        }
     }, error = function(e) {
       showNotification(as.character(e$message), type = "error", duration = NULL)
     })
