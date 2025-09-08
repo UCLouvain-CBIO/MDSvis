@@ -1,15 +1,11 @@
 bibentry(
   bibtype = "Article",
-  title    = "Visual quality control with {CytoMDS}, a Bioconductor package for
-              low dimensional representation of cytometry sample distances",
-  author   = "Hauchamps, Philippe and Delandre, Simon and Temmerman, Stéphane T
-               and Lin, Dan and Gatto, Laurent",
-  journal   = "Cytometry A",
-  publisher = "Wiley",
-  volume    =  107,
-  number    =  3,
-  pages     = "177--186",
-  month     = "mar",
-  year      =  2025,
-  language  = "en"
+  title    = "{MDSvis}, a Shiny application for interactive visualisation of
+              Multi Dimensional Scaling projections",
+  author   = "Hauchamps Philippe and Vicini Andrea and Gatto Laurent",
+  journal  = "bioRxiv",
+  pages    = "2025.06.23.660991",
+  month    =  "jun",
+  year     =  2025,
+  language = "en"
 )

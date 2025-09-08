@@ -1,6 +1,6 @@
 Package: MDSvis
 Title: Plots of MDS results
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: 
     c(person(given = "Andrea",
              family = "Vicini",
@@ -32,6 +32,8 @@ BugReports: https://github.com/UCLouvain-CBIO/MDSvis/issues
 URL: https://uclouvain-cbio.github.io/MDSvis
 biocViews: FlowCytometry, QualityControl, DimensionReduction, 
  MultidimensionalScaling, Software, Visualization
+Depends:
+    R (>= 4.5)
 Imports: 
     CytoMDS (>= 1.3.5),
     plotly,

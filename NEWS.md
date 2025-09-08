@@ -3,6 +3,9 @@
 ### MDSvis 0.99.0
 - version initially submitted to Bioconductor
 
+### MDSvis 0.99.1
+- slight tech changes to solve WARNINGS on Bioc building systems
+
 ## MDSvis 0.1
 
 ### MDSvis 0.1.7
