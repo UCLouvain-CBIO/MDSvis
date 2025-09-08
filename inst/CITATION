@@ -7,5 +7,6 @@ bibentry(
   pages    = "2025.06.23.660991",
   month    =  "jun",
   year     =  2025,
-  language = "en"
+  language = "en",
+  doi      = "10.1101/2025.06.23.660991"
 )

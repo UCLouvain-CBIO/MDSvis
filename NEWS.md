@@ -6,6 +6,9 @@
 ### MDSvis 0.99.1
 - slight tech changes to solve WARNINGS on Bioc building systems
 
+### MDSvis 0.99.2
+- added doi entry to CITATION file
+
 ## MDSvis 0.1
 
 ### MDSvis 0.1.7
