@@ -1,13 +1,16 @@
 ## MDSvis 0.99.0
 
-### MDSvis 0.99.0
-- version initially submitted to Bioconductor
+### MDSvis 0.99.3
+- moved shiny app code to main package R directory instead of install directory
+
+### MDSvis 0.99.2
+- added doi entry to CITATION file
 
 ### MDSvis 0.99.1
 - slight tech changes to solve WARNINGS on Bioc building systems
 
-### MDSvis 0.99.2
-- added doi entry to CITATION file
+### MDSvis 0.99.0
+- version initially submitted to Bioconductor
 
 ## MDSvis 0.1
 

@@ -1,6 +1,6 @@
 Package: MDSvis
 Title: Plots of MDS results
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: 
     c(person(given = "Andrea",
              family = "Vicini",
@@ -36,6 +36,7 @@ Depends:
     R (>= 4.5)
 Imports: 
     CytoMDS (>= 1.3.5),
+    ggplot2,
     plotly,
     shiny,
     shinyjs,
