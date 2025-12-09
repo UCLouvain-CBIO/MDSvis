@@ -378,7 +378,7 @@ function parameters.
     ## [130] viridisLite_0.4.2    BiocParallel_1.45.0  nnls_1.6            
     ## [133] Biostrings_2.79.2    lazyeval_0.2.2       glmnet_4.1-10       
     ## [136] Matrix_1.7-4         bit64_4.6.0-1        CytoPipeline_1.11.0 
-    ## [139] ggplot2_4.0.1        KEGGREST_1.51.1      shiny_1.12.0        
+    ## [139] ggplot2_4.0.1        KEGGREST_1.51.1      shiny_1.12.1        
     ## [142] rbibutils_2.4        broom_1.0.11         memoise_2.0.1       
     ## [145] bslib_0.9.0          bit_4.6.0            polynom_1.4-1
 

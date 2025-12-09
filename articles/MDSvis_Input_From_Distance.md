@@ -314,7 +314,7 @@ section](#fsap_methods) in the current vignette.
     ##  [55] nnet_7.3-20          tidyselect_1.2.1     rstudioapi_0.17.1   
     ##  [58] yaml_2.3.11          doParallel_1.0.17    codetools_0.2-20    
     ##  [61] lattice_0.22-7       tibble_3.3.0         plyr_1.8.9          
-    ##  [64] shiny_1.12.0         S7_0.2.1             evaluate_1.0.5      
+    ##  [64] shiny_1.12.1         S7_0.2.1             evaluate_1.0.5      
     ##  [67] foreign_0.8-90       desc_1.4.3           survival_3.8-3      
     ##  [70] proxy_0.4-27         pillar_1.11.1        BiocManager_1.30.27 
     ##  [73] mice_3.18.0          checkmate_2.3.3      foreach_1.5.2       

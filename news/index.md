@@ -7,6 +7,7 @@
 - updates following comments and remarks from Bioconductor peer review
 - added a ‘demo mode’ in the shiny application whereby the
   *Krieg_Anti_PD_1* dataset gets pre-loaded automatically
+- possibility to add ellipses to MDS plots (linked to colour)
 
 ### MDSvis 0.99.3
 
