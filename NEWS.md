@@ -2,6 +2,8 @@
 
 ### MDSvis 0.99.4
 - updates following comments and remarks from Bioconductor peer review
+- added a 'demo mode' in the shiny application whereby the *Krieg_Anti_PD_1* 
+dataset gets pre-loaded automatically
 
 ### MDSvis 0.99.3
 - moved shiny app code to main package R directory instead of install directory
