@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MDSvis</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,13 +96,14 @@ specific properties.</p>
 </h2>
 <p>To install this package, start R and enter (un-commented):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># if (!require("devtools", quietly = TRUE))</span></span>
-<span><span class="co">#     install.packages("devtools")</span></span>
-<span><span class="co"># </span></span>
-<span><span class="co"># devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://uclouvain-cbio.github.io/MDSvis">"MDSvis"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"MDSvis"</span><span class="op">)</span></span></code></pre></div>
 <p>We now load the packages needed in the current vignette:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://uclouvain-cbio.github.io/CytoMDS" class="external-link">CytoMDS</a></span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://uclouvain-cbio.github.io/CytoMDS" class="external-link">CytoMDS</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://uclouvain-cbio.github.io/MDSvis">MDSvis</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -204,10 +205,8 @@ options.</p>
 <span><span class="co">## Stress:  0.156626 </span></span>
 <span><span class="co">## Pseudo RSquare:  0.829141 </span></span>
 <span><span class="co">## Goodness of fit:  0.975468</span></span></code></pre>
-<p>Finally, we can save the newly created objects as .rds files on
-disk.<br>
-(Uncomment the corresponding code to do it).<br>
-These files can now be selected within the shiny app for
+<p>The newly created objects can be saved as .rds files.<br>
+These files can in turn be selected within the shiny app for
 visualization.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># outputs (for shiny app)</span></span>
@@ -216,9 +215,9 @@ visualization.</p>
 <span><span class="va">propRDSPath</span> <span class="op">&lt;-</span> <span class="st">"fsap_mature_props.rds"</span></span>
 <span></span>
 <span><span class="co"># saving objects </span></span>
-<span><span class="co">#saveRDS(MDSObj, file = MDSRDSPath)</span></span>
-<span><span class="co">#saveRDS(statList, file = statRDSPath)</span></span>
-<span><span class="co">#saveRDS(propDF, file = propRDSPath)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">MDSObj</span>, file <span class="op">=</span> <span class="va">MDSRDSPath</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">statList</span>, file <span class="op">=</span> <span class="va">statRDSPath</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">propDF</span>, file <span class="op">=</span> <span class="va">propRDSPath</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualization-of-the-mds-projection">Visualization of the MDS projection<a class="anchor" aria-label="anchor" href="#visualization-of-the-mds-projection"></a>
@@ -227,7 +226,7 @@ visualization.</p>
 interactive Shiny app. From here, you can take a look at the <a href="MDSvis.html">main</a> <code>MDSvis</code> vignette for an overview
 of the Shiny app features.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#MDSvis::run_app()</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">MDSvis</span><span class="fu">::</span><span class="fu"><a href="../reference/mdsvis_app.html">mdsvis_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Here below is a screen shot from the Shiny app, displaying a view of
 the MDS projection of the <code>fsap</code> dataset.</p>
 <p><img src="images/fsap_view.png"></p>
@@ -309,7 +308,7 @@ vignette.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.5.1 (2025-06-13)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2025-12-07 r89119)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.3 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -332,52 +331,52 @@ vignette.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] MDSvis_0.99.3       CytoMDS_1.5.0       Biobase_2.69.1     </span></span>
-<span><span class="co">## [4] BiocGenerics_0.55.1 generics_0.1.4      BiocStyle_2.37.1   </span></span>
+<span><span class="co">## [1] MDSvis_0.99.4       CytoMDS_1.7.1       Biobase_2.71.0     </span></span>
+<span><span class="co">## [4] BiocGenerics_0.57.0 generics_0.1.4      BiocStyle_2.39.0   </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.4         polynom_1.4-1        gridExtra_2.3       </span></span>
-<span><span class="co">##   [4] rlang_1.1.6          magrittr_2.0.4       e1071_1.7-16        </span></span>
-<span><span class="co">##   [7] matrixStats_1.5.0    compiler_4.5.1       gdata_3.0.1         </span></span>
-<span><span class="co">##  [10] systemfonts_1.2.3    vctrs_0.6.5          stringr_1.5.2       </span></span>
-<span><span class="co">##  [13] pkgconfig_2.0.3      shape_1.4.6.1        fastmap_1.2.0       </span></span>
-<span><span class="co">##  [16] backports_1.5.0      promises_1.3.3       ncdfFlow_2.55.0     </span></span>
-<span><span class="co">##  [19] rmarkdown_2.29       nloptr_2.2.1         graph_1.87.0        </span></span>
-<span><span class="co">##  [22] ragg_1.5.0           purrr_1.1.0          xfun_0.53           </span></span>
-<span><span class="co">##  [25] glmnet_4.1-10        jomo_2.7-6           cachem_1.1.0        </span></span>
-<span><span class="co">##  [28] jsonlite_2.0.0       flowWorkspace_4.21.0 later_1.4.4         </span></span>
-<span><span class="co">##  [31] pan_1.9              parallel_4.5.1       broom_1.0.10        </span></span>
-<span><span class="co">##  [34] cluster_2.1.8.1      R6_2.6.1             bslib_0.9.0         </span></span>
-<span><span class="co">##  [37] stringi_1.8.7        RColorBrewer_1.1-3   smacof_2.1-7        </span></span>
-<span><span class="co">##  [40] boot_1.3-32          rpart_4.1.24         jquerylib_0.1.4     </span></span>
-<span><span class="co">##  [43] Rcpp_1.1.0           bookdown_0.44        iterators_1.0.14    </span></span>
-<span><span class="co">##  [46] knitr_1.50           base64enc_0.1-3      weights_1.1.2       </span></span>
-<span><span class="co">##  [49] flowCore_2.21.0      httpuv_1.6.16        Matrix_1.7-4        </span></span>
-<span><span class="co">##  [52] nnls_1.6             splines_4.5.1        nnet_7.3-20         </span></span>
-<span><span class="co">##  [55] tidyselect_1.2.1     rstudioapi_0.17.1    yaml_2.3.10         </span></span>
-<span><span class="co">##  [58] doParallel_1.0.17    codetools_0.2-20     lattice_0.22-7      </span></span>
-<span><span class="co">##  [61] tibble_3.3.0         plyr_1.8.9           shiny_1.11.1        </span></span>
-<span><span class="co">##  [64] S7_0.2.0             evaluate_1.0.5       foreign_0.8-90      </span></span>
-<span><span class="co">##  [67] desc_1.4.3           survival_3.8-3       proxy_0.4-27        </span></span>
-<span><span class="co">##  [70] pillar_1.11.1        BiocManager_1.30.26  mice_3.18.0         </span></span>
-<span><span class="co">##  [73] checkmate_2.3.3      foreach_1.5.2        stats4_4.5.1        </span></span>
-<span><span class="co">##  [76] ellipse_0.5.0        reformulas_0.4.1     shinyjs_2.1.0       </span></span>
-<span><span class="co">##  [79] plotly_4.11.0        S4Vectors_0.47.3     ggplot2_4.0.0       </span></span>
-<span><span class="co">##  [82] ggcyto_1.37.1        scales_1.4.0         minqa_1.2.8         </span></span>
-<span><span class="co">##  [85] gtools_3.9.5         xtable_1.8-4         class_7.3-23        </span></span>
-<span><span class="co">##  [88] glue_1.8.0           Hmisc_5.2-3          lazyeval_0.2.2      </span></span>
-<span><span class="co">##  [91] tools_4.5.1          hexbin_1.28.5        data.table_1.17.8   </span></span>
-<span><span class="co">##  [94] lme4_1.1-37          fs_1.6.6             XML_3.99-0.19       </span></span>
-<span><span class="co">##  [97] grid_4.5.1           plotrix_3.8-4        tidyr_1.3.1         </span></span>
-<span><span class="co">## [100] RProtoBufLib_2.21.0  rbibutils_2.3        CytoPipeline_1.9.0  </span></span>
-<span><span class="co">## [103] colorspace_2.1-2     nlme_3.1-168         htmlTable_2.4.3     </span></span>
-<span><span class="co">## [106] Formula_1.2-5        cli_3.6.5            textshaping_1.0.3   </span></span>
-<span><span class="co">## [109] cytolib_2.21.0       viridisLite_0.4.2    dplyr_1.1.4         </span></span>
-<span><span class="co">## [112] Rgraphviz_2.53.0     gtable_0.3.6         sass_0.4.10         </span></span>
-<span><span class="co">## [115] digest_0.6.37        wordcloud_2.6        htmlwidgets_1.6.4   </span></span>
-<span><span class="co">## [118] farver_2.1.2         htmltools_0.5.8.1    pkgdown_2.1.3.9000  </span></span>
-<span><span class="co">## [121] lifecycle_1.0.4      httr_1.4.7           mitml_0.4-5         </span></span>
-<span><span class="co">## [124] mime_0.13            MASS_7.3-65</span></span></code></pre>
+<span><span class="co">##   [4] rlang_1.1.6          magrittr_2.0.4       otel_0.2.0          </span></span>
+<span><span class="co">##   [7] e1071_1.7-16         matrixStats_1.5.0    compiler_4.6.0      </span></span>
+<span><span class="co">##  [10] gdata_3.0.1          systemfonts_1.3.1    vctrs_0.6.5         </span></span>
+<span><span class="co">##  [13] stringr_1.6.0        pkgconfig_2.0.3      shape_1.4.6.1       </span></span>
+<span><span class="co">##  [16] fastmap_1.2.0        backports_1.5.0      promises_1.5.0      </span></span>
+<span><span class="co">##  [19] ncdfFlow_2.57.0      rmarkdown_2.30       nloptr_2.2.1        </span></span>
+<span><span class="co">##  [22] graph_1.89.1         ragg_1.5.0           purrr_1.2.0         </span></span>
+<span><span class="co">##  [25] jomo_2.7-6           xfun_0.54            glmnet_4.1-10       </span></span>
+<span><span class="co">##  [28] cachem_1.1.0         jsonlite_2.0.0       flowWorkspace_4.23.0</span></span>
+<span><span class="co">##  [31] later_1.4.4          pan_1.9              parallel_4.6.0      </span></span>
+<span><span class="co">##  [34] broom_1.0.11         cluster_2.1.8.1      R6_2.6.1            </span></span>
+<span><span class="co">##  [37] bslib_0.9.0          stringi_1.8.7        RColorBrewer_1.1-3  </span></span>
+<span><span class="co">##  [40] smacof_2.1-7         boot_1.3-32          rpart_4.1.24        </span></span>
+<span><span class="co">##  [43] jquerylib_0.1.4      Rcpp_1.1.0.8.1       bookdown_0.46       </span></span>
+<span><span class="co">##  [46] iterators_1.0.14     knitr_1.50           base64enc_0.1-3     </span></span>
+<span><span class="co">##  [49] weights_1.1.2        flowCore_2.23.0      splines_4.6.0       </span></span>
+<span><span class="co">##  [52] httpuv_1.6.16        Matrix_1.7-4         nnls_1.6            </span></span>
+<span><span class="co">##  [55] nnet_7.3-20          tidyselect_1.2.1     rstudioapi_0.17.1   </span></span>
+<span><span class="co">##  [58] yaml_2.3.11          doParallel_1.0.17    codetools_0.2-20    </span></span>
+<span><span class="co">##  [61] lattice_0.22-7       tibble_3.3.0         plyr_1.8.9          </span></span>
+<span><span class="co">##  [64] shiny_1.12.0         S7_0.2.1             evaluate_1.0.5      </span></span>
+<span><span class="co">##  [67] foreign_0.8-90       desc_1.4.3           survival_3.8-3      </span></span>
+<span><span class="co">##  [70] proxy_0.4-27         pillar_1.11.1        BiocManager_1.30.27 </span></span>
+<span><span class="co">##  [73] mice_3.18.0          checkmate_2.3.3      foreach_1.5.2       </span></span>
+<span><span class="co">##  [76] stats4_4.6.0         ellipse_0.5.0        reformulas_0.4.2    </span></span>
+<span><span class="co">##  [79] shinyjs_2.1.0        plotly_4.11.0        S4Vectors_0.49.0    </span></span>
+<span><span class="co">##  [82] ggplot2_4.0.1        ggcyto_1.39.0        scales_1.4.0        </span></span>
+<span><span class="co">##  [85] minqa_1.2.8          gtools_3.9.5         xtable_1.8-4        </span></span>
+<span><span class="co">##  [88] class_7.3-23         glue_1.8.0           Hmisc_5.2-4         </span></span>
+<span><span class="co">##  [91] lazyeval_0.2.2       tools_4.6.0          hexbin_1.28.5       </span></span>
+<span><span class="co">##  [94] data.table_1.17.8    lme4_1.1-38          fs_1.6.6            </span></span>
+<span><span class="co">##  [97] XML_3.99-0.20        grid_4.6.0           plotrix_3.8-13      </span></span>
+<span><span class="co">## [100] tidyr_1.3.1          RProtoBufLib_2.23.0  rbibutils_2.4       </span></span>
+<span><span class="co">## [103] CytoPipeline_1.11.0  colorspace_2.1-2     nlme_3.1-168        </span></span>
+<span><span class="co">## [106] htmlTable_2.4.3      Formula_1.2-5        cli_3.6.5           </span></span>
+<span><span class="co">## [109] textshaping_1.0.4    cytolib_2.23.0       viridisLite_0.4.2   </span></span>
+<span><span class="co">## [112] dplyr_1.1.4          Rgraphviz_2.55.0     gtable_0.3.6        </span></span>
+<span><span class="co">## [115] sass_0.4.10          digest_0.6.39        wordcloud_2.6       </span></span>
+<span><span class="co">## [118] htmlwidgets_1.6.4    farver_2.1.2         htmltools_0.5.9     </span></span>
+<span><span class="co">## [121] pkgdown_2.2.0.9000   lifecycle_1.0.4      httr_1.4.7          </span></span>
+<span><span class="co">## [124] mitml_0.4-5          mime_0.13            MASS_7.3-65</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -413,7 +412,7 @@ AlignMe.”</span> <em>PLoS One</em> 8 (3): e57731.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
 </div>
 
     </footer>
