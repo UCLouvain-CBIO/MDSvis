@@ -63,13 +63,13 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                              selectInput("colourBy", 
                                          "Colour by:", 
                                          choices = NULL),
-                             # conditionalPanel(
-                             #     condition = 
-                             #         "input.colourBy != '_'",
-                             #     checkboxInput("ellipses", 
-                             #                  "Add ellipses", 
-                             #                  value = FALSE)
-                             # ),
+                             conditionalPanel(
+                                 condition =
+                                     "input.colourBy != '_'",
+                                 checkboxInput("ellipses",
+                                              "Add ellipses",
+                                              value = FALSE)
+                             ),
                              selectInput("labelBy", 
                                          "Label by:", 
                                          choices = NULL),
@@ -158,7 +158,13 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                                  checkboxInput("repelArrowLabels", 
                                                "Repel arrow labels",
                                                value = FALSE)
-                             )
+                             ),
+                             numericInput("ellipseLevel",
+                                          "Ellipses level",
+                                          value = 0.95,
+                                          min = 0.01,
+                                          max = 0.99,
+                                          step = 0.01)
                          ),
                          mainPanel()
                      )
@@ -198,7 +204,6 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
         createPDataFromFile <- function(pDataFilePath){
             
             pdata <- NULL
-            browser()
             tryCatch({
                 pdata <- readRDS(pDataFilePath)
                 
@@ -366,7 +371,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 shinyjs::disable("axis1")
                 shinyjs::disable("axis2")
                 shinyjs::disable("colourBy")
-                #shinyjs::disable("ellipses")
+                shinyjs::disable("ellipses")
                 shinyjs::disable("labelBy")
                 shinyjs::disable("facetBy")
                 shinyjs::disable("shapeBy")
@@ -395,6 +400,8 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                     shinyjs::disable("arrowLabelSize")
                     shinyjs::disable("repelArrowLabels")
                 } 
+                shinyjs::disable("ellipseLevel")
+                
             } 
             if (rvIsMdsObjValid()){
             #if (!is.null(input$mdsObjFile) && rvIsMdsObjValid()){
@@ -420,7 +427,8 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 if (input$displayArrowLabels) {
                     shinyjs::enable("arrowLabelSize")
                     shinyjs::enable("repelArrowLabels")
-                } 
+                }
+                shinyjs::enable("ellipseLevel")
                 if (!is.null(rvStats()) && rvIsStatsValid() && 
                     rvAreMDSStatsCompatible()) {
                     shinyjs::enable("biplot")
@@ -444,7 +452,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 if (!is.null(rvPData()) && rvIsPDataValid() && 
                     rvAreMDSPdataCompatible()){
                     shinyjs::enable("colourBy")
-                    #shinyjs::enable("ellipses")
+                    shinyjs::enable("ellipses")
                     shinyjs::enable("labelBy")
                     shinyjs::enable("shapeBy")
                     shinyjs::enable("facetBy")
@@ -453,7 +461,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                     }
                 } else {
                     shinyjs::disable("colourBy")
-                    #shinyjs::disable("ellipses")
+                    shinyjs::disable("ellipses")
                     shinyjs::disable("labelBy")
                     shinyjs::disable("shapeBy")
                     shinyjs::disable("facetBy")
@@ -482,7 +490,6 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
         
         observeEvent(input$pDataFile, {
             req(input$pDataFile)
-            browser()
             pdata <- createPDataFromFile(
                 pDataFilePath = input$pDataFile$datapath)
             rvPData(pdata)
@@ -569,13 +576,14 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                     pltly <- pltly + 
                         ggplot2::facet_wrap(~ .data[[input$facetBy]])
                 }
-                # if (!is.null(rvPData()) && rvIsPDataValid() && 
-                #     rvAreMDSPdataCompatible() && input$ellipses) {
-                #     plt <- plt + 
-                #         ggplot2::stat_ellipse(group = .data[[input$colourBy]])
-                #     # pltly <- pltly + 
-                #     #     ggplot2::facet_wrap(~ .data[[input$facetBy]])
-                # }
+                if (!is.null(rvPData()) && rvIsPDataValid() &&
+                    rvAreMDSPdataCompatible() && input$ellipses) {
+                    plt <- plt +
+                        ggplot2::stat_ellipse(
+                            mapping = ggplot2::aes(
+                                col = .data[[input$colourBy]]),
+                            level = input$ellipseLevel)
+                }
                 list(plt = plt,
                      pltly = pltly)
             }

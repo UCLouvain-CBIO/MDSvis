@@ -1,6 +1,6 @@
 Package: MDSvis
 Title: Plots of MDS results
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: 
     c(person(given = "Andrea",
              family = "Vicini",
