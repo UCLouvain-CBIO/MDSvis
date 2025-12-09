@@ -21,26 +21,27 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'hide'}
+```{r style, echo=FALSE, results='hide', message=FALSE}
 BiocStyle::markdown()
 ```
 
 # Installation and loading dependencies
 
-To install this package, start R and enter (un-commented):
+To install this package, start R and enter:
 
-```{r package_install}
-# if (!require("devtools", quietly = TRUE))
-#     install.packages("devtools")
-# 
-# devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')
+```{r package_install, eval=FALSE, message=FALSE, warning=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if (!require("MDSvis", quietly = TRUE))
+    BiocManager::install("MDSvis")
 ```
 
 We now load the packages needed in the current vignette:
 
-```{r rlibs, results=FALSE}
-suppressPackageStartupMessages(library(HDCytoData))
-suppressPackageStartupMessages(library(CytoMDS))
+```{r rlibs, results=FALSE, message=FALSE, warning=FALSE}
+library(HDCytoData)
+library(CytoMDS)
 library(MDSvis)
 ```
 
@@ -81,12 +82,21 @@ predictor of survival in response to immunotherapy treatment.
 Notably, this dataset contains a strong batch effect, 
 due to sample acquisition on two different days (@Krieg2018-zs).
 
+# Generation of input files
+
+In the current section, we show how to build the input objects needed 
+by the shiny app, step by step. However, if you are only interested 
+in the description of the app functionalities, you might decide to launch 
+the application demo mode - which automatically pre-loads 
+the *Krieg_Anti_PD_1* dataset - and jump to 
+[the next section](#visualization-of-the-mds-projection). 
+
+First we load the *Krieg_Anti_PD_1* dataset, from the *HDCytoData* package.  
+
 ```{r loadDataSet}
 Krieg_fs <- Krieg_Anti_PD_1_flowSet()
 Krieg_fs
 ```
-
-# Computation of input files
 
 Next we build a *phenodata* dataframe with experimental design information, 
 which are here found in the cytometry data structures.
@@ -172,31 +182,40 @@ chStats <- CytoMDS::channelSummaryStats(
 
 ```
 
-We save the newly created objects as .rds files.  
-(Uncomment the corresponding code to do it).  
-These files can now be selected within the shiny app for visualization.  
+The newly created objects can be saved as .rds files.  
+These files can in turn be selected within the shiny app for visualization.  
 
-```{r saveRDS}
-#saveRDS(mdsObj, file = "Krieg_mdsObj.rds")
-#saveRDS(phenoData, file = "Krieg_phenoData.rds")
-#saveRDS(chStats, file = "Krieg_chStats.rds")
+```{r saveRDS, eval=FALSE}
+saveRDS(mdsObj, file = "Krieg_mdsObj.rds")
+saveRDS(phenoData, file = "Krieg_phenoData.rds")
+saveRDS(chStats, file = "Krieg_chStats.rds")
 ```
 
 # Visualization of the MDS projection
-```{r launch}
-# MDSvis::run_app()
-```
-
 
 The `MDSvis` function `run_app` launches the interactive Shiny app and the
-three tabs window in the figure below gets opened. In the
-'Input files' tab the objects can be loaded for visualization. The plots
+three tabs window in the figure below gets opened. 
+
+```{r launch, eval = FALSE}
+MDSvis::mdsvis_app()
+
+# alternatively launch the application in demo mode, with the Krieg_Anti_PD_1
+# dataset already loaded.
+#MDSvis::mdsvis_app(preLoadDemoDataset = TRUE)
+
+```
+
+In the 'Input files' tab the objects can be loaded for visualization. The plots
 are then shown in the 'View' tab while the 'General settings' contains more
 technical plot settings controls. All the input files are expected to
 have .rds extension and at least a file containing the MDS object has
 to be loaded. Optionally a phenodata file containing a phenodata dataframe
 and/or a file containing a list of statistics for biplot visualization
-can be loaded.
+can be loaded.  
+
+Alternatively, a 'demo mode' (see in commented code chunck above) allows 
+the user to launch the app with the *Krieg_Anti_PD_1* dataset pre-loaded, 
+without importing input .rds files.
 
 ![](images/InputFiles.png)
 We can select the previously created files and proceed with the visualization.

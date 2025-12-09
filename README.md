@@ -1,9 +1,9 @@
 # MDSvis
 
-The `MDSvis` package implements visualization of Multi Dimensional Scaling (MDS)
+The `MDSvis` package implements visualisation of Multi Dimensional Scaling (MDS)
 objects representing a low dimensional projection of cytometry samples.
 Such objects can be obtained using the functionalities implemented in the
-`CytoMDS` package. The visualization is realised via a Shiny app that allows 
+`CytoMDS` package. The visualisation is realised via a Shiny app that allows 
 the user to interactively customise the plots depending on a series of input
 parameters.
 

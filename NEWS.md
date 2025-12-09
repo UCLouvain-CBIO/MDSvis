@@ -1,5 +1,8 @@
 ## MDSvis 0.99.0
 
+### MDSvis 0.99.4
+- updates following comments and remarks from Bioconductor peer review
+
 ### MDSvis 0.99.3
 - moved shiny app code to main package R directory instead of install directory
 

@@ -21,7 +21,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r style, echo = FALSE, results = 'hide'}
+```{r style, echo=FALSE, results='hide', message=FALSE}
 BiocStyle::markdown()
 ```
 
@@ -40,17 +40,18 @@ starting from any distance matrix, and some sample specific properties.
 
 To install this package, start R and enter (un-commented):
 
-```{r package_install}
-# if (!require("devtools", quietly = TRUE))
-#     install.packages("devtools")
-# 
-# devtools::install_github(repo = 'https://github.com/UCLouvain-CBIO/MDSvis')
+```{r package_install, eval=FALSE, message=FALSE, warning=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+if (!require("MDSvis", quietly = TRUE))
+    BiocManager::install("MDSvis")
 ```
 
 We now load the packages needed in the current vignette:
 
-```{r rlibs, results=FALSE}
-suppressPackageStartupMessages(library(CytoMDS))
+```{r rlibs, results=FALSE, message=FALSE, warning=FALSE}
+library(CytoMDS)
 library(MDSvis)
 ```
 
@@ -134,20 +135,19 @@ MDSObj <- CytoMDS::computeMetricMDS(pwDist = distMat,
 show(MDSObj)
 ```
 
-Finally, we can save the newly created objects as .rds files on disk.  
-(Uncomment the corresponding code to do it).  
-These files can now be selected within the shiny app for visualization.  
+The newly created objects can be saved as .rds files.  
+These files can in turn be selected within the shiny app for visualization.   
 
-```{r saveRDS}
+```{r saveRDS, eval=FALSE}
 # outputs (for shiny app)
 MDSRDSPath <- "fsap_mature_MDS.rds"
 statRDSPath <- "fsap_mature_stats.rds"
 propRDSPath <- "fsap_mature_props.rds"
 
 # saving objects 
-#saveRDS(MDSObj, file = MDSRDSPath)
-#saveRDS(statList, file = statRDSPath)
-#saveRDS(propDF, file = propRDSPath)
+saveRDS(MDSObj, file = MDSRDSPath)
+saveRDS(statList, file = statRDSPath)
+saveRDS(propDF, file = propRDSPath)
 ```
 
 # Visualization of the MDS projection
@@ -156,8 +156,8 @@ The `MDSvis` function `run_app` launches the interactive Shiny app.
 From here, you can take a look at the [main](MDSvis.html) `MDSvis` vignette 
 for an overview of the Shiny app features.   
 
-```{r launch}
-#MDSvis::run_app()
+```{r launch,eval=FALSE}
+MDSvis::mdsvis_app()
 ```
 
 Here below is a screen shot from the Shiny app, 

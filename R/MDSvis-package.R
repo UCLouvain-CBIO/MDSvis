@@ -1,4 +1,4 @@
-# MDSvis - Copyright (C) <2025>
+# MDSvis - Copyright (C) <2025-2026>
 # <Université catholique de Louvain (UCLouvain), Belgique>
 #
 #   Description and complete License: see LICENSE file.
@@ -20,7 +20,7 @@
 #' @rdname MDSvis
 #' 
 #' @seealso \link[CytoMDS:CytoMDS-package]{CytoMDS}
-#' @seealso [MDSvis::run_app]
+#' @seealso [MDSvis::mdsvis_app]
 #'
 #' @description
 #'
