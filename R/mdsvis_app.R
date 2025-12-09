@@ -63,6 +63,13 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                              selectInput("colourBy", 
                                          "Colour by:", 
                                          choices = NULL),
+                             # conditionalPanel(
+                             #     condition = 
+                             #         "input.colourBy != '_'",
+                             #     checkboxInput("ellipses", 
+                             #                  "Add ellipses", 
+                             #                  value = FALSE)
+                             # ),
                              selectInput("labelBy", 
                                          "Label by:", 
                                          choices = NULL),
@@ -168,6 +175,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 mds <- readRDS(mdsObjFilePath)
                 if (!inherits(mds, "MDS")) {
                     rvIsMdsObjValid(FALSE)
+                    mds <- NULL
                     stop("The selected file does not contain a MDS object.")
                 }
                 rvIsMdsObjValid(TRUE)
@@ -190,13 +198,13 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
         createPDataFromFile <- function(pDataFilePath){
             
             pdata <- NULL
+            browser()
             tryCatch({
                 pdata <- readRDS(pDataFilePath)
                 
                 if (!is.data.frame(pdata)) {
                     rvIsPDataValid(FALSE)
-                    rvPData(NULL)
-                    rvPDataSubs(NULL)
+                    pdata <- NULL
                     stop("The selected file does not contain ",
                          "a data.frame object.")
                 }
@@ -263,6 +271,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                                                    FUN = is.matrix,
                                                    FUN.VALUE = logical(1))))) {
                     rvIsStatsValid(FALSE)
+                    stats <- NULL
                     updateSelectInput(session, 
                                       "extVariables", 
                                       choices = c("_"))
@@ -357,6 +366,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 shinyjs::disable("axis1")
                 shinyjs::disable("axis2")
                 shinyjs::disable("colourBy")
+                #shinyjs::disable("ellipses")
                 shinyjs::disable("labelBy")
                 shinyjs::disable("facetBy")
                 shinyjs::disable("shapeBy")
@@ -434,6 +444,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                 if (!is.null(rvPData()) && rvIsPDataValid() && 
                     rvAreMDSPdataCompatible()){
                     shinyjs::enable("colourBy")
+                    #shinyjs::enable("ellipses")
                     shinyjs::enable("labelBy")
                     shinyjs::enable("shapeBy")
                     shinyjs::enable("facetBy")
@@ -442,6 +453,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                     }
                 } else {
                     shinyjs::disable("colourBy")
+                    #shinyjs::disable("ellipses")
                     shinyjs::disable("labelBy")
                     shinyjs::disable("shapeBy")
                     shinyjs::disable("facetBy")
@@ -470,6 +482,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
         
         observeEvent(input$pDataFile, {
             req(input$pDataFile)
+            browser()
             pdata <- createPDataFromFile(
                 pDataFilePath = input$pDataFile$datapath)
             rvPData(pdata)
@@ -478,6 +491,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
             dimCheck <- checkInputObjectDims(
                 rvMdsObj(), rvPData(), rvStats())
 
+            
             rvAreMDSPdataCompatible(
                 dimCheck$dimCompatibility$areMDSPdataCompatible)
         })
@@ -555,6 +569,13 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
                     pltly <- pltly + 
                         ggplot2::facet_wrap(~ .data[[input$facetBy]])
                 }
+                # if (!is.null(rvPData()) && rvIsPDataValid() && 
+                #     rvAreMDSPdataCompatible() && input$ellipses) {
+                #     plt <- plt + 
+                #         ggplot2::stat_ellipse(group = .data[[input$colourBy]])
+                #     # pltly <- pltly + 
+                #     #     ggplot2::facet_wrap(~ .data[[input$facetBy]])
+                # }
                 list(plt = plt,
                      pltly = pltly)
             }
