@@ -289,7 +289,7 @@ section](#fsap_methods) in the current vignette.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] MDSvis_0.99.4       CytoMDS_1.7.1       Biobase_2.71.0     
+    ## [1] MDSvis_0.99.5       CytoMDS_1.7.1       Biobase_2.71.0     
     ## [4] BiocGenerics_0.57.0 generics_0.1.4      BiocStyle_2.39.0   
     ## 
     ## loaded via a namespace (and not attached):

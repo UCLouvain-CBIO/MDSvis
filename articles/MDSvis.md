@@ -320,7 +320,7 @@ function parameters.
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] MDSvis_0.99.4               CytoMDS_1.7.1              
+    ##  [1] MDSvis_0.99.5               CytoMDS_1.7.1              
     ##  [3] HDCytoData_1.31.0           flowCore_2.23.0            
     ##  [5] SummarizedExperiment_1.41.0 Biobase_2.71.0             
     ##  [7] GenomicRanges_1.63.0        Seqinfo_1.1.0              
