@@ -266,7 +266,7 @@ section](#fsap_methods) in the current vignette.
 
 ## Session information
 
-    ## R Under development (unstable) (2025-12-07 r89119)
+    ## R Under development (unstable) (2026-01-10 r89298)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.3 LTS
     ## 
@@ -289,51 +289,51 @@ section](#fsap_methods) in the current vignette.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] MDSvis_0.99.5       CytoMDS_1.7.1       Biobase_2.71.0     
+    ## [1] MDSvis_0.99.6       CytoMDS_1.7.1       Biobase_2.71.0     
     ## [4] BiocGenerics_0.57.0 generics_0.1.4      BiocStyle_2.39.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.4         polynom_1.4-1        gridExtra_2.3       
-    ##   [4] rlang_1.1.6          magrittr_2.0.4       otel_0.2.0          
-    ##   [7] e1071_1.7-16         matrixStats_1.5.0    compiler_4.6.0      
+    ##   [4] rlang_1.1.7          magrittr_2.0.4       otel_0.2.0          
+    ##   [7] e1071_1.7-17         matrixStats_1.5.0    compiler_4.6.0      
     ##  [10] gdata_3.0.1          systemfonts_1.3.1    vctrs_0.6.5         
     ##  [13] stringr_1.6.0        pkgconfig_2.0.3      shape_1.4.6.1       
     ##  [16] fastmap_1.2.0        backports_1.5.0      promises_1.5.0      
     ##  [19] ncdfFlow_2.57.0      rmarkdown_2.30       nloptr_2.2.1        
-    ##  [22] graph_1.89.1         ragg_1.5.0           purrr_1.2.0         
-    ##  [25] jomo_2.7-6           xfun_0.54            glmnet_4.1-10       
-    ##  [28] cachem_1.1.0         jsonlite_2.0.0       flowWorkspace_4.23.0
-    ##  [31] later_1.4.4          pan_1.9              parallel_4.6.0      
+    ##  [22] graph_1.89.1         ragg_1.5.0           purrr_1.2.1         
+    ##  [25] jomo_2.7-6           xfun_0.55            glmnet_4.1-10       
+    ##  [28] cachem_1.1.0         jsonlite_2.0.0       flowWorkspace_4.23.1
+    ##  [31] later_1.4.5          pan_1.9              parallel_4.6.0      
     ##  [34] broom_1.0.11         cluster_2.1.8.1      R6_2.6.1            
     ##  [37] bslib_0.9.0          stringi_1.8.7        RColorBrewer_1.1-3  
     ##  [40] smacof_2.1-7         boot_1.3-32          rpart_4.1.24        
-    ##  [43] jquerylib_0.1.4      Rcpp_1.1.0.8.1       bookdown_0.46       
-    ##  [46] iterators_1.0.14     knitr_1.50           base64enc_0.1-3     
-    ##  [49] weights_1.1.2        flowCore_2.23.0      splines_4.6.0       
+    ##  [43] jquerylib_0.1.4      Rcpp_1.1.1           bookdown_0.46       
+    ##  [46] iterators_1.0.14     knitr_1.51           base64enc_0.1-3     
+    ##  [49] weights_1.1.2        flowCore_2.23.1      splines_4.6.0       
     ##  [52] httpuv_1.6.16        Matrix_1.7-4         nnls_1.6            
     ##  [55] nnet_7.3-20          tidyselect_1.2.1     rstudioapi_0.17.1   
-    ##  [58] yaml_2.3.11          doParallel_1.0.17    codetools_0.2-20    
-    ##  [61] lattice_0.22-7       tibble_3.3.0         plyr_1.8.9          
+    ##  [58] yaml_2.3.12          doParallel_1.0.17    codetools_0.2-20    
+    ##  [61] lattice_0.22-7       tibble_3.3.1         plyr_1.8.9          
     ##  [64] shiny_1.12.1         S7_0.2.1             evaluate_1.0.5      
     ##  [67] foreign_0.8-90       desc_1.4.3           survival_3.8-3      
-    ##  [70] proxy_0.4-27         pillar_1.11.1        BiocManager_1.30.27 
-    ##  [73] mice_3.18.0          checkmate_2.3.3      foreach_1.5.2       
-    ##  [76] stats4_4.6.0         ellipse_0.5.0        reformulas_0.4.2    
-    ##  [79] shinyjs_2.1.0        plotly_4.11.0        S4Vectors_0.49.0    
-    ##  [82] ggplot2_4.0.1        ggcyto_1.39.0        scales_1.4.0        
+    ##  [70] proxy_0.4-29         pillar_1.11.1        BiocManager_1.30.27 
+    ##  [73] mice_3.19.0          checkmate_2.3.3      foreach_1.5.2       
+    ##  [76] stats4_4.6.0         ellipse_0.5.0        reformulas_0.4.3.1  
+    ##  [79] shinyjs_2.1.1        plotly_4.11.0        S4Vectors_0.49.0    
+    ##  [82] ggplot2_4.0.1        ggcyto_1.39.1        scales_1.4.0        
     ##  [85] minqa_1.2.8          gtools_3.9.5         xtable_1.8-4        
-    ##  [88] class_7.3-23         glue_1.8.0           Hmisc_5.2-4         
+    ##  [88] class_7.3-23         glue_1.8.0           Hmisc_5.2-5         
     ##  [91] lazyeval_0.2.2       tools_4.6.0          hexbin_1.28.5       
-    ##  [94] data.table_1.17.8    lme4_1.1-38          fs_1.6.6            
+    ##  [94] data.table_1.18.0    lme4_1.1-38          fs_1.6.6            
     ##  [97] XML_3.99-0.20        grid_4.6.0           plotrix_3.8-13      
-    ## [100] tidyr_1.3.1          RProtoBufLib_2.23.0  rbibutils_2.4       
+    ## [100] tidyr_1.3.2          RProtoBufLib_2.23.0  rbibutils_2.4       
     ## [103] CytoPipeline_1.11.0  colorspace_2.1-2     nlme_3.1-168        
     ## [106] htmlTable_2.4.3      Formula_1.2-5        cli_3.6.5           
     ## [109] textshaping_1.0.4    cytolib_2.23.0       viridisLite_0.4.2   
     ## [112] dplyr_1.1.4          Rgraphviz_2.55.0     gtable_0.3.6        
     ## [115] sass_0.4.10          digest_0.6.39        wordcloud_2.6       
     ## [118] htmlwidgets_1.6.4    farver_2.1.2         htmltools_0.5.9     
-    ## [121] pkgdown_2.2.0.9000   lifecycle_1.0.4      httr_1.4.7          
+    ## [121] pkgdown_2.2.0.9000   lifecycle_1.0.5      httr_1.4.7          
     ## [124] mitml_0.4-5          mime_0.13            MASS_7.3-65
 
 ## References
