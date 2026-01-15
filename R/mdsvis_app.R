@@ -23,6 +23,7 @@
 #' @importFrom plotly renderPlotly plotlyOutput ggplotly
 #' @importFrom CytoMDS nDim ggplotSampleMDS
 #' @importFrom ggplot2 facet_wrap ggsave labs
+#' @importFrom rlang .data
 #' @return no return value
 #' @examples
 #' if (interactive()) {

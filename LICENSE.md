@@ -5,7 +5,7 @@ This file attempts to include all licenses that apply within MDSvis (this progra
 
 MDSvis is a R package for visualization of Multi Dimensional Scaling (MDS) objects via Shiny app.
 
-Copyright (C) <2025> <Université catholique de Louvain (UCLouvain), Belgique>
+Copyright (C) <2025-2026> <Université catholique de Louvain (UCLouvain), Belgique>
 The list of the contributors to the development of MDSvis is given in the DESCRIPTION file.
 
 

@@ -1,5 +1,8 @@
 ## MDSvis 0.99.0
 
+### MDSvis 0.99.6
+- now imports `rlang` package (using `.data`)
+
 ### MDSvis 0.99.5
 - possibility to add coloured ellipses to MDS plots (linked to dot colour)
 
