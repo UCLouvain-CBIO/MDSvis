@@ -1,3 +1,8 @@
+## MDSvis 1.1
+
+### MDSvis 1.1.1
+- max file upload size is now a parameter in `mdsvis_app()`
+
 ## MDSvis 0.99.0
 
 ### MDSvis 0.99.6

@@ -4,10 +4,12 @@
 \alias{mdsvis_app}
 \title{Launch shiny app for MDS projection visualization}
 \usage{
-mdsvis_app(preLoadDemoDataset = FALSE)
+mdsvis_app(preLoadDemoDataset = FALSE, maxUploadSize = 50 * 1024^2)
 }
 \arguments{
 \item{preLoadDemoDataset}{if TRUE, pre-load the \emph{Krieg_Anti_PD_1} dataset}
+
+\item{maxUploadSize}{maximum size for file upload (50MB by default)}
 }
 \value{
 no return value

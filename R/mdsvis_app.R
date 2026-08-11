@@ -18,6 +18,7 @@
 #' @export
 #' @title Launch shiny app for MDS projection visualization
 #' @param preLoadDemoDataset if TRUE, pre-load the *Krieg_Anti_PD_1* dataset
+#' @param maxUploadSize maximum size for file upload (50MB by default)
 #' @import shiny
 #' @importFrom shinyjs useShinyjs enable disable
 #' @importFrom plotly renderPlotly plotlyOutput ggplotly
@@ -29,7 +30,9 @@
 #' if (interactive()) {
 #'   mdsvis_app()
 #' }
-mdsvis_app <- function(preLoadDemoDataset = FALSE) {
+mdsvis_app <- function(
+    preLoadDemoDataset = FALSE,
+    maxUploadSize = 50 * 1024^2) {
     ui <- fluidPage(
         shinyjs::useShinyjs(),
         titlePanel("Plot of Metric MDS object"),
@@ -175,7 +178,8 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
     )
     
     server <- function(input, output, session) {
-        
+        cat("Server-side shiny.maxRequestSize:", 
+            getOption("shiny.maxRequestSize"), "\n")
         createMDSObjectFromFile <- function(mdsObjFilePath){
             mds <- NULL
             tryCatch({
@@ -327,10 +331,6 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
             
             dimCheck
         }
-        
-        
-        # Increase the maximum upload size to 50 MB
-        options(shiny.maxRequestSize = 50 * 1024^2)
         
         rvIsMdsObjValid <- reactiveVal(TRUE)
         rvIsPDataValid <- reactiveVal(TRUE)
@@ -700,5 +700,7 @@ mdsvis_app <- function(preLoadDemoDataset = FALSE) {
         
     }
     
+    # Increase the maximum upload size to user specified size
+    options(shiny.maxRequestSize = maxUploadSize)
     shinyApp(ui = ui, server = server)
 }
