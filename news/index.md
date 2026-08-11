@@ -1,5 +1,12 @@
 # Changelog
 
+## MDSvis 1.1
+
+### MDSvis 1.1.1
+
+- max file upload size is now a parameter in
+  [`mdsvis_app()`](https://uclouvain-cbio.github.io/MDSvis/reference/mdsvis_app.md)
+
 ## MDSvis 0.99.0
 
 ### MDSvis 0.99.6

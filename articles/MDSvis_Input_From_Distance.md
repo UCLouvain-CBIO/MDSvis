@@ -54,13 +54,13 @@ their amino acid sequences. For details, see the [fsap dataset methods
 section](#fsap_methods) below.
 
 On top of the peptide distances, peptide properties have also been
-collected:  
-- Uniprot accession number  
-- taxonomic family, genus, species  
+collected:\
+- Uniprot accession number\
+- taxonomic family, genus, species\
 - some physicochemical parameters
 
-In the following code, we import the two text files of the dataset:  
-- the distance matrix file (imported as a R `matrix`)  
+In the following code, we import the two text files of the dataset:\
+- the distance matrix file (imported as a R `matrix`)\
 - the sample properties file (imported as a R `data.frame`)
 
 ``` r
@@ -144,7 +144,7 @@ table(propDF$species)
     ##       13       17        1
 
 From the distance matrix, we now need to calculate the MDS projection
-object, which will be used as main input in the Shiny app.  
+object, which will be used as main input in the Shiny app.\
 This is done using the `CytoMDS` package. Here we set the number of
 projection dimensions to 10. See the documentation of
 [`CytoMDS::computeMetricMDS()`](https://uclouvain-cbio.github.io/CytoMDS/reference/computeMetricMDS.html)
@@ -165,7 +165,7 @@ show(MDSObj)
     ## Pseudo RSquare:  0.829141 
     ## Goodness of fit:  0.975468
 
-The newly created objects can be saved as .rds files.  
+The newly created objects can be saved as .rds files.\
 These files can in turn be selected within the shiny app for
 visualization.
 
@@ -237,23 +237,22 @@ calculated and used to construct a distance, or dissimilarity matrix.
 
 ### Physicochemical parameters distinguishing FSAP
 
-The following parameters were calculated for each mature FSAP
-sequence:  
-1. peptide length (number of amino acids)  
+The following parameters were calculated for each mature FSAP sequence:\
+1. peptide length (number of amino acids)\
 2. grand average of hydropathy, or GRAVY index (obtained by dividing the
 sum of hydropathy values of all amino acids by total sequence length),
 to determine the hydrophobicity/hydrophilicity of the protein; a
 positive index indicates a more hydrophobic character, whereas a
-negative index indicates a more hydrophilic character  
+negative index indicates a more hydrophilic character\
 3. hydrophobic moment (measure of the amphipathicity of a structure, or
 asymmetry of hydrophobicity, by quantifying the distribution of
 hydrophobic and hydrophilic residues along its length; particularly
-relevant for α-helices)  
+relevant for α-helices)\
 4. isoelectric point, or pI (pH at which the peptide carries a net
-electrical charge of zero)  
-5. molar mass  
-6. net charge at pH 7  
-7. cysteine content (%)  
+electrical charge of zero)\
+5. molar mass\
+6. net charge at pH 7\
+7. cysteine content (%)\
 8. ratio of lysines to arginines (e.g., changes in this ratio in
 α-helical peptides can affect the hydrophobicity required for membrane
 perturbation)
@@ -266,9 +265,9 @@ section](#fsap_methods) in the current vignette.
 
 ## Session information
 
-    ## R Under development (unstable) (2026-01-10 r89298)
+    ## R version 4.6.1 (2026-06-24)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -289,52 +288,52 @@ section](#fsap_methods) in the current vignette.
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] MDSvis_0.99.6       CytoMDS_1.7.1       Biobase_2.71.0     
-    ## [4] BiocGenerics_0.57.0 generics_0.1.4      BiocStyle_2.39.0   
+    ## [1] MDSvis_1.1.1         CytoMDS_1.9.0        Biobase_2.73.2      
+    ## [4] BiocGenerics_0.59.11 generics_0.1.4       BiocStyle_2.41.0    
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] Rdpack_2.6.4         polynom_1.4-1        gridExtra_2.3       
-    ##   [4] rlang_1.1.7          magrittr_2.0.4       otel_0.2.0          
-    ##   [7] e1071_1.7-17         matrixStats_1.5.0    compiler_4.6.0      
-    ##  [10] gdata_3.0.1          systemfonts_1.3.1    vctrs_0.6.5         
+    ##   [1] Rdpack_2.6.6         polynom_1.4-1        gridExtra_2.3.1     
+    ##   [4] rlang_1.3.0          magrittr_2.0.5       otel_0.2.0          
+    ##   [7] e1071_1.7-17         matrixStats_1.5.0    compiler_4.6.1      
+    ##  [10] gdata_3.0.1          systemfonts_1.3.2    vctrs_0.7.3         
     ##  [13] stringr_1.6.0        pkgconfig_2.0.3      shape_1.4.6.1       
-    ##  [16] fastmap_1.2.0        backports_1.5.0      promises_1.5.0      
-    ##  [19] ncdfFlow_2.57.0      rmarkdown_2.30       nloptr_2.2.1        
-    ##  [22] graph_1.89.1         ragg_1.5.0           purrr_1.2.1         
-    ##  [25] jomo_2.7-6           xfun_0.55            glmnet_4.1-10       
-    ##  [28] cachem_1.1.0         jsonlite_2.0.0       flowWorkspace_4.23.1
-    ##  [31] later_1.4.5          pan_1.9              parallel_4.6.0      
-    ##  [34] broom_1.0.11         cluster_2.1.8.1      R6_2.6.1            
-    ##  [37] bslib_0.9.0          stringi_1.8.7        RColorBrewer_1.1-3  
-    ##  [40] smacof_2.1-7         boot_1.3-32          rpart_4.1.24        
-    ##  [43] jquerylib_0.1.4      Rcpp_1.1.1           bookdown_0.46       
-    ##  [46] iterators_1.0.14     knitr_1.51           base64enc_0.1-3     
-    ##  [49] weights_1.1.2        flowCore_2.23.1      splines_4.6.0       
-    ##  [52] httpuv_1.6.16        Matrix_1.7-4         nnls_1.6            
-    ##  [55] nnet_7.3-20          tidyselect_1.2.1     rstudioapi_0.17.1   
+    ##  [16] fastmap_1.2.0        backports_1.5.1      promises_1.5.0      
+    ##  [19] ncdfFlow_2.59.1      rmarkdown_2.31       nloptr_2.2.1        
+    ##  [22] graph_1.91.0         ragg_1.5.2           purrr_1.2.2         
+    ##  [25] jomo_2.7-6           xfun_0.60            glmnet_5.0          
+    ##  [28] cachem_1.1.0         jsonlite_2.0.0       flowWorkspace_4.25.1
+    ##  [31] later_1.4.8          pan_2.0              parallel_4.6.1      
+    ##  [34] broom_1.0.13         cluster_2.1.8.3      R6_2.6.1            
+    ##  [37] bslib_0.12.0         stringi_1.8.9        RColorBrewer_1.1-3  
+    ##  [40] smacof_2.1-7         boot_1.3-32          rpart_4.1.27        
+    ##  [43] jquerylib_0.1.4      Rcpp_1.1.2           bookdown_0.47       
+    ##  [46] iterators_1.0.14     knitr_1.51           base64enc_0.1-6     
+    ##  [49] weights_1.1.2        flowCore_2.25.1      httpuv_1.6.17       
+    ##  [52] Matrix_1.7-6         nnls_1.6             splines_4.6.1       
+    ##  [55] nnet_7.3-21          tidyselect_1.2.1     rstudioapi_0.19.0   
     ##  [58] yaml_2.3.12          doParallel_1.0.17    codetools_0.2-20    
-    ##  [61] lattice_0.22-7       tibble_3.3.1         plyr_1.8.9          
-    ##  [64] shiny_1.12.1         S7_0.2.1             evaluate_1.0.5      
-    ##  [67] foreign_0.8-90       desc_1.4.3           survival_3.8-3      
+    ##  [61] lattice_0.22-9       tibble_3.3.1         plyr_1.8.9          
+    ##  [64] shiny_1.14.0         S7_0.2.2             evaluate_1.0.5      
+    ##  [67] foreign_0.8-91       desc_1.4.3           survival_3.8-9      
     ##  [70] proxy_0.4-29         pillar_1.11.1        BiocManager_1.30.27 
-    ##  [73] mice_3.19.0          checkmate_2.3.3      foreach_1.5.2       
-    ##  [76] stats4_4.6.0         ellipse_0.5.0        reformulas_0.4.3.1  
-    ##  [79] shinyjs_2.1.1        plotly_4.11.0        S4Vectors_0.49.0    
-    ##  [82] ggplot2_4.0.1        ggcyto_1.39.1        scales_1.4.0        
-    ##  [85] minqa_1.2.8          gtools_3.9.5         xtable_1.8-4        
-    ##  [88] class_7.3-23         glue_1.8.0           Hmisc_5.2-5         
-    ##  [91] lazyeval_0.2.2       tools_4.6.0          hexbin_1.28.5       
-    ##  [94] data.table_1.18.0    lme4_1.1-38          fs_1.6.6            
-    ##  [97] XML_3.99-0.20        grid_4.6.0           plotrix_3.8-13      
-    ## [100] tidyr_1.3.2          RProtoBufLib_2.23.0  rbibutils_2.4       
-    ## [103] CytoPipeline_1.11.0  colorspace_2.1-2     nlme_3.1-168        
-    ## [106] htmlTable_2.4.3      Formula_1.2-5        cli_3.6.5           
-    ## [109] textshaping_1.0.4    cytolib_2.23.0       viridisLite_0.4.2   
-    ## [112] dplyr_1.1.4          Rgraphviz_2.55.0     gtable_0.3.6        
-    ## [115] sass_0.4.10          digest_0.6.39        wordcloud_2.6       
-    ## [118] htmlwidgets_1.6.4    farver_2.1.2         htmltools_0.5.9     
-    ## [121] pkgdown_2.2.0.9000   lifecycle_1.0.5      httr_1.4.7          
-    ## [124] mitml_0.4-5          mime_0.13            MASS_7.3-65
+    ##  [73] mice_3.19.0          checkmate_2.3.4      foreach_1.5.2       
+    ##  [76] stats4_4.6.1         ellipse_0.5.0        reformulas_0.4.4    
+    ##  [79] shinyjs_2.1.1        plotly_4.12.1        S4Vectors_0.51.6    
+    ##  [82] ggplot2_4.0.3        ggcyto_1.41.1        scales_1.4.0        
+    ##  [85] minqa_1.2.8          gtools_3.9.5         xtable_1.8-8        
+    ##  [88] class_7.3-24         glue_1.8.1           Hmisc_5.2-6         
+    ##  [91] tools_4.6.1          hexbin_1.28.6        data.table_1.18.4   
+    ##  [94] lme4_2.0-6           fs_2.1.0             XML_3.99-0.23       
+    ##  [97] grid_4.6.1           plotrix_3.8-14       tidyr_1.3.2         
+    ## [100] RProtoBufLib_2.25.0  rbibutils_2.4.1      CytoPipeline_1.13.0 
+    ## [103] colorspace_2.1-3     nlme_3.1-170         htmlTable_2.5.0     
+    ## [106] Formula_1.2-6        cli_3.6.6            textshaping_1.0.5   
+    ## [109] cytolib_2.25.0       viridisLite_0.4.3    dplyr_1.2.1         
+    ## [112] Rgraphviz_2.57.0     gtable_0.3.6         sass_0.4.10         
+    ## [115] digest_0.6.39        wordcloud_2.6        htmlwidgets_1.6.4   
+    ## [118] farver_2.1.2         htmltools_0.5.9      pkgdown_2.2.1.9000  
+    ## [121] lifecycle_1.0.5      httr_1.4.8           mitml_0.4-5         
+    ## [124] mime_0.13            MASS_7.3-66
 
 ## References
 

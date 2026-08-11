@@ -16,6 +16,9 @@ Multi Dimensional Scaling (MDS) results.
 
 Authors:
 
+- Philippe Hauchamps <philippe.hauchamps@uclouvain.be>
+  ([ORCID](https://orcid.org/0000-0003-2865-1852))
+
 - Andrea Vicini <andrea.vicini@uclouvain.be>
   ([ORCID](https://orcid.org/0000-0001-9438-6909))
 
